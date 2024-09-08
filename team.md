@@ -3,3 +3,6 @@ Currently a 2nd year student in BU MET Graduate Program, Natasya finished her MS
 
 ## Requirement Leader: Poom Chantarapornrat
 I graduated with a Bachelor's degree in Chemistry from Penn State University. My background is in computational chemistry where I mostly use Python to do science research. I am finishing my last semester of MS in Computer Science. I am currently in Boston and enrolling in 2 other in-person classes. I plan to go back to Thailand and get a job in science data analytic industry after my graduation.
+
+## Security Leader: Ananya Singh
+I graduated with a B.S. in Computer Science from New Jersey Institute of Technology. I have 3 years of experience as a Senior Software Engineer in the industry. I am in my second-to-last semester of MS in Software Developmment. I live in New Jersey right now. 
