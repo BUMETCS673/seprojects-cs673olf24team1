@@ -71,7 +71,7 @@ Due to the unavailability of the BU Registration MS database, the team has imple
 4. **Python AI Service:**
     - Navigate to the AI service directory:
       ```bash
-      cd ai_service
+      cd ai-service
       python -m venv venv
       source venv/bin/activate
       pip install -r requirements.txt
