@@ -1,0 +1,23 @@
+version: '3'
+services:
+  ai-service:
+    build: ./ai-service
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./ai-service:/app
+    environment:
+      - FLASK_ENV=development
+
+  course-builder-chatbot-ms:
+    build:
+      context: ./backend/course-builder-chatbot-ms
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+
+volumes:
+  ai-service-data:
+  course-builder-chatbot-ms-data:
