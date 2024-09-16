@@ -88,7 +88,7 @@ class InputChat(BaseModel):
 
 chain_with_history = RunnableWithMessageHistory(
     chain,
-    create_session_factory("chat_histories"),
+    create_session_factory(base_dir="chat_histories"),
     input_messages_key="human_input",
     history_messages_key="history",
 ).with_types(input_type=InputChat)

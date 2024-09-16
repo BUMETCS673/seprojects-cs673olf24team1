@@ -11,6 +11,7 @@ app = FastAPI(
 add_routes(
     app,
     chain_with_history,
+    path="/model"
 )
 
 if __name__ == "__main__":
