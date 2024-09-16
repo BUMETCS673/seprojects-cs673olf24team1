@@ -10,6 +10,7 @@ fetch configuration from the request.
 import re
 from pathlib import Path
 from typing import Callable, Union
+from fastapi import FastAPI, HTTPException
 
 from dotenv import load_dotenv
 load_dotenv()
