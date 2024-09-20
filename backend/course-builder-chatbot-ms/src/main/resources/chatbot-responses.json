@@ -1,0 +1,24 @@
+{
+  "conversations": [
+    {
+      "input": "Tell me about the Introduction to Programming course",
+      "response": "The Introduction to Programming course is designed for beginners with no prior coding experience. It covers fundamental programming concepts using Python. Topics include variables, data types, control structures, functions, and basic object-oriented programming. The course involves hands-on coding exercises and a final project."
+    },
+    {
+      "input": "What are the prerequisites for Data Structures and Algorithms?",
+      "response": "The prerequisites for the Data Structures and Algorithms course are: 1) Introduction to Programming, and 2) Discrete Mathematics. Students should be comfortable with basic programming concepts and have some experience with algorithmic thinking."
+    },
+    {
+      "input": "Describe the Machine Learning course",
+      "response": "The Machine Learning course introduces students to the fundamentals of ML. Topics include supervised and unsupervised learning, neural networks, and deep learning. Prerequisites include linear algebra, probability theory, and proficiency in Python. The course involves programming assignments and a final project implementing various ML algorithms."
+    },
+    {
+      "input": "What programming languages are used in the Web Development course?",
+      "response": "The Web Development course primarily uses HTML, CSS, and JavaScript for front-end development. For back-end development, the course covers Node.js and Express.js. Students also learn about databases (SQL and NoSQL) and are introduced to modern frameworks like React."
+    },
+    {
+      "input": "Tell me about the Artificial Intelligence course",
+      "response": "The Artificial Intelligence course covers a broad range of AI concepts including search algorithms, knowledge representation, planning, and machine learning. Prerequisites include Data Structures and Algorithms, and probability theory. The course involves programming assignments in Python and a final project that implements an AI system."
+    }
+  ]
+}
