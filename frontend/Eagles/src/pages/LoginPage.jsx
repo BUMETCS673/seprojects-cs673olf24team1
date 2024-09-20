@@ -80,7 +80,7 @@ const LoginPage = (props) => {
         <Link to="/chat" className='login-btn'>Login</Link>
         {/* <button className='form-input-btn' type='submit'><a href="/chat">Log in</a></button> */}
         {/* {error && <div><p style={{color:"red"}}>Login failed</p></div>} */}
-        <Link to="/chat" className='login-btn'>Okta</Link>
+
         <span className='form-input-login'>
             Do not have an account? <Link to="/signup">Sign Up
             {/* {"Don't have an account? Sign Up"} */}
