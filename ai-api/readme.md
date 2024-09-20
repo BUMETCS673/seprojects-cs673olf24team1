@@ -1,82 +1,94 @@
+
 ---
 
 # 🌟 Model API Service
 
-This directory handles the core functionalities of the project:
+Welcome to the **Model API Service**! This directory encompasses the core functionalities of the project, designed to deliver a seamless experience.
+
+## 🔍 Core Features
 
 1. **Model Implementation**:  
-   - Implements GPT-3.5 Turbo with RAG (Retrieval-Augmented Generation) using LangChain.  
-   - Code is found in `app.py`.
+   - Utilizes **GPT-4o** with **Retrieval-Augmented Generation (RAG)** via LangChain.  
+   - Code is organized into two primary modules: 
+     - **`llm_route.py`**: Manages responses from the language model.
+     - **`tree_route.py`**: Provides course recommendations using a decision tree algorithm.
 
 2. **API Service Creation**:  
-   - API service built using Langserve/FastAPI.  
-   - Code is found in `api.py`.
+   - Built on **Langserve/FastAPI** for efficient API service.  
+   - Main service code can be found in **`main.py`**.
 
 3. **Deployment**:  
-   - Hosted on **Vercel** using Serverless Functions.  
+   - Currently hosted locally for development purposes.
 
 ---
 
 ## 🚧 Development Progress
 
-### Currently in Progress:
+### Ongoing Tasks:
 
-1. Adding **chat history** and **session ID** support to the model.
-2. Integrating **vector storage** for efficient embedding data retrieval.
-3. Integrating **PostgreSQL** to store chat history and session IDs.
+1. **Chat History** & **Session ID**: Implementing support for tracking conversation history. [✔️]
+2. **Vector Storage Integration**: Enhancing data retrieval efficiency with vector storage. [✔️]
+3. **PostgreSQL Integration**: Storing chat history and session IDs for persistence.
 
 ---
 
 ## 📖 API Service Documentation
 
-- **API Endpoint**: [https://buan.vercel.app](https://buan.vercel.app)
-- **Full API Documentation**: [https://buan.vercel.app/docs](https://buan.vercel.app/docs)
+To get the API up and running, execute the following command:
 
-> **Note**: Vercel does not support response streaming yet!  
-> Please use one-time retrieval via `/invoke` instead.
+```bash
+docker-compose up --build
+```
 
 ---
 
-### 🚀 API Call Example
+### 🚀 API Call Examples
+
+#### **Endpoint**:  
+```http
+POST /course_tree
+```
+
+**Description**:  
+Submit student data to retrieve a personalized course schedule. This should be done at the beginning of the conversation, returning a simple string message.
+
+**Request Body**:
+```json
+{
+  "user_id": "buid_or_whatever_1234",
+  "student_name": "John Doe",
+  "course_taken": [521],
+  "path_interest": "secure software development",
+  "course_to_take": 4
+}
+```
+
+**Response Example**:
+```json
+{"message": "Your course schedule has been generated."}
+```
+
+---
 
 #### **Endpoint**:  
 ```http
 POST /model/invoke
 ```
 
-#### **Description**:  
-Pass in the user input message and session ID (currently, use `123`) to get the model's response.
+**Description**:  
+Send the user's input message along with the session ID (which corresponds to the user ID) to receive a response from the model.
 
-#### **Request Body**:
+**Request Body**:
 ```json
 {
-  "input": {
-    "human_input": "string"
-  },
-  "config": {
-    "configurable": {
-      "session_id": "123"
-    }
-  },
-  "kwargs": {}
+  "session_id": "same_as_student_id",
+  "content": "Hello! This is user input message"
 }
 ```
 
-#### **Response Example**:
+**Response Example**:
 ```json
-{
-  "output": {},
-  "metadata": {
-    "run_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "feedback_tokens": [
-      {
-        "key": "string",
-        "token_url": "string",
-        "expires_at": "2024-09-17T00:59:53.729Z"
-      }
-    ]
-  }
-}
+{"response": "model's response here."}
 ```
 
 ---
