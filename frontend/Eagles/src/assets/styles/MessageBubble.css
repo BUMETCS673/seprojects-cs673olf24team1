@@ -1,0 +1,33 @@
+/* .message-bubble {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+}
+
+.user {
+    background-color: #E54500;
+    align-self: flex-end;
+    color: white;
+}
+
+.bot {
+    background-color: #675DFF;
+    align-self: flex-start;
+    color: white;
+} */
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 60px auto;
+    min-height: 60px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #1b1b1d;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+}

@@ -1,0 +1,19 @@
+.main-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px;
+    margin: auto;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: #ffd0bc;
+    padding: 10px 20px;
+    border-radius: 50px;
+    margin-bottom: 50px;
+}
