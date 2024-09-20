@@ -77,4 +77,4 @@ async def response_message(request: Request, message_info: MessageInfo):
         {"input": user_input, "context": context},
         config=config,)
 
-    return response
+    return {"response" : response}

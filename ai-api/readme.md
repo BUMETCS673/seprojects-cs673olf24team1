@@ -3,7 +3,7 @@
 
 # 🌟 Model API Service
 
-Welcome to the **Model API Service**! This directory encompasses the core functionalities of the project, designed to deliver a seamless experience.
+Welcome to the **Model API Service**! This directory encompasses the core functionalities of the project. We implemented the llm model using Langchain and a decision tree algorithm. Then, expose it as an API using FastAPI/Uvicorn. Docker is used to containerize and deploy on the cloud.
 
 ## 🔍 Core Features
 
@@ -50,7 +50,7 @@ POST /course_tree
 ```
 
 **Description**:  
-Submit student data to retrieve a personalized course schedule. This should be done at the beginning of the conversation, returning a simple string message.
+Submit student data to retrieve a personalized course schedule. This should be done at the beginning of the conversation, returning a simple string message. The user_id must be unique for each user.
 
 **Request Body**:
 ```json
@@ -65,7 +65,7 @@ Submit student data to retrieve a personalized course schedule. This should be d
 
 **Response Example**:
 ```json
-{"message": "Your course schedule has been generated."}
+{"response": "Your course schedule has been generated."}
 ```
 
 ---
@@ -76,13 +76,14 @@ POST /model/invoke
 ```
 
 **Description**:  
-Send the user's input message along with the session ID (which corresponds to the user ID) to receive a response from the model.
+Send the user's input message along with the user_id to receive a response from the model.
+Make sure that the user_id is the same with previous conversations to continue talking with the same model as before.
 
 **Request Body**:
 ```json
 {
-  "session_id": "same_as_student_id",
-  "content": "Hello! This is user input message"
+  "user_id": "buid_or_whatever_1234",
+  "message": "Hello! This is the user's input message"
 }
 ```
 

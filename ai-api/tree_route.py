@@ -235,4 +235,4 @@ async def recommend_courses(request: Request, student_info: StudentInfo):
     message = AIMessage(content=response)
     store[session_id].add_message(message)
     
-    return {"message": response}
+    return {"response" : response}
