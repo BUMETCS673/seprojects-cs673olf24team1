@@ -1,9 +1,0 @@
-fastapi
-langchain
-langchain-community
-langchain-core
-langchain-openai
-langserve
-langsmith
-sse_starlette
-uvicorn
