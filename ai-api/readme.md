@@ -65,7 +65,7 @@ Submit student data to retrieve a personalized course schedule. This should be d
 
 **Response Example**:
 ```json
-{"response": "Your course schedule has been generated."}
+{"response": "Hi [student_name]!, this is your recommended courses ... feel free to ask more!"}
 ```
 
 ---
