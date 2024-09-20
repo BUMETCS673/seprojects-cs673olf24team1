@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from langchain_core.chat_history import InMemoryChatMessageHistory
@@ -17,7 +20,7 @@ app = FastAPI(
 
 # # Initialize app data
 app.state.student_data = cast(Dict[str, StudentInfo], {})
-app.state.chat_history = cast(Dict[str, List[InMemoryChatMessageHistory]], {})
+app.state.chat_history = cast(Dict[str, InMemoryChatMessageHistory], {})
 
 # Register routes
 @app.get("/")
