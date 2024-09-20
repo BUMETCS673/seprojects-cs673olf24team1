@@ -1,7 +1,7 @@
 package com.bu.coursebuilderchatbotms.service;
 
-import com.example.demo.entity.Project;
-import com.example.demo.repository.ProjectRepository;
+import com.bu.coursebuilderchatbotms.domain.Projects;
+import com.bu.coursebuilderchatbotms.dao.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +13,15 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public List<Project> getAllProjects() {
+    public List<Projects> getAllProjects() {
         return projectRepository.findAll();
     }
 
-    public Project getProjectById(Long id) {
+    public Projects getProjectById(Long id) {
         return projectRepository.findById(id).orElse(null);
     }
 
-    public Project createProject(Project project) {
+    public Projects createProject(Projects project) {
         return projectRepository.save(project);
     }
 
