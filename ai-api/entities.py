@@ -9,5 +9,5 @@ class StudentInfo(BaseModel):
     course_to_take: int
     
 class MessageInfo(BaseModel):
-    session_id: str
-    content: str
+    user_id: str
+    message: str

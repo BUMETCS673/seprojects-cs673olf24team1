@@ -56,8 +56,8 @@ rag_chain = prompt | llm | parser
 
 @router.post("/model/invoke")
 async def response_message(request: Request, message_info: MessageInfo):
-    user_input = message_info.content
-    session_id = message_info.session_id
+    user_input = message_info.message
+    session_id = message_info.user_id
 
     def get_session_history(session_id: str) -> BaseChatMessageHistory:
         store = request.app.state.chat_history
