@@ -1,0 +1,24 @@
+{
+  "conversations": [
+    {
+      "input": "Hello, I'm John. I took CS521 last semester and want to take 3 courses this semester that related to secure web development",
+      "response": "Hello John, based on the details on the courses you've taken, your program, and selected number of courses to take this semester, these are the recommended courses for you to take: CS526 - Data Structure and Algorithm, CS673 - Software Engineering, CS622 - Advance Programming Technique. Would you like more information about your recommended courses, or would you like to learn about other courses in the program?"
+    },
+    {
+      "input": "Yes, what do I learn in CS673?",
+      "response": "CS673, titled Software Engineering, is a comprehensive course that covers various techniques and tools essential for developing high-quality software. You will learn about the Software Development Life Cycle (SDLC) including Agile and DevOps methodologies, software design, refactoring, testing, and project management. A group project requires designing and developing a real-world software system using Agile methodology. The course also involves using tools like UML, version control, and testing frameworks. The workload is high with a moderate difficulty level. Prerequisites include MET CS 342 and one programming-intensive science course."
+    },
+    {
+      "input": "Is there any prerequisites for the data structure class?",
+      "response": "Yes, there are prerequisites for the Data Structure classes. For CS526 - Data Structure and Algorithms, the prerequisites are MET CS 300 and either MET CS 520 or MET CS 521. This course includes implementing data structures using a high-level programming language and analyzing computational complexity. Other data structure courses like CS341 (with C++) and CS342 (with Java) have their own prerequisites, such as MET CS 231 and 232, respectively."
+    },
+    {
+      "input": "What classes can benefit me to be in the secure software development industry?",
+      "response": "If you're aiming to enter the secure software development industry, key courses to consider include: CS763 - Secure Software Development, CS633 - Software Quality, Testing, and Security Management, CS695 - Cybersecurity, CS674 - Database Security, CS684 - Enterprise Cybersecurity Management, CS602 - Server-Side Web Development, and CS690 - Network Security. These courses cover a wide range of topics such as application security, security testing, project management, and cybersecurity mechanisms, and will provide you with the necessary skills for this industry."
+    },
+    {
+      "input": "I'm actually interested in artificial intelligence too. Does BU offer any courses about it?",
+      "response": "Yes, Boston University offers several courses related to Artificial Intelligence. Some key AI courses include: CS664 - Artificial Intelligence, CS767 - Advanced Machine Learning and Neural Networks, CS793 - Special Topics in Computer Science (Generative AI), CS688 - Web Mining and Graph Analytics, and CS699 - Data Mining. These courses cover topics such as machine learning, neural networks, AI models, web mining, and data mining, providing a strong foundation in AI and its applications."
+    }
+  ]
+}

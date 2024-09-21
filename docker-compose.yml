@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: chatbot_db
+      POSTGRES_USER: groupone
+      POSTGRES_PASSWORD: groupOneRocks
+
+  ai-service:
+    build: ./ai-service
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./ai-service:/app
+    environment:
+      - FLASK_ENV=development
+
+  course-builder-chatbot-ms:
+    build:
+      context: ./backend/course-builder-chatbot-ms
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+
+volumes:
+  postgres_data:
+  ai-service-data:
+  course-builder-chatbot-ms-data:
