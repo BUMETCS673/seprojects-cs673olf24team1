@@ -15,7 +15,6 @@ const ChatBox = () => {
     resultData,
   } = useContext(Context);
 
-
   return (
     <div className='main'>
       <div className="nav">
