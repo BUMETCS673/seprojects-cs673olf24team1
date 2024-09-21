@@ -1,5 +1,7 @@
 version: '3.8'
+
 services:
+  # PostgreSQL Database Service
   db:
     image: postgres:14
     ports:
@@ -11,23 +13,40 @@ services:
       POSTGRES_USER: groupone
       POSTGRES_PASSWORD: groupOneRocks
 
+  # AI Service (FastAPI)
   ai-service:
-    build: ./ai-service
+    build: ./code/ai-service
     ports:
       - "9080:9080"
     volumes:
-      - ./ai-service:/app
+      - ./code/ai-service:/app
     environment:
       - FLASK_ENV=development
 
+  # Backend (Spring Boot)
   course-builder-chatbot-ms:
     build:
-      context: ./backend/course-builder-chatbot-ms
+      context: ./code/backend/course-builder-chatbot-ms
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - ai-service
+      - db
+
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./frontend/Eagles
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Exposing port 80 inside container to port 3000 outside
+    volumes:
+      - ./frontend/Eagles:/app
+    depends_on:
+      - course-builder-chatbot-ms
+    environment:
+      - NODE_ENV=production
 
 volumes:
   postgres_data:
