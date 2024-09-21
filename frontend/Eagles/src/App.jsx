@@ -1,25 +1,22 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import eagle_logo from './assets/images/eagle_logo.png';
-import './App.css'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import Sidebar from './components/Sidebar/Sidebar'
+import ChatPage from './pages/ChatPage'
+// import ChatPage from './pages/ChatPage';
+import LoginPage from './pages/LoginPage';
 
-function App() {
-  // const [count, setCount] = useState(0)
+
+const App = () => {
 
   return (
-    <>
-      <div>
-        <a href="#" target="_blank">
-          <img src={eagle_logo} className="logo" alt="Eagle logo" />
-        </a>
-
-      </div>
-      <h1>BU Academic Navigator</h1>
-      <h1>It is BUAN chatbot</h1>
-      <p className="read-the-docs">Your own chat buddy</p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+      </Routes>
+    </Router>
   )
 }
 
-export default App
+export default App;
