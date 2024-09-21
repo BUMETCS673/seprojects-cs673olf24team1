@@ -3,7 +3,7 @@ services:
     build:
       context: .  # Path to the Dockerfile directory
       dockerfile: Dockerfile
-    image: buan-api:1.0.1
+    # image: ai-api:1.0.1
     ports:
       - "8080:8080"
     env_file:
