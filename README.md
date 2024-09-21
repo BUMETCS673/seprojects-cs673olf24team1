@@ -1,114 +1,80 @@
 
-# **Course Building Chatbot Web Application**
+# 🦅 Course Builder Chatbot
 
-**Team: BU MET CS Course Building Chatbot (Group 1)**
+This project provides a web application designed to help students select courses based on their preferences and the AI-driven recommendations. It integrates a chatbot built with Llama 2 and GPT-4 to enhance user interactions. The app leverages AI to recommend courses and store the data in MongoDB and PostgreSQL for efficient tracking.
 
----
+## Core Features
+- **AI-Driven Recommendations**: AI model integrated with FastAPI, Llama 2, and GPT-4 for personalized course suggestions.
+- **Spring Boot Backend**: Java-based backend handling application logic and communication between components.
+- **Frontend**: React-based UI for seamless interaction with users.
+- **Databases**: 
+  - MongoDB for storing course and program data.
+  - PostgreSQL for chat history.
 
-## **Project Overview**
+## Project Structure
+```
+├── code/
+│   ├── ai-service/                # AI model service (FastAPI + LangChain)
+│   ├── backend/                   # Java Spring Boot backend
+│   ├── frontend/                  # React frontend
+│   └── ...other components...
+├── .github/                       # GitHub Actions workflows
+├── .idea/                         # IDE settings (JetBrains)
+├── docker-compose.yml              # Docker Compose for service orchestration
+└── README.md                      # Project documentation
+```
 
-This project is a web application built using **React**, **Java**, and **Python**, integrated with the **Llama 2 Chatbot** for enhancing the course selection process. It offers students personalized course recommendations based on the data stored in our **MongoDB** database and a decision tree algorithm. The application includes various features such as chat history sharing, emailing, caching, and user authentication for a secure and seamless experience.
+### Technologies Used:
+- **Frontend**: React + Vite
+- **Backend**: Java (Spring Boot)
+- **AI Models**: Llama 2, GPT-4, LangChain (via FastAPI)
+- **Databases**: 
+  - MongoDB: For course and program data.
+  - PostgreSQL: For storing chat history.
+- **Authentication**: Okta Authentication
+- **Deployment**: Docker (containerized for local and cloud development)
 
-Due to the unavailability of the BU Registration MS database, the team has implemented its own database using **MongoDB** to store course and program data.
+## Getting Started
 
----
+### Prerequisites
+Ensure you have the following installed:
+- Docker
+- Docker Compose
+- Node.js (for React frontend)
+- Java 17+ (for backend)
 
-## **Technologies Used**
+### Setup
 
-- **Frontend:** React (JavaScript)
-- **Backend:** Java (Spring Boot)
-- **AI Model & Services:** Python (integrated with Llama 2 via Hugging Face API)
-- **Databases:**
-    - **MongoDB:** Used to store course and program data and AI model recommendations.
-    - **PostgreSQL:** Used for storing chat history.
-- **Authentication:** Okta Authentication for user security.
-
----
-
-## **Features**
-
-- **Llama 2 Chatbot Integration:** Provides interactive chatbot assistance for course selection.
-- **Decision Tree Algorithm:** Recommends courses based on program data and user inputs.
-- **MongoDB Database:** Stores course/program data for recommendations.
-- **Chat History Storage:** Stores chat history in PostgreSQL for easy access.
-- **Email, Print, and Share Chat History:** Allows users to email, print, or share their chat history with others.
-- **Caching:** Stores recent chat history for quick retrieval.
-- **Security:** Includes authentication via Okta to ensure secure access to the application.
-
----
-
-## **Installation and Setup**
-
-### **Requirements:**
-- **Node.js** (for React frontend)
-- **Java (JDK 17)** (for Spring Boot backend)
-- **Python 3.9** (for AI services)
-- **MongoDB and PostgreSQL** databases
-
-### **Steps:**
-
-1. **Clone the Repository:**
+1. **Clone the Repository**:
    ```bash
-   git clone git@github.com:BUMETCS673/seprojects-cs673olf24team1.git
-   cd seprojects-cs673olf24team1
+   git clone https://github.com/your-repo-url.git
+   cd your-repo-directory
    ```
 
-2. **Frontend (React):**
-    - Navigate to the frontend directory:
-      ```bash
-      cd frontend
-      npm install
-      npm start
-      ```
+2. **Build and Start the Services**:
+   Use Docker Compose to set up the PostgreSQL database, AI service, and backend:
+   ```bash
+   docker-compose up --build
+   ```
 
-3. **Backend (Spring Boot):**
-    - Navigate to the backend directory:
-      ```bash
-      cd backend
-      ./mvnw spring-boot:run
-      ```
+3. **Access the Services**:
+   - **Frontend**: `http://localhost:3000`
+   - **Backend (Spring Boot)**: `http://localhost:8080`
+   - **AI Service (FastAPI)**: `http://localhost:9080`
 
-4. **Python AI Service:**
-    - Navigate to the AI service directory:
-      ```bash
-      cd ai-service
-      python -m venv venv
-      source venv/bin/activate
-      pip install -r requirements.txt
-      python app.py
-      ```
+## Development Notes
 
-5. **Set Up Databases:**
-    - Ensure MongoDB and PostgreSQL are running locally or via cloud services.
+- All source code for AI-related APIs and models is found in the `code/ai-service/` folder.
+- Java backend is located in `code/backend/`, with entry point in `CourseBuilderApplication.java`.
+- React frontend is in `code/frontend/`.
 
-6. **Run the Application:**
-    - Frontend (React): Accessible via `http://localhost:3000`
-    - Backend (Spring Boot): Accessible via `http://localhost:8080`
-    - Python AI Service: Accessible via API endpoints integrated with backend.
+### AI Model Service Details
+The AI model service exposes two main API endpoints:
+- **Language Model Route**: Handles requests to the Llama 2-based chatbot.
+- **Course Recommendation Route**: Returns course suggestions using a decision tree algorithm.
 
 ---
 
-## **Team Members**
+## Deployment
 
-- **Natasya Liew** - Team Leader
-- **Natthaphon Foithong**
-- **Ananya Singh**
-- **Battal Cevik**
-- **Poom Chantarapornrat**
-- **Yujun Liu**
-
----
-
-## **Contact Information**
-
-For any questions regarding the project, feel free to reach out to the team leader:
-
-- **Natasya Liew** (Team Leader): nliew@bu.edu
-
----
-
-## **License**
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
+The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production.
