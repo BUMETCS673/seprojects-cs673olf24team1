@@ -78,3 +78,29 @@ The AI model service exposes two main API endpoints:
 ## Deployment
 
 The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production.
+
+
+## **Team Members**
+
+- **Natasya Liew** - Team Leader
+- **Natthaphon Foithong**
+- **Ananya Singh**
+- **Battal Cevik**
+- **Poom Chantarapornrat**
+- **Yujun Liu**
+
+---
+
+## **Contact Information**
+
+For any questions regarding the project, feel free to reach out to the team leader:
+
+- **Natasya Liew** (Team Leader): nliew@bu.edu
+
+---
+
+## **License**
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
