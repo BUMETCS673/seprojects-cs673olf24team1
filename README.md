@@ -17,24 +17,27 @@ SEPROJECTS-CS673OLF24TEAM1
 ├── .github
 ├── .idea
 ├── code
-│   ├── ai-api
-│   │   ├── .dockerignore
-│   │   ├── coursebuilder.py
-│   │   ├── courses.csv
-│   │   ├── Dockerfile
-│   │   ├── entities.py
-│   │   ├── ilm_route.py
-│   │   ├── main.py
-│   │   ├── README.md
-│   │   ├── requirements.txt
-│   │   ├── tree_route.py
-│   │   └── unittest_coursebuilder.py
 │   │
 │   ├── ai-service
-│   │   ├── .idea
-│   │   ├── Dockerfile
-│   │   ├── main.py
-│   │   └── requirements.txt
+│   │   │ 
+│   │   ├── fast-api
+│   │   │   ├── .dockerignore
+│   │   │   ├── coursebuilder.py
+│   │   │   ├── courses.csv
+│   │   │   ├── Dockerfile
+│   │   │   ├── entities.py
+│   │   │   ├── ilm_route.py
+│   │   │   ├── main.py
+│   │   │   ├── README.md
+│   │   │   ├── requirements.txt
+│   │   │   ├── tree_route.py
+│   │   │   └── unittest_coursebuilder.py
+│   │   │ 
+│   │   └── flask-api
+│   │       ├── .idea
+│   │       ├── Dockerfile
+│   │       ├── main.py
+│   │       └── requirements.txt
 │   │
 │   ├── backend
 │   │   ├── .idea
