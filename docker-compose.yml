@@ -37,12 +37,12 @@ services:
   # Frontend (React + Vite)
   frontend:
     build:
-      context: ./frontend/Eagles
+      context: ./code/frontend  # Updated context path after moving files
       dockerfile: Dockerfile
     ports:
       - "3000:80"  # Exposing port 80 inside container to port 3000 outside
     volumes:
-      - ./frontend/Eagles:/app
+      - ./code/frontend:/app
     depends_on:
       - course-builder-chatbot-ms
     environment:

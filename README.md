@@ -13,15 +13,66 @@ This project provides a web application designed to help students select courses
 
 ## Project Structure
 ```
-├── code/
-│   ├── ai-service/                # AI model service (FastAPI + LangChain)
-│   ├── backend/                   # Java Spring Boot backend
-│   ├── frontend/                  # React frontend
-│   └── ...other components...
-├── .github/                       # GitHub Actions workflows
-├── .idea/                         # IDE settings (JetBrains)
-├── docker-compose.yml              # Docker Compose for service orchestration
-└── README.md                      # Project documentation
+SEPROJECTS-CS673OLF24TEAM1
+├── .github
+├── .idea
+├── code
+│   ├── ai-api
+│   │   ├── .dockerignore
+│   │   ├── coursebuilder.py
+│   │   ├── courses.csv
+│   │   ├── Dockerfile
+│   │   ├── entities.py
+│   │   ├── ilm_route.py
+│   │   ├── main.py
+│   │   ├── README.md
+│   │   ├── requirements.txt
+│   │   ├── tree_route.py
+│   │   └── unittest_coursebuilder.py
+│   │
+│   ├── ai-service
+│   │   ├── .idea
+│   │   ├── Dockerfile
+│   │   ├── main.py
+│   │   └── requirements.txt
+│   │
+│   ├── backend
+│   │   ├── .idea
+│   │   └── course-builder-chatbot-ms
+│   │       ├── .gitignore
+│   │       ├── .mvn
+│   │       ├── Dockerfile
+│   │       ├── mvnw
+│   │       ├── mvnw.cmd
+│   │       ├── pom.xml
+│   │       ├── README.md
+│   │       ├── src
+│   │       └── target
+│   │
+│   └── frontend
+│       ├── .env
+│       ├── .gitignore
+│       ├── Dockerfile
+│       ├── dist
+│       ├── index.html
+│       ├── node_modules
+│       ├── package.json
+│       ├── package-lock.json
+│       ├── public
+│       ├── README.md
+│       ├── src
+│       └── vite.config.js
+│
+├── db
+│   ├── Readme.md
+│
+├── demo
+├── doc
+├── docker-compose.yml
+├── misc
+├── README.md
+└── team.md
+                     # Project documentation
 ```
 
 ### Technologies Used:
@@ -55,6 +106,11 @@ Ensure you have the following installed:
    Use Docker Compose to set up the PostgreSQL database, AI service, and backend:
    ```bash
    docker-compose up --build
+   ```
+
+   To stop containers you need to follow below command:
+      ```bash
+   docker-compose down
    ```
 
 3. **Access the Services**:
