@@ -34,10 +34,10 @@ SEPROJECTS-CS673OLF24TEAM1
 │   │   │   └── unittest_coursebuilder.py
 │   │   │ 
 │   │   └── flask-api
-│   │        ├── .idea
-│   │        ├── Dockerfile
-│   │        ├── main.py
-│   │        └── requirements.txt
+│   │       ├── .idea
+│   │       ├── Dockerfile
+│   │       ├── main.py
+│   │       └── requirements.txt
 │   │
 │   ├── backend
 │   │   ├── .idea
