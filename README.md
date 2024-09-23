@@ -4,11 +4,11 @@
 This project provides a web application designed to help students select courses based on their preferences and the AI-driven recommendations. It integrates a chatbot built with Llama 2 and GPT-4 to enhance user interactions. The app leverages AI to recommend courses and store the data in MongoDB and PostgreSQL for efficient tracking.
 
 ## Core Features
-- **AI-Driven Recommendations**: AI model integrated with FastAPI, Llama 2, and GPT-4 for personalized course suggestions.
+- **AI-Driven Recommendations**: AI model integrated with Python, Langchain, and GPT-4o for personalized course suggestions.
 - **Spring Boot Backend**: Java-based backend handling application logic and communication between components.
 - **Frontend**: React-based UI for seamless interaction with users.
 - **Databases**: 
-  - MongoDB for storing course and program data.
+  - Pinecone's Vector Storage for storing course and program data.
   - PostgreSQL for chat history.
 
 ## Project Structure
@@ -81,9 +81,9 @@ SEPROJECTS-CS673OLF24TEAM1
 ### Technologies Used:
 - **Frontend**: React + Vite
 - **Backend**: Java (Spring Boot)
-- **AI Models**: Llama 2, GPT-4, LangChain (via FastAPI)
+- **AI Models**: Tree Algorithm, OpenAI's GPT-4o, LangChain
 - **Databases**: 
-  - MongoDB: For course and program data.
+  - Pinecode's Vector Storage: For course and program data.
   - PostgreSQL: For storing chat history.
 - **Authentication**: Okta Authentication
 - **Deployment**: Docker (containerized for local and cloud development)
@@ -96,6 +96,7 @@ Ensure you have the following installed:
 - Docker Compose
 - Node.js (for React frontend)
 - Java 17+ (for backend)
+- Python 3.8+ (for AI Service)
 
 ### Setup
 
