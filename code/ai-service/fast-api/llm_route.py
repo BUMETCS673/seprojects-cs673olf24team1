@@ -13,10 +13,9 @@ from os import environ as env
 # Define the API Router for organizing routes
 router = APIRouter()
 
-openai_key = env['OPENAI_API_KEY']
 loader = CSVLoader(file_path="courses.csv", encoding="utf-8-sig")
 documents = loader.load()
-vectorstore = Chroma.from_documents(documents, OpenAIEmbeddings(api_key=openai_key))
+vectorstore = Chroma.from_documents(documents, OpenAIEmbeddings())
 retriever = vectorstore.as_retriever(search_kwargs={'k': 12})
 
 llm = ChatOpenAI(
@@ -25,7 +24,6 @@ llm = ChatOpenAI(
     max_tokens=None,
     timeout=None,
     max_retries=2,
-    api_key=openai_key
 )
 
 system_prompt = """
