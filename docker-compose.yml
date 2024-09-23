@@ -15,13 +15,16 @@ services:
 
   # AI Service (FastAPI)
   ai-service:
-    build: ./code/ai-service
+    build: 
+      context: ./code/ai-service/fast-api
+      dockerfile: Dockerfile
     ports:
       - "9080:9080"
     volumes:
-      - ./code/ai-service:/app
+      - ./code/ai-service/fast-api:/app
     environment:
-      - FLASK_ENV=development
+      - .env
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9080"]
 
   # Backend (Spring Boot)
   course-builder-chatbot-ms:
