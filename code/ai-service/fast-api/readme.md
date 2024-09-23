@@ -42,6 +42,10 @@ docker-compose up --build
 
 ---
 
+## ⚙️ Usage
+
+Once the service is up and running, you can access the API at: http://localhost:9080
+
 ### 🚀 API Call Examples
 
 #### **Endpoint**:  
