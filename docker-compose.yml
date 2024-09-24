@@ -14,17 +14,18 @@ services:
       POSTGRES_PASSWORD: groupOneRocks
 
   # AI Service (FastAPI)
-  ai-service:
-    build: 
-      context: ./code/ai-service/fast-api
-      dockerfile: Dockerfile
-    ports:
-      - "9080:9080"
-    volumes:
-      - ./code/ai-service/fast-api:/app
-    environment:
-      - .env
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9080"]
+  # ai-service:
+  #   build: 
+  #     # context: ./code/ai-service/fast-api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9080:9080"
+  #   volumes:
+  #     - ./code/ai-service/fast-api:/app
+  #   environment:
+  #     - OPENAI_API_KEY=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
+  #     - .env
+  #   command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9080"]
 
   # Backend (Spring Boot)
   course-builder-chatbot-ms:

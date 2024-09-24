@@ -88,7 +88,7 @@ const LoginPage = (props) => {
           {/* <p>Already have an account? Login <a href='/'>here</a></p> */}
         </span>
         <span className='form-input-login'>
-          <Link to="/forgetpassword">
+          <Link to="/forgotpassword">
             {"Forgot password"}
           </Link>
           {/* Already have an account? Login <a href='/login'>here</a> */}
