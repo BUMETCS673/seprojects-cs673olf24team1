@@ -80,6 +80,11 @@
     cursor: pointer;
 }
 
+.logoutButton {
+    color: #282828 !important;
+    text-decoration: none !important;
+}
+
 @media (max-width:600px) {
     .sidebar {
         display: none;

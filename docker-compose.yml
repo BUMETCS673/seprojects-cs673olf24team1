@@ -16,7 +16,7 @@ services:
   # AI Service (FastAPI)
   ai-service:
     build: 
-      context: ./code/ai-service/fast-api
+      # context: ./code/ai-service/fast-api
       dockerfile: Dockerfile
     ports:
       - "9080:9080"
