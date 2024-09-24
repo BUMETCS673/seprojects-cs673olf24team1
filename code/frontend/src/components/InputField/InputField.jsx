@@ -1,40 +1,25 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './InputField.css'
 import { assets } from '../../assets/assets'
+import { Context } from '../../context/ContextProvider'
 
-const InputField = ({ onSend }) => {
+const InputField = () => {
 
-  const [input, setInput] = useState('');
-
-  const handleSend = () => {
-    if (input.trim()) {
-      onSend(input);  // Pass the input message to parent component
-      setInput('');   // Clear the input field after sending
-    }
+    const { onSent, setInput, input } = useContext(Context);
+  
+    return (  
+          <div className="main-bottom">
+            <div className="search-box">
+              <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder='Type your message' />
+              <div>
+                <img src={assets.gallery_icon} width={30} alt="" />
+                <img src={assets.mic_icon} width={30} alt="" />
+                {input ? <img onClick={() => onSent()} src={assets.send_icon} width={30} alt="" /> : null}
+              </div>
+            </div>
+          </div>
+    );
   };
-
-  return (
-    <div className="main-bottom">
-      <div className="search-box">
-        <input
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-          type="text"
-          placeholder='Type your message'
-        />
-        <div>
-          {/* <img src={assets.gallery_icon} width={30} alt="Gallery Icon" />
-          <img src={assets.mic_icon} width={30} alt="Mic Icon" /> */}
-          {/* {input ? <img onClick={handleSend} src={assets.send_icon} width={30} alt="Send Icon" /> : null} */}
-          <img onClick={handleSend} src={assets.send_icon} width={30} alt="Send Icon" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default InputField;
-
+  
+  export default InputField;

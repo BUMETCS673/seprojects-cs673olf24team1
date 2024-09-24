@@ -2,7 +2,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    max-width: 700px;
+    max-width: 900px;
     padding: 0 20px;
     margin: auto;
 }
@@ -16,5 +16,4 @@
     padding: 10px 20px;
     border-radius: 50px;
     margin-bottom: 50px;
-    margin-left: 3em;
 }

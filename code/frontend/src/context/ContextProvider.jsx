@@ -1,36 +1,64 @@
-/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from "react";
+import runChat from "../config/samplegeneraterunchat"; //Sample run chat with gemini
 
 export const Context = createContext();
 
-const ContextProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
-  const [recentPrompt, setRecentPrompt] = useState('');
-  const [resultData, setResultData] = useState(null);
-  const [showResult, setShowResult] = useState(false);
-  const [input, setInput] = useState('');
-  const [prevPrompts, setPrevPrompts] = useState([]);
+const ContextProvider = (props) => {
 
-  // other state or logic...
-  const onSent = async (prompt) => {
-        setResultData("");
-        setLoading(true);
-        setShowResult(true);
+    const [prevPrompts, setPrevPrompts] = useState([]);
+    const [input, setInput] = useState("");
+    const [recentPrompt, setRecentPrompt] = useState("");
+    const [showResult, setShowResult] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [resultData, setResultData] = useState("")
 
-        try {
-            const response = await getChatbotResponse(prompt || input);
-            setResultData(response);
-            setPrevPrompts(prev => [...prev, prompt || input]);
-            setRecentPrompt(prompt || input);
-        } catch (error) {
-            setResultData("Sorry, there was an error. Please try again.");
-        } finally {
-            setLoading(false);
-            setInput("");
+
+    function delayPara(index, nextWord) {
+        setTimeout(function () {
+            setResultData(prev => prev + nextWord)
+        }, 75 * index);
+    }
+
+    const onSent = async (prompt) => {
+
+        setResultData("")
+        setLoading(true)
+        setShowResult(true)
+        let response;
+        if (prompt !== undefined) {
+            response = await runChat(prompt); 
+            setRecentPrompt(prompt)
         }
-    };
+        else {
+            setPrevPrompts(prev => [...prev, input]);
+            setRecentPrompt(input)
+            response = await runChat(input);
+        }
+        let responseArray = response.split('**');
+        let newArray = "";
+        for (let i = 0; i < responseArray.length; i++) {
+            if (i === 0 || i % 2 !== 1) {
+                newArray += responseArray[i]
+            }
+            else {
+                newArray += "<b>" + responseArray[i] + "</b>"
+            }
+        }
+        console.log(newArray);
+        responseArray = newArray.split('*').join("</br>").split(" ");
+        for (let i = 0; i < responseArray.length; i++) {
+            const nextWord = responseArray[i];
+            delayPara(i, nextWord + " ")
+        }
+        setLoading(false);
+        setInput("")
+    }
+
+    const newChat = async () => {
+        setLoading(false);
+        setShowResult(false);
+    }
 
     const contextValue = {
         prevPrompts,
@@ -43,24 +71,14 @@ const ContextProvider = ({ children }) => {
         resultData,
         input,
         setInput,
-    };
+        newChat
+    }
 
-  return (
-    <Context.Provider value={{
-      loading,
-      setLoading,
-      recentPrompt,
-      setRecentPrompt,
-      resultData,
-      setResultData,
-      showResult,
-      setShowResult,
-      input,
-      setInput
-    }}>
-      {children}
-    </Context.Provider>
-  );
-};
+    return (
+        <Context.Provider value={contextValue}>
+            {props.children}
+        </Context.Provider>
+    )
+}
 
-export default ContextProvider;
+export default ContextProvider
