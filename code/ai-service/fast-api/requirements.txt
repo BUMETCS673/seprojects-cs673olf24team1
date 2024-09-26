@@ -8,3 +8,4 @@ langserve
 langsmith
 sse_starlette
 uvicorn
+pandas
