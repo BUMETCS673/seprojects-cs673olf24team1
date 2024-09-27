@@ -10,6 +10,7 @@ on:
       - "frontend/**"
       - "backend/**"
       - "ai_service/**"
+      - "tests/**"            # Ensure tests folder is included
 
 jobs:
   # Job 1: Lint and Test React Frontend
@@ -107,6 +108,62 @@ jobs:
           cd ai_service
           source venv/bin/activate
           python test_huggingface_integration.py
+
+  # Job 4: Cucumber BDD Tests (UI + API)
+  bdd-tests:
+    name: Cucumber BDD Testing (UI and API)
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'tests') || contains(github.event.commits[*].message, 'tests')
+
+    services:
+      mongo:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: chat_db
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install Java
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+
+      # Install Google Chrome
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # Set up ChromeDriver
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          version: latest
+
+      # Install Maven and run Cucumber tests
+      - name: Install Maven and Run Tests
+        run: |
+          cd tests
+          mvn clean install
+          mvn test
+
+      # Archive Cucumber reports
+      - name: Archive Cucumber Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: cucumber-reports
+          path: tests/target/cucumber-reports/
 
   # Shared Job: Super-Linter
   super-lint:
