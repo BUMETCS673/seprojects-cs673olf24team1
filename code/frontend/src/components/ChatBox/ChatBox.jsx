@@ -62,22 +62,15 @@ const ChatBox = () => {
     }
   };
 
+  // new chat function
   const newChat = () => {
-        setConversations([]); // Clear the current conversations
+        // Clear the current conversations
+        setConversations([]); 
+        // Optional: Show a greeting message for the new chat
         const newGreeting = { input: "Start a new chat", response: "Hello, BU Student! How can I assist you today?" };
-        setConversations([newGreeting]); // Set the new greeting as the first entry
+        // Set the new greeting as the first entry
+        setConversations([newGreeting]); 
     };
-
-  // Function to handle starting a new chat
-  // const handleNewChat = () => {
-  //       // Clear the current conversations
-  //       setConversations([]);
-        
-  //       // Optional: Show a greeting message for the new chat
-  //       const newGreeting = { input: "Start a new chat", response: "Hello, BU Student! How can I assist you today?" };
-  //       setConversations([newGreeting]); // Set the new greeting as the first entry
-  //   };
-
 
   // Scroll to the bottom whenever conversations change
   useEffect(() => {
