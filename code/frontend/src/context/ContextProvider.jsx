@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState } from 'react';
+import axios from 'axios';
 
 export const Context = createContext();
 
@@ -34,13 +35,24 @@ const ContextProvider = ({ children }) => {
     };
 
     // Function to handle new chat
-    const handleNewChat = () => {
+    const handleNewChat = async () => {
       setConversations([]); // Clear conversation history
       const newGreeting = { input: "Start a new chat", response: "Hello, how can I help you?" };
       setConversations([newGreeting]); // Start with a new greeting
       setRecentPrompt(''); // Clear recent prompt
       setInput(''); // Clear input
+
+      // Optionally, send a request to the backend to initialize a new chat
+      try {
+        const response = await axios.post('/api/new-chat'); // Adjust the endpoint accordingly
+        // Handle any data you need from the response
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error starting a new chat:', error);
+      }
+      
     };
+
 
     const contextValue = {
       prevPrompts,
