@@ -1,31 +1,27 @@
 package com.bu.coursebuilderchatbotms.controller;
 
-import com.bu.coursebuilderchatbotms.dao.UserDAO;
 import com.bu.coursebuilderchatbotms.domain.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import com.bu.coursebuilderchatbotms.dto.UserCreationDTO;
+import com.bu.coursebuilderchatbotms.service.UserService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserDAO userDAO;
+    private final UserService userService;
 
-    public UserController(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
-    }
-
-    @GetMapping("/users/{userId}")
+    @GetMapping("/user/{userId}")
     public User getUserById(@PathVariable int userId) {
-        return userDAO.getUserById(userId);
+        return userService.getUserById(userId);
+    }
+
+    @PostMapping("/user")
+    public User createUser(@RequestBody UserCreationDTO userDTO) {
+        return userService.createUser(userDTO);
     }
 }

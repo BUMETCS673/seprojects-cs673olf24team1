@@ -11,4 +11,7 @@ public class User {
     private String createdAt;
     private String lastLogin;
     private String userPreferences;
+    private String course_taken;
+    private String path_interest;
+    private Integer course_to_take;
 }
