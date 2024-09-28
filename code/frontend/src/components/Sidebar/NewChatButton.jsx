@@ -7,11 +7,12 @@ import { Context } from '../../context/ContextProvider';
 const NewChatButton = () => {
 
     const [extended, setExtended] = useState(false);
-    const {newChat} = useContext(Context);
+    const {handleNewChat} = useContext(Context);
 
     return (
-        <div onClick={()=>newChat()} className="new-chat">
-            <img src={assets.newchat} alt="" /> <p>New Chat</p>
+        // <div onClick={()=>handleNewChat()} className="new-chat">
+        <div onClick={handleNewChat} className="new-chat">
+            <img src={assets.newchat} alt="new chat" /> <p>New Chat</p>
             {/* {extended ? <p>New Chat</p> : null} */}
         </div>
     )

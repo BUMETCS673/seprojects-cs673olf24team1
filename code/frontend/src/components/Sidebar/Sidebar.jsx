@@ -15,7 +15,7 @@ import DownloadButton from './DownloadButton'
 const Sidebar = () => {
 
     const [extended, setExtended] = useState(false);
-    const {onSent,prevPrompts,setRecentPrompt} = useContext(Context);
+    const {onSent,prevPrompts,setRecentPrompt, handleNewChat} = useContext(Context);
 
     const loadPrompt = async (prompt) => {
         await onSent(prompt);
@@ -25,8 +25,8 @@ const Sidebar = () => {
     return (
         <div className='sidebar'>
             <div className="top">
-                <NewChatButton />
-                <ChatHistory />
+            <NewChatButton onNewChat={handleNewChat} /> {/* Pass handleNewChat here */}
+            <ChatHistory />
             </div>
             <div className="bottom">
                 {/* <ClearButton />

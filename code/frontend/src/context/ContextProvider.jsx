@@ -12,6 +12,7 @@ const ContextProvider = ({ children }) => {
   const [showResult, setShowResult] = useState(false);
   const [input, setInput] = useState('');
   const [prevPrompts, setPrevPrompts] = useState([]);
+  const [conversations, setConversations] = useState([]); // Add conversations state
 
   // other state or logic...
   const onSent = async (prompt) => {
@@ -32,32 +33,33 @@ const ContextProvider = ({ children }) => {
         }
     };
 
+    // Function to handle new chat
+    const handleNewChat = () => {
+      setConversations([]); // Clear conversation history
+      const newGreeting = { input: "Start a new chat", response: "Hello, how can I help you?" };
+      setConversations([newGreeting]); // Start with a new greeting
+      setRecentPrompt(''); // Clear recent prompt
+      setInput(''); // Clear input
+    };
+
     const contextValue = {
-        prevPrompts,
-        setPrevPrompts,
-        onSent,
-        setRecentPrompt,
-        recentPrompt,
-        showResult,
-        loading,
-        resultData,
-        input,
-        setInput,
+      prevPrompts,
+      setPrevPrompts,
+      onSent,
+      setRecentPrompt,
+      recentPrompt,
+      showResult,
+      loading,
+      resultData,
+      input,
+      setInput,
+      handleNewChat,
+      // conversations, // Include conversations in context value
+      // setConversations, // Optionally expose setConversations if needed
     };
 
   return (
-    <Context.Provider value={{
-      loading,
-      setLoading,
-      recentPrompt,
-      setRecentPrompt,
-      resultData,
-      setResultData,
-      showResult,
-      setShowResult,
-      input,
-      setInput
-    }}>
+    <Context.Provider value={contextValue}>
       {children}
     </Context.Provider>
   );
