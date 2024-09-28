@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react'
 import NewChatButton from './NewChatButton'
-import ClearButton from './ClearButton'
-import EmailButton from './EmailButton'
-import PrintButton from './PrintButton'
-import ShareButton from './ShareButton'
+// import ClearButton from './ClearButton'
+// import EmailButton from './EmailButton'
+// import PrintButton from './PrintButton'
+// import ShareButton from './ShareButton'
 import LogoutButton from './LogoutButton'
 import ChatHistory from './ChatHistory'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/ContextProvider';
+import DownloadButton from './DownloadButton'
 
 const Sidebar = () => {
 
@@ -28,10 +29,11 @@ const Sidebar = () => {
                 <ChatHistory />
             </div>
             <div className="bottom">
-                <ClearButton />
+                {/* <ClearButton />
                 <EmailButton />
                 <PrintButton />
-                <ShareButton />
+                <ShareButton /> */}
+                <DownloadButton />
                 <LogoutButton />
             </div>
         </div>

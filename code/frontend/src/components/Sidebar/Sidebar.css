@@ -50,7 +50,7 @@
     padding: 10px;
     padding-right: 40px;
     border-radius: 50px;
-    color: #282828;
+    color: #ffffff;
     cursor: pointer;
 }
 
@@ -67,7 +67,8 @@
 
 .sidebar .recent-entry:hover {
     background-color: #ffd0bc;
-    width: 120px;
+    width: 140px;
+    color: #282828;
 }
 
 .sidebar .bottom {
@@ -81,8 +82,14 @@
 }
 
 .logoutButton {
-    color: #282828 !important;
+    color: #ffffff !important;
     text-decoration: none !important;
+}
+
+.logoutButton:hover {
+    background-color: #ffd0bc;
+    width: 140px;
+    color: #282828 !important;
 }
 
 @media (max-width:600px) {
