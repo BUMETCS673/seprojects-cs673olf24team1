@@ -76,38 +76,52 @@ jobs:
         run: cd backend && ./mvnw verify
 
   # Job 3: Lint, Test, and Deploy Python AI Service
-  python-ai-service:
-    name: Python AI Service Linting and Testing
-    runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'ai_service') || contains(github.event.commits[*].message, 'ai_service')
+python-ai-service:
+  name: Python AI Service Linting and Testing
+  runs-on: ubuntu-latest
+  if: contains(github.event.head_commit.message, 'ai_service') || contains(github.event.commits[*].message, 'ai_service')
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
 
-      - name: Install dependencies
-        run: |
-          cd ai_service
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        cd ai_service
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
 
-      - name: Lint Python code
-        run: cd ai_service && flake8 .
+    - name: Auto-format code with Black
+      run: |
+        cd ai_service
+        source venv/bin/activate
+        pip install black
+        black .
 
-      - name: Run Python Unit Tests
-        run: cd ai_service && pytest
+    - name: Lint Python code
+      run: |
+        cd ai_service
+        source venv/bin/activate
+        pip install flake8
+        flake8 .
 
-      - name: Run Integration Test for Hugging Face API
-        run: |
-          cd ai_service
-          source venv/bin/activate
-          python test_huggingface_integration.py
+    - name: Run Python Unit Tests
+      run: |
+        cd ai_service
+        source venv/bin/activate
+        pytest
+
+    - name: Run Integration Test for Hugging Face API
+      run: |
+        cd ai_service
+        source venv/bin/activate
+        python test_huggingface_integration.py
 
   # Job 4: Cucumber BDD Tests (UI + API)
   bdd-tests:
