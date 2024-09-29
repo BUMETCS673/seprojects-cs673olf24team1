@@ -1,30 +1,23 @@
-from typing import List
-from os import environ as env
-from pydantic import BaseModel
-from fastapi import FastAPI, APIRouter, Request
-from langchain_core.output_parsers import StrOutputParser
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_chroma import Chroma
+from fastapi import APIRouter, Request
 from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import CSVLoader, JSONLoader
-from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from coursebuilder import recommend_courses
 from langchain.schema import AIMessage, HumanMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from entities import StudentInfo, APIInfo
+from coursebuilder import recommend_courses
+from vectorstore import create_course_storage, create_prompt_storage
 
 
 # Define the API Router for organizing routes
 router = APIRouter()
 
-loader = CSVLoader(file_path="courses.csv", encoding="utf-8-sig")
-documents = loader.load()
-course_storage = Chroma.from_documents(documents, OpenAIEmbeddings())
+# Create data retrivers
+course_retriever = create_course_storage().as_retriever(search_kwargs={'k': 80})  # Need to be optimized
+prompt_retriever = create_prompt_storage().as_retriever(search_kwargs={'k': 4})
 
-
-# This needs to be optimized
-course_retriever = course_storage.as_retriever(search_kwargs={'k': len(documents)})
-
+# Define language models
 smart_llm = ChatOpenAI(
     temperature=0,
     model="gpt-4o",
@@ -53,10 +46,15 @@ Do not tell the specific number of these scores but just explain how difficult o
 Please make the response short.
 
 Context:
-"{context}"
+Best practice to answer the question:
+"{prompt_context}"
+
+Course description data:
+"{course_context}"
+
 """
 
-prompt1 = ChatPromptTemplate.from_messages(
+advisor_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt1),
         ("human", "{input}"),
@@ -69,7 +67,7 @@ The output should be in one paragraph and plain text without any formatting and 
 Please make the sentenses more concise and in a more friendly response from a friend.
 """
 
-prompt2 = ChatPromptTemplate.from_messages(
+format_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt2),
         ("human", "{input}"),
@@ -78,28 +76,16 @@ prompt2 = ChatPromptTemplate.from_messages(
 
 parser = StrOutputParser()
 
-rag_chain = prompt1 | smart_llm | prompt2 | fast_llm | parser
-
-
-class StudentInfo(BaseModel):
-    user_id: str
-    student_name: str
-    course_taken: List[int]
-    path_interest: str
-    course_to_take: int
-
-class APIInfo(StudentInfo):
-    message: str
-
+rag_chain = advisor_prompt | smart_llm | format_prompt | fast_llm | parser
 
 @router.post("/api/v1/chatbot")
 async def response_message(request: Request, info: APIInfo):
     state = request.app.state
     chat_storage = state.chat_history
-    
+
     user_input = info.message
     session_id = info.user_id
-    
+
     # If user start conersation the first time
     if session_id not in chat_storage:
 
@@ -111,11 +97,8 @@ async def response_message(request: Request, info: APIInfo):
 
         prefixed_courses = [f'CS{course}' for course in course_list]
         courses_string = ', '.join(prefixed_courses)
-
-        response = f"""
-        Hello {info.student_name}, based on the details on the courses you've taken, your program, and selected number of courses to take this semester, these are the recommended courses for your to take: {courses_string}. Would you like more information about your recommended courses, or would you like to learn about other courses in the program.
-        """
-        
+        response = f"""Hello {info.student_name}, based on the details on the courses you've taken, your program, and selected number of courses to take this semester, these are the recommended courses for your to take: {
+            courses_string}. Would you like more information about your recommended courses, or would you like to learn about other courses in the program."""
         chat_storage[session_id] = InMemoryChatMessageHistory()
         message = AIMessage(content=response)
         chat_storage[session_id].add_message(message)
@@ -132,12 +115,18 @@ async def response_message(request: Request, info: APIInfo):
                                                        input_messages_key="input",
                                                        )
         # Retrieve the course info
-        context = course_retriever.invoke(user_input)
+        course_context = course_retriever.invoke(user_input)
+        prompt_context = prompt_retriever.invoke(user_input)
 
         # Invoke the model
         config = {"configurable": {"session_id": session_id}}
         response = chat_with_history.invoke(
-            {"input": user_input, "context": context},
-            config=config,)
+            {
+                "input": user_input,
+                "prompt_context": prompt_context,
+                "course_context": course_context,
+            },
+            config=config,
+        )
 
     return {"response": response}
