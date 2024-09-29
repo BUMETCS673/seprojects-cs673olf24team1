@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
+ 
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
+ 
 import React, { useState } from 'react'
 import './InputField.css'
 import { assets } from '../../assets/assets'

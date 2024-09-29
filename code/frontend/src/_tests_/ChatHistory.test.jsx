@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+ 
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ChatHistory from './ChatHistory';

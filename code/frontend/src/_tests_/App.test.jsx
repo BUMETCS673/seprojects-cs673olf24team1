@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/display-name */
-/* eslint-disable no-unused-vars */
+ 
 // App.test.js
 import React from 'react';
 import { render, screen } from '@testing-library/react';
