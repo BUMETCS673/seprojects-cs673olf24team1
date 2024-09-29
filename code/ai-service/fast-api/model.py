@@ -1,17 +1,15 @@
 from typing import List
-from os import environ as env
 from pydantic import BaseModel
-from fastapi import FastAPI, APIRouter, Request
-from langchain_core.output_parsers import StrOutputParser
+from fastapi import APIRouter, Request
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
-from langchain_openai import ChatOpenAI
 from langchain_community.document_loaders import CSVLoader
-from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.chat_history import (BaseChatMessageHistory,
+                                         InMemoryChatMessageHistory)
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from coursebuilder import recommend_courses
-from langchain.schema import AIMessage, HumanMessage
+from langchain.schema import AIMessage
 
 
 # Define the API Router for organizing routes
@@ -43,12 +41,15 @@ llm2 = ChatOpenAI(
 system_prompt1 = """
 You are a student advisor
 
-You will give the class information based on the question that a student asks.
-Be aware, students usually call the course as department+course_id such as CS546.
+You will give the class information based on the question
+ that a student asks.
+Be aware, students usually call the course as department+course_id
+such as CS546.
 
 The workload score (1-5) is how much work the sudent can put in.
 The difficulty score (1-5) is the difficulty of the class.
-Do not tell the specific number of these scores but just explain how difficult or how much work to the student.
+Do not tell the specific number of these scores but just explain
+how difficult or how much work to the student.
 Please make the response short.
 
 Context:
@@ -63,9 +64,12 @@ prompt1 = ChatPromptTemplate.from_messages(
 )
 
 system_prompt2 = """
-Your job is to format and summarize an input text to be like a response chat message
-The output should be in one paragraph and plain text without any formatting and markdown. 
-Please make the sentenses more concise and in a more friendly response from a friend.
+Your job is to format and summarize an input text to be like a
+response chat message
+The output should be in one paragraph and plain text without any
+formatting and markdown.
+Please make the sentenses more concise and in a more friendly response
+ from a friend.
 """
 
 prompt2 = ChatPromptTemplate.from_messages(
@@ -75,7 +79,9 @@ prompt2 = ChatPromptTemplate.from_messages(
     ]
 )
 
-parser = StrOutputParser()
+parser = StrOutputParser(
+    []
+)
 
 rag_chain = prompt1 | llm1 | prompt2 | llm2 | parser
 
@@ -93,26 +99,30 @@ class APIInfo(BaseModel):
 async def response_message(request: Request, info: APIInfo):
     state = request.app.state
     chat_storage = state.chat_history
-    
     user_input = info.message
     session_id = info.user_id
-    
+
     # If user start conersation the first time
     if session_id not in chat_storage:
 
         # Get the course recommendation
-        course_list = recommend_courses(courses_taken=info.course_taken,
-                                        path_interest=info.path_interest,
-                                        num_courses_to_take=info.course_to_take,
-                                        )
+        course_list = recommend_courses(
+            courses_taken=info.course_taken,
+            path_interest=info.path_interest,
+            num_courses_to_take=info.course_to_take)
 
         prefixed_courses = [f'CS{course}' for course in course_list]
         courses_string = ', '.join(prefixed_courses)
 
         response = f"""
-        Hello {info.student_name}, based on the details on the courses you've taken, your program, and selected number of courses to take this semester, these are the recommended courses for your to take: {courses_string}. Would you like more information about your recommended courses, or would you like to learn about other courses in the program.
+        Hello {info.student_name}, based on the details on the
+         courses you've taken,your program, and selected number
+          of courses to take this semester,these are the recommended
+           courses for your to take: {courses_string}.
+           Would you like more information about your recommended courses,
+            or would you like to learn about other courses in the program.
         """
-        
+
         chat_storage[session_id] = InMemoryChatMessageHistory()
         message = AIMessage(content=response)
         chat_storage[session_id].add_message(message)
@@ -124,10 +134,11 @@ async def response_message(request: Request, info: APIInfo):
                 store[session_id] = InMemoryChatMessageHistory()
             return store[session_id]
 
-        chat_with_history = RunnableWithMessageHistory(rag_chain,
-                                                       get_session_history,
-                                                       input_messages_key="input",
-                                                       )
+        chat_with_history = RunnableWithMessageHistory(
+            rag_chain,
+            get_session_history,
+            input_messages_key="input"
+        )
         # Retrieve the course info
         context = retriever.invoke(user_input)
 
