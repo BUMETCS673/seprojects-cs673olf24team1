@@ -40,8 +40,9 @@ const ChatBox = () => {
     setConversations([...conversations, newConversation]);
 
     try {
-      // Call the backend API to get a response from OpenAI
-      const response = await axios.post('/api/openai-chat', { message: input });
+      // Call the backend API to get a response from OpenAI http://localhost:8080/api/v1/chatbot/chat_conversation
+      // const response = await axios.post('/api/openai-chat', { message: input });
+      const response = await axios.post('http://localhost:8080/api/v1/chatbot/chat_conversation', { message: input });
       const botResponse = response.data.response;
 
       // Update the conversation history with the bot's response
