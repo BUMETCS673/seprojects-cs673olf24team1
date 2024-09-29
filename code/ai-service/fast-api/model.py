@@ -6,7 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import CSVLoader
+from langchain_community.document_loaders import CSVLoader, JSONLoader
 from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
@@ -19,12 +19,13 @@ router = APIRouter()
 
 loader = CSVLoader(file_path="courses.csv", encoding="utf-8-sig")
 documents = loader.load()
-vectorstore = Chroma.from_documents(documents, OpenAIEmbeddings())
+course_storage = Chroma.from_documents(documents, OpenAIEmbeddings())
+
 
 # This needs to be optimized
-retriever = vectorstore.as_retriever(search_kwargs={'k': len(documents)})
+course_retriever = course_storage.as_retriever(search_kwargs={'k': len(documents)})
 
-llm1 = ChatOpenAI(
+smart_llm = ChatOpenAI(
     temperature=0,
     model="gpt-4o",
     max_tokens=None,
@@ -32,7 +33,7 @@ llm1 = ChatOpenAI(
     max_retries=2,
 )
 
-llm2 = ChatOpenAI(
+fast_llm = ChatOpenAI(
     temperature=0,
     model="gpt-3.5-turbo",
     max_tokens=None,
@@ -77,16 +78,18 @@ prompt2 = ChatPromptTemplate.from_messages(
 
 parser = StrOutputParser()
 
-rag_chain = prompt1 | llm1 | prompt2 | llm2 | parser
+rag_chain = prompt1 | smart_llm | prompt2 | fast_llm | parser
 
 
-class APIInfo(BaseModel):
+class StudentInfo(BaseModel):
     user_id: str
     student_name: str
-    message: str
     course_taken: List[int]
     path_interest: str
     course_to_take: int
+
+class APIInfo(StudentInfo):
+    message: str
 
 
 @router.post("/api/v1/chatbot")
@@ -129,7 +132,7 @@ async def response_message(request: Request, info: APIInfo):
                                                        input_messages_key="input",
                                                        )
         # Retrieve the course info
-        context = retriever.invoke(user_input)
+        context = course_retriever.invoke(user_input)
 
         # Invoke the model
         config = {"configurable": {"session_id": session_id}}
