@@ -127,6 +127,7 @@ format_prompt = ChatPromptTemplate.from_messages(
 
 parser = StrOutputParser()
 
+# Create all chains
 question_router = route_prompt | structured_llm_router
 general_chain = advisor_prompt | smart_llm | format_prompt | fast_llm | parser
 schedule_chain = schedule_prompt | smart_llm | format_prompt | fast_llm | parser
@@ -141,11 +142,11 @@ async def response_message(request: Request, info: APIInfo):
     session_id = info.user_id
     config = {"configurable": {"session_id": session_id}}
     first_conversation = session_id not in chat_storage
-    course_taken = [f'CS{course}' for course in info.course_taken]
 
     if first_conversation:
         # Create a new session history
         chat_storage[session_id] = InMemoryChatMessageHistory()
+        course_taken = [f'CS{course}' for course in info.course_taken]
         user_input = f"""Hello, my name is {info.student_name}, My program is MS in Computer Science concentrating in {info.path_interest} at Boston University. I have already taken {
             ', '.join(course_taken)} and I would like to take {info.course_to_take} classes in the next semester. Could you recommend me a class schedule?"""
 
