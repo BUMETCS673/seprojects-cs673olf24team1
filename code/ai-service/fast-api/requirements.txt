@@ -1,8 +1,9 @@
-fastapi
 langchain
 langchain-community
 langchain-core
 langchain-openai
+langgraph
+faiss-cpu
+fastapi
 uvicorn
 pandas
-faiss-cpu
