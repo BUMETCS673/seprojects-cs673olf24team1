@@ -80,7 +80,7 @@ Submit student data to retrieve a personalized course schedule. This should be d
 
 4. **`path_interest`**:  
    - **Type**: String  
-   - **Description**: The student’s academic or career path of interest. This should be exactly one of these five elements "ai/ml", "secure software development", "web development", "app development", and "data science"
+   - **Description**: The student’s academic or career path of interest. This should be exactly one of these five elements `"ai/ml"`, `"secure software development"`, `"web development"`, `"app development"`, and `"data science"`. Failing to match the string ot having a typo will result in an error.
 
 5. **`course_to_take`**:  
    - **Type**: Integer  
@@ -96,11 +96,6 @@ Submit student data to retrieve a personalized course schedule. This should be d
 {
   "response": "Hi John!, this is your recommended courses ... feel free to ask more!"
 }
-```
-
-**Response Example**:
-```json
-{"response": "Hi John!, this is your recommended courses ... feel free to ask more!"}
 ```
 
 1. **`response`**:  
