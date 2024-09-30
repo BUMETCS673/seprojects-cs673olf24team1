@@ -1,11 +1,9 @@
-fastapi
 langchain
 langchain-community
 langchain-core
 langchain-openai
-langchain_chroma
-langserve
-langsmith
-sse_starlette
+langgraph
+faiss-cpu
+fastapi
 uvicorn
 pandas
