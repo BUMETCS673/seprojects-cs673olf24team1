@@ -3,7 +3,7 @@ import './ProfileForm.css';
 import CourseTakenField from './CourseTakenField';
 import { assets } from '../../assets/assets';
 
-function StudentForm() {
+function ProfileForm() {
   const [formData, setFormData] = useState({
     userName: 'John Doe',
     email: 'john@bu.edu',
@@ -35,7 +35,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Name:</label>
+          <label>Name</label>
           <input
             type="text"
             name="userName"
@@ -45,7 +45,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Email:</label>
+          <label>Email</label>
           <input
             type="email"
             name="email"
@@ -55,7 +55,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>BU ID:</label>
+          <label>BU ID</label>
           <input
             type="text"
             name="id"
@@ -65,7 +65,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Program Type:</label>
+          <label>Program Type</label>
           <select
             name="programType"
             value={formData.programType}
@@ -76,7 +76,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Program Name:</label>
+          <label>Program Name</label>
           <select
             name="programName"
             value={formData.programType}
@@ -87,7 +87,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Path of Interest:</label>
+          <label>Path of Interest</label>
           <select
             name="pathOfInterest"
             value={formData.pathOfInterest}
@@ -102,7 +102,7 @@ function StudentForm() {
         </div>
 
         <div>
-          <label>Courses to Take:</label>
+          <label>Courses to Take</label>
           <select
             name="coursesToTake"
             value={formData.coursesToTake}
@@ -125,4 +125,4 @@ function StudentForm() {
   );
 }
 
-export default StudentForm;
+export default ProfileForm;
