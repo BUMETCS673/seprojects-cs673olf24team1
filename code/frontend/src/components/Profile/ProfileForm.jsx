@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './StudentForm.css';
+import './ProfileForm.css';
 import CourseTakenField from './CourseTakenField';
 import { assets } from '../../assets/assets';
 
@@ -30,7 +30,6 @@ function StudentForm() {
   return (
     <div className='profile-form-container'>
       <form onSubmit={handleSubmit}>
-        <h1 className="form-title">BUAN Profile</h1>
         <div className="user-avatar-container">
           <img className="user-avatar" src={assets.user_icon} alt="user avatar" />
         </div>

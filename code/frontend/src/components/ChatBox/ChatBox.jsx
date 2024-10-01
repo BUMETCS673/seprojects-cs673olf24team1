@@ -7,12 +7,14 @@ import { assets } from '../../assets/assets'
 import { Context } from '../../context/ContextProvider'
 import Cookies from 'js-cookie'; // Import the js-cookie library
 import axios from 'axios'; // Import Axios for API calls
-import ProfileAvatar from '../ProfileAvatar/ProfileAvatar'
+import ProfileForm from '../Profile/ProfileForm'
 
 const ChatBox = () => {
 
+  const [isProfilePanelOpen, setProfilePanelOpen] = useState(false);
+
   const { recentPrompt, showResult, loading, resultData } = useContext(Context);
-  
+
   // State to track the conversation history
   const [conversations, setConversations] = useState([]);
 
@@ -33,7 +35,7 @@ const ChatBox = () => {
       Cookies.set('chatHistory', JSON.stringify(conversations), { expires: 7 }); // Store for 7 days
     }
   }, [conversations]);
-  
+
   // Handle new user messages
   const handleNewMessage = async (input) => {
     // Add user input to the conversation history
@@ -66,13 +68,13 @@ const ChatBox = () => {
 
   // new chat function
   const newChat = () => {
-        // Clear the current conversations
-        setConversations([]); 
-        // Optional: Show a greeting message for the new chat
-        const newGreeting = { input: "Start a new chat", response: "Hello, BU Student! How can I assist you today?" };
-        // Set the new greeting as the first entry
-        setConversations([newGreeting]); 
-    };
+    // Clear the current conversations
+    setConversations([]);
+    // Optional: Show a greeting message for the new chat
+    const newGreeting = { input: "Start a new chat", response: "Hello, BU Student! How can I assist you today?" };
+    // Set the new greeting as the first entry
+    setConversations([newGreeting]);
+  };
 
   // Scroll to the bottom whenever conversations change
   useEffect(() => {
@@ -87,6 +89,10 @@ const ChatBox = () => {
   //   setConversations([]); // Clear chat history in state as well
   // };
 
+  const toggleProfilePanel = () => {
+    setProfilePanelOpen(!isProfilePanelOpen);
+  };
+
   return (
     <div className='main'>
       <div className="nav">
@@ -94,8 +100,21 @@ const ChatBox = () => {
           <img src={assets.eagle_logo} alt="" />
           <p>BUAN CHATBOT</p>
         </div>
-        <ProfileAvatar/>
+        {/* Profile Avatar */}
+        <div className="avatar-container" onClick={toggleProfilePanel}>
+          <img src={assets.user_icon} alt="User Avatar" />
+        </div>
       </div>
+
+      {/* Sliding Profile Panel */}
+      <div className={`profile-panel ${isProfilePanelOpen ? 'open' : ''}`}>
+        <button className="close-btn" onClick={toggleProfilePanel}>X</button>
+        <h2>User Profile</h2>
+        {<ProfileForm />}
+      </div>
+
+      {/* Overlay */}
+      {isProfilePanelOpen && <div className="overlay" onClick={toggleProfilePanel}></div>}
 
       <div className="main-container">
         {/* Dynamically render conversation history */}
@@ -127,8 +146,8 @@ const ChatBox = () => {
         </div> */}
         {/* InputField to send new messages */}
         <InputField onSend={handleNewMessage} />
-        
-        
+
+
       </div>
     </div>
   )
