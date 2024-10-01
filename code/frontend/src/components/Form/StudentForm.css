@@ -52,6 +52,7 @@ form {
   button {
     width: 100%;
     padding: 12px;
+    margin-top: 20px;
     background-color: #e54500;
     color: white;
     font-size: 16px;
