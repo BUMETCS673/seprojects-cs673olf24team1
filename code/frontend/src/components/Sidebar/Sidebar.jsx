@@ -1,20 +1,21 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react'
 import NewChatButton from './NewChatButton'
-import ClearButton from './ClearButton'
-import EmailButton from './EmailButton'
-import PrintButton from './PrintButton'
-import ShareButton from './ShareButton'
+// import ClearButton from './ClearButton'
+// import EmailButton from './EmailButton'
+// import PrintButton from './PrintButton'
+// import ShareButton from './ShareButton'
 import LogoutButton from './LogoutButton'
 import ChatHistory from './ChatHistory'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/ContextProvider';
+import DownloadButton from './DownloadButton'
 
 const Sidebar = () => {
 
     const [extended, setExtended] = useState(false);
-    const {onSent,prevPrompts,setRecentPrompt} = useContext(Context);
+    const {onSent,prevPrompts,setRecentPrompt, handleNewChat} = useContext(Context);
 
     const loadPrompt = async (prompt) => {
         await onSent(prompt);
@@ -24,14 +25,15 @@ const Sidebar = () => {
     return (
         <div className='sidebar'>
             <div className="top">
-                <NewChatButton />
-                <ChatHistory />
+            <NewChatButton onNewChat={handleNewChat} /> {/* Pass handleNewChat here */}
+            <ChatHistory />
             </div>
             <div className="bottom">
-                <ClearButton />
+                {/* <ClearButton />
                 <EmailButton />
                 <PrintButton />
-                <ShareButton />
+                <ShareButton /> */}
+                <DownloadButton />
                 <LogoutButton />
             </div>
         </div>

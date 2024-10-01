@@ -1,65 +1,71 @@
 package com.bu.coursebuilderchatbotms.controller;
 
+import com.bu.coursebuilderchatbotms.service.UserService;
+import com.bu.coursebuilderchatbotms.domain.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/chatbot")
 public class ChatbotController {
 
-    private final String FLASK_API_URL = "http://localhost:9000";
-
+    private final String FAST_API = "http://localhost:9080";
     private final WebClient webClient;
-
     private final ObjectMapper objectMapper;
+    private final UserService userService;
 
-    private final ResourceLoader resourceLoader;
-
-    public ChatbotController(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, ResourceLoader resourceLoader) {
-        this.webClient = webClientBuilder.baseUrl(FLASK_API_URL).build();
+    @Autowired
+    public ChatbotController(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, UserService userService) {
+        this.webClient = webClientBuilder.baseUrl(FAST_API).build();
         this.objectMapper = objectMapper;
-        this.resourceLoader = resourceLoader;
+        this.userService = userService;
     }
 
-    /*
-    Below API is how we are going to make an external API call (e.g. Poom's bot)
-     */
-    @GetMapping("/example")
-    public Mono<String> getPosts() {
-        return webClient.get()
-                .uri("/posts")
+    @PostMapping("/chat_conversation")
+    public Mono<JsonNode> chatConversation(@RequestBody JsonNode request) {
+        String username = request.get("user_id").asText();
+        User user = userService.getUserByUsername(username);
+
+        ObjectNode flaskRequest = objectMapper.createObjectNode();
+        flaskRequest.put("user_id", user.getUsername());
+        flaskRequest.put("student_name", user.getUsername());
+        flaskRequest.put("message", request.get("message").asText());
+        List<String> courseTaken = convertStringToStringArr(user.getCourse_taken());
+        flaskRequest.set("course_taken", objectMapper.valueToTree(courseTaken));
+        flaskRequest.put("path_interest", user.getPath_interest());
+        flaskRequest.put("course_to_take", user.getCourse_to_take());
+
+        System.out.println(flaskRequest);
+        return webClient.post()
+                .uri("/api/v1/chatbot")
+                .bodyValue(flaskRequest)
                 .retrieve()
-                .bodyToMono(String.class)
-                .map(this::processResponse);
+                .bodyToMono(JsonNode.class);
     }
 
-    @PostMapping("/chat")
-    public String getChatbotResponse(@RequestBody String userInput) throws IOException {
-        Resource resource = resourceLoader.getResource("classpath:chatbot-responses.json");
-        JsonNode rootNode = objectMapper.readTree(resource.getInputStream());
-        JsonNode conversations = rootNode.get("conversations");
-
-        for (JsonNode conversation : conversations) {
-            if (conversation.get("input").asText().equalsIgnoreCase(userInput.trim())) {
-                return conversation.get("response").asText();
-            }
+    private List<String> convertStringToStringArr(String input) {
+        if (input == null || input.isEmpty()) {
+            return new ArrayList<>();
         }
 
-        return "I'm sorry, I don't have information about that specific topic. Can you please ask about one of our courses?";
-    }
+        // Remove the single quotes and square brackets
+        input = input.replaceAll("'", "").replaceAll("\\[", "").replaceAll("\\]", "");
 
-    private String processResponse(String response) {
-        try {
-            return "Processed response: " + response;
-        } catch (Exception e) {
-            return "Error processing response: " + e.getMessage();
+        // Split the string by comma and trim each element
+        String[] elements = input.split(",");
+        List<String> result = new ArrayList<>();
+        for (String element : elements) {
+            result.add(element.trim());
         }
+
+        return result;
     }
 }

@@ -278,4 +278,7 @@ class CourseTree:
             self.display_tree(child, level + 1)
 
 
-
+# Exported function to use in other modules
+def recommend_courses(courses_taken, path_interest, num_courses_to_take):
+    tree = CourseTree()
+    return tree.recommend_courses(courses_taken, path_interest, num_courses_to_take)

@@ -5,6 +5,8 @@ import InputField from '../InputField/InputField'
 import './ChatBox.css'
 import { assets } from '../../assets/assets'
 import { Context } from '../../context/ContextProvider'
+import Cookies from 'js-cookie'; // Import the js-cookie library
+import axios from 'axios'; // Import Axios for API calls
 
 const ChatBox = () => {
 
@@ -16,37 +18,60 @@ const ChatBox = () => {
   // Ref to track the chat container and scroll automatically
   const chatContainerRef = useRef(null);
 
-  // Simulate chatbot interaction (replace this with actual backend call or chatbot logic)
-  const handleNewMessage = (input) => {
-    const jsonConversations = [
-      {
-        "input": "Hello, I'm John. I took CS521 last semester and want to take 3 courses this semester that related to secure web development",
-        "response": "Hello John, based on the details on the courses you've taken..."
-      },
-      {
-        "input": "Yes, what do I learn in CS673?",
-        "response": "CS673, titled Software Engineering, is a comprehensive course..."
-      },
-      {
-            "input": "Is there any prerequisites for the data structure class?",
-            "response": "Yes, there are prerequisites for the Data Structure classes. For CS526 - Data Structure and Algorithms, the prerequisites are MET CS 300 and either MET CS 520 or MET CS 521. This course includes implementing data structures using a high-level programming language and analyzing computational complexity. Other data structure courses like CS341 (with C++) and CS342 (with Java) have their own prerequisites, such as MET CS 231 and 232, respectively."
-        },
-        {
-            "input": "What classes can benefit me to be in the secure software development industry?",
-            "response": "If you're aiming to enter the secure software development industry, key courses to consider include: CS763 - Secure Software Development, CS633 - Software Quality, Testing, and Security Management, CS695 - Cybersecurity, CS674 - Database Security, CS684 - Enterprise Cybersecurity Management, CS602 - Server-Side Web Development, and CS690 - Network Security. These courses cover a wide range of topics such as application security, security testing, project management, and cybersecurity mechanisms, and will provide you with the necessary skills for this industry."
-        },
-        {
-            "input": "I'm actually interested in artificial intelligence too. Does BU offer any courses about it?",
-            "response": "Yes, Boston University offers several courses related to Artificial Intelligence. Some key AI courses include: CS664 - Artificial Intelligence, CS767 - Advanced Machine Learning and Neural Networks, CS793 - Special Topics in Computer Science (Generative AI), CS688 - Web Mining and Graph Analytics, and CS699 - Data Mining. These courses cover topics such as machine learning, neural networks, AI models, web mining, and data mining, providing a strong foundation in AI and its applications."
-        }
-    ];
+  // Load chat history from cookies on initial load
+  useEffect(() => {
+    const cachedConversations = Cookies.get('chatHistory');
+    if (cachedConversations) {
+      setConversations(JSON.parse(cachedConversations));
+    }
+  }, []);
 
-    // Add the new conversation (input and matching response)
-    const newConversation = jsonConversations.find(conv => conv.input === input) || { input, response: "Sorry, I didn't understand that. Please try again." };
-    
-    // Update conversation history
+  // Save chat history to cookies whenever conversations change
+  useEffect(() => {
+    if (conversations.length > 0) {
+      Cookies.set('chatHistory', JSON.stringify(conversations), { expires: 7 }); // Store for 7 days
+    }
+  }, [conversations]);
+  
+  // Handle new user messages
+  const handleNewMessage = async (input) => {
+    // Add user input to the conversation history
+    const newConversation = { input, response: "Loading..." };
     setConversations([...conversations, newConversation]);
+
+    try {
+      // Call the backend API to get a response from OpenAI http://localhost:8080/api/v1/chatbot/chat_conversation
+      // const response = await axios.post('/api/openai-chat', { message: input });
+      const response = await axios.post('http://localhost:8080/api/v1/chatbot/chat_conversation', { message: input });
+      const botResponse = response.data.response;
+
+      // Update the conversation history with the bot's response
+      const updatedConversation = { input, response: botResponse };
+      setConversations((prevConversations) =>
+        prevConversations.map((conv, idx) =>
+          idx === prevConversations.length - 1 ? updatedConversation : conv
+        )
+      );
+    } catch (error) {
+      console.error('Error communicating with OpenAI:', error);
+      const errorResponse = { input, response: "Sorry, something went wrong. Please try again." };
+      setConversations((prevConversations) =>
+        prevConversations.map((conv, idx) =>
+          idx === prevConversations.length - 1 ? errorResponse : conv
+        )
+      );
+    }
   };
+
+  // new chat function
+  const newChat = () => {
+        // Clear the current conversations
+        setConversations([]); 
+        // Optional: Show a greeting message for the new chat
+        const newGreeting = { input: "Start a new chat", response: "Hello, BU Student! How can I assist you today?" };
+        // Set the new greeting as the first entry
+        setConversations([newGreeting]); 
+    };
 
   // Scroll to the bottom whenever conversations change
   useEffect(() => {
@@ -54,6 +79,12 @@ const ChatBox = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [conversations]);
+
+  // Clear chat history from cookies
+  // const handleClearCache = () => {
+  //   Cookies.remove('chatHistory');
+  //   setConversations([]); // Clear chat history in state as well
+  // };
 
   return (
     <div className='main'>
@@ -89,8 +120,13 @@ const ChatBox = () => {
           )}
         </div>
 
+        {/* Button to clear chat cache */}
+        {/* <div className="clear-cache">
+          <button onClick={handleClearCache}>Clear Cache</button>
+        </div> */}
         {/* InputField to send new messages */}
         <InputField onSend={handleNewMessage} />
+        
         
       </div>
     </div>
