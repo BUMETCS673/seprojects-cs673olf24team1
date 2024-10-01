@@ -7,6 +7,7 @@ import { assets } from '../../assets/assets'
 import { Context } from '../../context/ContextProvider'
 import Cookies from 'js-cookie'; // Import the js-cookie library
 import axios from 'axios'; // Import Axios for API calls
+import ProfileAvatar from '../ProfileAvatar/ProfileAvatar'
 
 const ChatBox = () => {
 
@@ -93,7 +94,7 @@ const ChatBox = () => {
           <img src={assets.eagle_logo} alt="" />
           <p>BUAN CHATBOT</p>
         </div>
-        <img src={assets.user_icon} alt="" />
+        <ProfileAvatar/>
       </div>
 
       <div className="main-container">
