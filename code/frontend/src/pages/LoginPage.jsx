@@ -44,7 +44,7 @@ const LoginPage = (props) => {
     <main className='flex-row justify-center mb-4 h-screen' style={{height:'100vh'}}>
     <div className='form-container h-screen'>
     <div className="form-content-left">
-      <img src={eaglelogo} alt="silver-socials-logo" className='form-img' style={{height:'40%'}}/>
+      <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{height:'40%'}}/>
     </div> 
     <div className='form-content-right col-12 col-md-6'>
       <form onSubmit={handleFormSubmit} className='form'>
@@ -77,7 +77,7 @@ const LoginPage = (props) => {
               />
           {/* {errors.password && <p>{errors.password}</p>} */}
         </div>
-        <Link to="/chat" className='login-btn'>Login</Link>
+        <Link to="/chat" className='login-btn form-input-btn'>Login</Link>
         {/* <button className='form-input-btn' type='submit'><a href="/chat">Log in</a></button> */}
         {/* {error && <div><p style={{color:"red"}}>Login failed</p></div>} */}
 
