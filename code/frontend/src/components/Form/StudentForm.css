@@ -1,0 +1,80 @@
+.form-title {
+    text-align: center; 
+    font-size: 24px; 
+    margin-bottom: 20px; 
+    color: #333; 
+  }
+
+form {
+    background-color: #f8f9fa;
+    padding: 40px;
+    border-radius: 8px;
+    width: 100%; 
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* General label styling */
+  label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  /* Styling for input fields */
+  input[type="text"],
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #555;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Change border color when input is focused */
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  select:focus {
+    border-color: #e54500;
+    outline: none;
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #e54500;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Change button color on hover */
+  button:hover {
+    background-color: #019a76;
+  }
+  
+  /* Responsive design: Make form take full width on smaller screens */
+  @media (max-width: 600px) {
+    form {
+      padding: 15px;
+      max-width: 100%;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  }
+  
