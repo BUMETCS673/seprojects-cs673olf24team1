@@ -82,12 +82,17 @@ function StudentForm() {
 
         <div>
           <label>Path of Interest:</label>
-          <input
-            type="text"
+          <select
             name="pathOfInterest"
             value={formData.pathOfInterest}
             onChange={handleChange}
-          />
+          >
+            <option value="app development">App Development</option>
+            <option value="web development">Web Development</option>
+            <option value="secure software development">Secure Software Development</option>
+            <option value="data science">Data Science</option>
+            <option value="ai/ml">Artificial Intelligence and Machine Learning</option>
+          </select>
         </div>
 
         <div>
@@ -104,7 +109,7 @@ function StudentForm() {
           </select>
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit">Create Profile</button>
       </form>
   );
 }
