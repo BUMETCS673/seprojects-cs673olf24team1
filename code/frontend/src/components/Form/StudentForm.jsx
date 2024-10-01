@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import './StudentForm.css';
+import CourseTakenField from './CourseTakenField';
 
 function StudentForm() {
   const [formData, setFormData] = useState({
-    userName: '',
-    email: '',
-    id: '',
+    userName: 'John Doe',
+    email: 'john@bu.edu',
+    id: 'U123456',
     programType: 'MS degree',
     programName: '',
     pathOfInterest: '',
-    coursesToTake: '1'
+    coursesToTake: '3'
   });
 
   const handleChange = (e) => {
@@ -107,6 +108,10 @@ function StudentForm() {
             <option value="3">3</option>
             <option value="4">4</option>
           </select>
+        </div>
+
+        <div>
+          <CourseTakenField/>
         </div>
 
         <button type="submit">Create Profile</button>
