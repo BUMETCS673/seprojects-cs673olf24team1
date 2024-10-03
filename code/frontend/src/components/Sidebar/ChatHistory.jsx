@@ -2,11 +2,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './Sidebar.css';
 import { assets } from '../../assets/assets';
-import Context from '../../context/ContextProvider';
 import { Link } from 'react-router-dom';
+import { useChat } from '../../context/ChatContext';
 
 const ChatHistory = () => {
-  const { userId, setRecentPrompt } = useContext(Context);
+  const { sessions, activeSessionId } = useChat();
   const [chatHistory, setChatHistory] = useState([]);
   const [error, setError] = useState(null);
   

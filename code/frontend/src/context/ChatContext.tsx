@@ -139,7 +139,7 @@ interface ChatContextType {
    * storage, effectively resetting the chat context. It is usually called 
    * when the user logs out of the application.
    */
-  clearCachedData: () => void;
+  clearCachedChatData: () => void;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -305,7 +305,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const clearCachedData = () => {
+  const clearCachedChatData = () => {
     localStorage.removeItem('activeSessionId');
     localStorage.removeItem('chatSessions');
     setSessions([]);
@@ -324,7 +324,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     handleSendMessage,
     initChatSession,
     loadSessionHistory,
-    clearCachedData,
+    clearCachedChatData,
   };
 
   return <ChatContext.Provider value={exportedValues}>{children}</ChatContext.Provider>;

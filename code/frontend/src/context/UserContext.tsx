@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
-// Define the shape of the user data
 interface User {
     buId: string;
     firstName: string;
@@ -15,14 +14,12 @@ interface User {
     isNew: boolean;
 }
 
-// Define the shape of the context value
 interface UserContextType {
     user: User;
     updateUser: (newUser: Partial<User>) => void;
     resetUser: () => void;
 }
 
-// Create a UserContext with an empty object as the default value
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -43,8 +40,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         };
     });
 
+    // Save user data to localStorage whenever it changes
     useEffect(() => {
-        // Save user data to localStorage whenever it changes
         localStorage.setItem('user', JSON.stringify(user));
     }, [user]);
 
@@ -77,7 +74,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     );
 };
 
-// Custom hook to use the UserContext
 export const useUser = (): UserContextType => {
     const context = useContext(UserContext);
     if (context === undefined) {

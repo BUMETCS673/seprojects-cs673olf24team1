@@ -7,9 +7,7 @@ import eaglelogo from '../assets/images/eagle_logo.png';
 import '../assets/styles/SignupPage.scss';
 
 const LoginPage = (props) => {
-
-  const { login, auth } = useAuth();
-  const { isAuth, isLoading, isIncorrectPassword } = auth;
+  const { isAuth, isLoading, isIncorrectPassword, login } = useAuth();
   const [formState, setFormState] = useState({ email: '', password: '' });
   const navigate = useNavigate();
 
