@@ -1,3 +1,4 @@
+-- Created by Natasya Liew
 -- Database: BUAN RELATIONAL DB
 DROP TABLE users;
 DROP TABLE sessions;

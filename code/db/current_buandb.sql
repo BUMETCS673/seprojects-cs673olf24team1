@@ -1,3 +1,4 @@
+-- Created by Natasya Liew, Input by Ananya Singh
 -- UPDATED WORKING DB
 
 -- TABLE: users
