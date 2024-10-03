@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 -- Created by Natasya Liew
 -- Database: BUAN RELATIONAL DB
+=======
+-- Database: BUAN
+>>>>>>> origin/develop
 DROP TABLE users;
 DROP TABLE sessions;
 DROP TABLE program_owner;
@@ -34,6 +38,18 @@ CREATE TABLE program_owner (
     title VARCHAR(50)
 );
 
+<<<<<<< HEAD
+=======
+-- Table: chathistory
+CREATE TABLE chat_history (
+    chat_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    conversation JSONB NOT NULL,
+    metadata JSONB
+);
+
+>>>>>>> origin/develop
 -- Table: department
 CREATE TABLE dept (
     dept_id SERIAL PRIMARY KEY,
@@ -116,7 +132,10 @@ CREATE TABLE programs (
 -- Table: student
 CREATE TABLE student (
     student_id SERIAL PRIMARY KEY,
+<<<<<<< HEAD
 	user_id INTEGER NOT NULL REFERENCES users(user_id),
+=======
+>>>>>>> origin/develop
     program_id INTEGER NOT NULL REFERENCES programs(program_id),
     course_taken INTEGER NOT NULL REFERENCES course_list(courselist_id),
     path_interest INTEGER NOT NULL REFERENCES path_interest(pathinterest_id),
@@ -138,14 +157,22 @@ CREATE TABLE student (
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
 	username VARCHAR(10),
+<<<<<<< HEAD
 	user_role VARCHAR(25) NOT NULL,
+=======
+>>>>>>> origin/develop
 	f_name VARCHAR(10) NOT NULL,
 	l_name VARCHAR(25) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password_hash VARCHAR(50) NOT NULL,
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	last_login TIMESTAMP WITH TIME ZONE,
+<<<<<<< HEAD
 	user_preference VARCHAR
+=======
+	user_preference JSONB,
+    student_id INTEGER NOT NULL REFERENCES student(student_id)
+>>>>>>> origin/develop
 );
 
 -- Table: session_log (bridge)
@@ -615,6 +642,7 @@ VALUES (1, 'mssd', 'Software Development', false, true, 'graduate', 32, 1, 3, 4,
 
 
 -- Populate student table
+<<<<<<< HEAD
 INSERT INTO student (user_id, program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
 VALUES (1, 1, 10, 1, 3, 'U15811234', 'Fall 2025', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
 
@@ -628,3 +656,18 @@ VALUES ('jdoe', 'student', 'Jane', 'Doe', 'jdoe@bu.edu', 'password_hashed');
 
 INSERT INTO users (username, user_role, f_name, l_name, email, password_hash)
 VALUES ('jsmith','student', 'John', 'Smith', 'jsmith@bu.edu', 'buantest123_hashed');
+=======
+INSERT INTO student (program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
+VALUES (1, 10, 1, 3, 'U15811234', 'Fall 2025', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
+
+INSERT INTO student (program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
+VALUES (1, 11, 4, 4, 'U13135556', 'Spring 2026', FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
+
+
+-- Populate user table
+INSERT INTO users (username, f_name, l_name, email, password_hash, student_id)
+VALUES ('jdoe', 'Jane', 'Doe', 'jdoe@bu.edu', 'password_hashed', 1);
+
+INSERT INTO users (username, f_name, l_name, email, password_hash,  student_id)
+VALUES ('jsmith', 'John', 'Smith', 'jsmith@bu.edu', 'buantest123_hashed', 2);
+>>>>>>> origin/develop

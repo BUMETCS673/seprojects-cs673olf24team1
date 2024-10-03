@@ -176,3 +176,56 @@
         gap: 5px;
     }
 }
+
+/* Profile Pannel */
+/* Avatar styling */
+.avatar-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Profile Panel Styling */
+.profile-panel {
+    position: fixed;
+    top: 0;
+    right: -500px; /* Initially hidden on the right */
+    width: 500px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enables vertical scrolling */
+}
+
+/* When the panel is open */
+.profile-panel.open {
+    right: 0; /* Slides the panel into view */
+}
+
+/* Close button */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-bottom: 20px;
+    color: #e54500;
+}
+
+/* Overlay to darken the background */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 500;
+}
