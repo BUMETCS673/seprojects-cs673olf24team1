@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
         path_interest: '',
         courses_to_take: 0,
         coures_taken: [],
-        session_ids: [],
+        chat_session_ids: [],
         isNew: true,
     });
 
