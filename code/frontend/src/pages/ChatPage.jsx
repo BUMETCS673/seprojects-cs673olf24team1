@@ -10,7 +10,7 @@ import '../App.css';
 const ChatPage = () => {
     return (
         <> 
-            <SideBar />
+            {/* <SideBar /> */}
             <ChatBox />
         </>
     );

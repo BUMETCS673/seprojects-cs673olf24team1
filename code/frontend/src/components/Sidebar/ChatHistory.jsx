@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './Sidebar.css';
 import { assets } from '../../assets/assets';
-import { Context } from '../../context/ContextProvider';
+import Context from '../../context/ContextProvider';
 import { Link } from 'react-router-dom';
 
 const ChatHistory = () => {

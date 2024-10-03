@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom';
-import { Context } from '../../context/ContextProvider';
+import Context from '../../context/ContextProvider';
 
 
 const LogoutButton = () => {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useUser } from '../context/UserContext';
 
-const useChat = (sessionId, user) => {
-
+const useChat = (sessionId) => {
+    
+    const { user } = useUser();
     const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [sessionId, setSessionId] = useState(null);
     const [sessionCreatedTime, setSessionCreatedTime] = useState(null);
 
     const generateSessionId = () => Math.random().toString(36).substring(2, 9);
@@ -17,8 +17,8 @@ const useChat = (sessionId, user) => {
         return message.trim() !== '' && wordCount <= 200;
     };
 
-    const handleSendMessage = () => {
-        if (!isValidInput) return;
+    const handleSendMessage = (input) => {
+        if (!isValidInput(input)) return;
 
         setMessages((prevMessages) => [
             ...prevMessages,
@@ -29,10 +29,10 @@ const useChat = (sessionId, user) => {
         // Insert a sevice API call here
         // response = ChatService.getChatBotResponse(input, ...);
 
-        fakeResponse = "Hi there. This is a fake AI response message";
+        const fakeResponse = "Hi there. This is a fake AI response message";
 
         if (fakeResponse) {
-            fakeAIMessage = {
+            const AIMessage = {
                 text: fakeResponse,
                 timestamp: Date.now(),
                 isUser: false
@@ -40,19 +40,14 @@ const useChat = (sessionId, user) => {
 
             setMessages((prevMessages) => [
                 ...prevMessages,
-                { text: fakeAIMessage, id: Date.now(), isUser: false },
+                AIMessage,
             ]);
+
         } else {
             setError('Error occured while getting the AI response')
         }
         setIsLoading(false);
     };
-
-    const handleInputChange = (event) => {
-        text = event.target.value
-        setInput(text);
-    };
-
 
     // Initialize chat session when the hook is first used
     const initChatSession = async () => {
@@ -73,19 +68,24 @@ const useChat = (sessionId, user) => {
                 isUser: true
             },
             {
-                text: "I want to ask about CS675. What is it?",
+                text: "Sure! It is about blablabla",
                 timestamp: Date.UTC(2024, 10, 2, 2),
+                isUser: false
+            },
+            {
+                text: "Is it hard?",
+                timestamp: Date.UTC(2024, 10, 2, 3),
                 isUser: true
             },
             {
-                text: "Sure! It is about blablabla",
-                timestamp: Date.UTC(2024, 10, 2, 3),
-                isUser: true
-            }]
+                text: "Not really",
+                timestamp: Date.UTC(2024, 10, 2, 4),
+                isUser: false
+            },
+        ]
 
             if (existingMessages) {
                 setMessages(existingMessages);
-                setSessionId(sessionId);
                 setIsLoading(false);
             } else {
                 setError(existingMessages);
@@ -93,7 +93,6 @@ const useChat = (sessionId, user) => {
             }
         } else {
             const newSessionId = generateSessionId();
-            setSessionId(newSessionId);
             setMessages([{
                 text: `Hi ${user.firstName}! How can I help you today?`,
                 timestamp: Date.now(),
@@ -110,10 +109,8 @@ const useChat = (sessionId, user) => {
 
     return {
         messages,
-        input,
         error,
         handleSendMessage,
-        handleInputChange,
         sessionId,
         isLoading,
         sessionCreatedTime,

@@ -9,7 +9,7 @@ import LogoutButton from './LogoutButton'
 import ChatHistory from './ChatHistory'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
-import { Context } from '../../context/ContextProvider';
+import Context from '../../context/ContextProvider';
 import DownloadButton from './DownloadButton'
 
 const Sidebar = () => {
