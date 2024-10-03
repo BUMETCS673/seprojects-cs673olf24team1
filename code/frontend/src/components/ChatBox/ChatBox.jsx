@@ -3,12 +3,12 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import InputField from '../InputField/InputField';
 import { assets } from '../../assets/assets';
 import ProfileForm from '../Profile/ProfileForm';
-import useChat from '../../hooks/useChat';
 import ChatBubble from './ChatBubble';
 import './ChatBox.css';
+import { useChat } from '../../context/ChatContext';
 
-const ChatBox = ({session_id}) => {
-  const { messages, error, isLoading, sessionId, sessionCreatedTime, handleSendMessage } = useChat(session_id);
+const ChatBox = () => {
+  const { initChatSession, messages, handleSendMessage, isLoading, error } = useChat();
   const [isProfilePanelOpen, setProfilePanelOpen] = useState(false);
   const [input, setInput] = useState('');
 
@@ -30,6 +30,11 @@ const ChatBox = ({session_id}) => {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Initialize the chat data when mounted
+  useEffect(() => {
+    initChatSession();
+  }, []);
 
   return (
     <div className='main'>

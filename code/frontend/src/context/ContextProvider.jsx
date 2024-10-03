@@ -1,11 +1,14 @@
 import { UserProvider } from './UserContext';
 import { AuthProvider } from './AuthContext';
+import { ChatProvider } from './ChatContext';
 
 const ContextProvider = ({ children }) => {
   return (
     <UserProvider>
       <AuthProvider>
-        {children}
+        <ChatProvider>
+          {children}
+        </ChatProvider>
       </AuthProvider>
     </UserProvider>
   );
