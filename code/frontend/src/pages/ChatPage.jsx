@@ -9,9 +9,9 @@ import '../App.css';
 
 const ChatPage = () => {
     return (
-        <> 
+        <>
             {/* <SideBar /> */}
-            <ChatBox />
+            <ChatBox session_id={'123'} />
         </>
     );
 };

@@ -7,8 +7,8 @@ import useChat from '../../hooks/useChat';
 import ChatBubble from './ChatBubble';
 import './ChatBox.css';
 
-const ChatBox = () => {
-  const { messages, error, isLoading, sessionId, sessionCreatedTime, handleSendMessage } = useChat("123");
+const ChatBox = ({session_id}) => {
+  const { messages, error, isLoading, sessionId, sessionCreatedTime, handleSendMessage } = useChat(session_id);
   const [isProfilePanelOpen, setProfilePanelOpen] = useState(false);
   const [input, setInput] = useState('');
 
