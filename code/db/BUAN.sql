@@ -33,6 +33,15 @@ CREATE TABLE program_owner (
     title VARCHAR(50)
 );
 
+-- Table: chathistory
+CREATE TABLE chat_history (
+    chat_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    conversation JSONB NOT NULL,
+    metadata JSONB
+);
+
 -- Table: department
 CREATE TABLE dept (
     dept_id SERIAL PRIMARY KEY,
