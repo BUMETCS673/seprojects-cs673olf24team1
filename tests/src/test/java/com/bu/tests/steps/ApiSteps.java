@@ -50,12 +50,6 @@ public class ApiSteps {
         assertEquals(expectedStatusCode, response.statusCode());
     }
 
-//    @Then("I receive a response with message {string}")
-//    public void i_receive_a_response_with_message(String expectedMessage) {
-//        JSONObject jsonResponse = new JSONObject(response.body());
-//        String actualMessage = jsonResponse.getString("message");
-//        assertTrue(actualMessage.contains(expectedMessage));
-//    }
 }
 
 
