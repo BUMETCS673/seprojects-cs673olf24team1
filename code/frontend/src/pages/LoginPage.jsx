@@ -46,7 +46,7 @@ const LoginPage = (props) => {
     <div className="form-content-left">
       <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{height:'40%'}}/>
     </div> 
-    <div className='form-content-right col-12 col-md-6'>
+    <div className='form-content-right col-10 col-md-6'>
       <form onSubmit={handleFormSubmit} className='form'>
         <h1>BUAN CHATBOT</h1>
         <h2>Sign In</h2>

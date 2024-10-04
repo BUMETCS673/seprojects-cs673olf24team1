@@ -78,7 +78,6 @@
     outline: none;
 }
 
-
 .dropdown {
     position: absolute;
     top: 100%;
@@ -106,7 +105,6 @@
     background-color: #f0f0f0;
 }
 
-
 .remove-course-icon {
     margin-left: 10px;
     margin-right: 15px;
@@ -125,7 +123,6 @@
         padding: 15px;
         max-width: 100%;
     }
-
     .add-course-container button {
         font-size: 14px;
     }

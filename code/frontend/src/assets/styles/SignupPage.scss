@@ -166,6 +166,25 @@
     transition: all 0.4s ease-out;
 }
 
+.form-input-btn-second {
+    width: 80%;
+    height: 50px;
+    margin-top: 10px;
+    border-radius: 2px;
+    background-color: #ffffff !important;
+    outline: none;
+    border: solid 1px !important;
+    color: #e54500 !important;
+    font-size: 1rem;
+}
+
+.form-input-btn-second:hover {
+    cursor: pointer;
+    background: linear-gradient( 90deg, $primary 0%, $secondary 100%);
+    transition: all 0.4s ease-out;
+    color: #ffffff !important;
+}
+
 .form-input-login {
     font-size: 0.8rem;
     margin-top: 10px;

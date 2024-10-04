@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import './ProfileForm.css';
 import CourseTakenField from './CourseTakenField';

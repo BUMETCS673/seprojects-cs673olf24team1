@@ -177,8 +177,12 @@
     }
 }
 
+
 /* Profile Pannel */
+
+
 /* Avatar styling */
+
 .avatar-container {
     position: absolute;
     top: 10px;
@@ -186,11 +190,14 @@
     cursor: pointer;
 }
 
+
 /* Profile Panel Styling */
+
 .profile-panel {
     position: fixed;
     top: 0;
-    right: -500px; /* Initially hidden on the right */
+    right: -500px;
+    /* Initially hidden on the right */
     width: 500px;
     height: 100%;
     background-color: #f8f9fa;
@@ -200,15 +207,21 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-y: auto;
+    /* Enables vertical scrolling */
 }
+
 
 /* When the panel is open */
+
 .profile-panel.open {
-    right: 0; /* Slides the panel into view */
+    right: 0;
+    /* Slides the panel into view */
 }
 
+
 /* Close button */
+
 .close-btn {
     background: none;
     border: none;
@@ -219,7 +232,9 @@
     color: #e54500;
 }
 
+
 /* Overlay to darken the background */
+
 .overlay {
     position: fixed;
     top: 0;
