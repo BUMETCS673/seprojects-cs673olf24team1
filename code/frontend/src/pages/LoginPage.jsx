@@ -8,7 +8,7 @@ import '../assets/styles/SignupPage.scss';
 
 const LoginPage = (props) => {
   const { isAuth, isLoading, isIncorrectPassword, login } = useAuth();
-  const [formState, setFormState] = useState({ email: '', password: '' });
+  const [formState, setFormState] = useState({ email: 'test@bu.edu', password: '1234' });
   const navigate = useNavigate();
 
   const handleChange = (event) => {

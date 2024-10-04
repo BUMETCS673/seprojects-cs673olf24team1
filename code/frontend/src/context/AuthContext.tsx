@@ -18,7 +18,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const { updateUser, resetUser } = useUser();
     const { loadSessionHistory, clearCachedChatData } = useChat();
 
-    const getCachedIsAuth = () => localStorage.getItem('isAuth') === 'true';
+    const getCachedIsAuth = (): boolean => {
+        const cachedAuth = localStorage.getItem('isAuth')
+        return cachedAuth === 'true' ? JSON.parse(cachedAuth) : false;
+    }
     const setCachnedIsAuth = (isAuth: boolean) => localStorage.setItem('isAuth', JSON.stringify(isAuth));
 
     const [isAuth, setIsAuth] = useState<boolean>(() => getCachedIsAuth());
@@ -26,7 +29,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
-    // Save auth data to localStorage whenever auth changes
     useEffect(() => {
         setCachnedIsAuth(isAuth);
     }, [isAuth]);
