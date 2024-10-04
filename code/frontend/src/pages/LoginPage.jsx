@@ -1,18 +1,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import eaglelogo from '../assets/images/eagle_logo.png';
 import { Link, useNavigate } from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-
-// import styling
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import eaglelogo from '../assets/images/eagle_logo.png';
 import '../assets/styles/SignupPage.scss';
 
-
 const LoginPage = (props) => {
-  const [formState, setFormState] = useState({ email: '', password: '' });
-  // // const [login, {error}] =useMutation(LOGIN_USER)
-  // // update state based on form input changes
+  const { isAuth, isLoading, isIncorrectPassword, login } = useAuth();
+  const [formState, setFormState] = useState({ email: 'test@bu.edu', password: '1234' });
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -20,40 +18,37 @@ const LoginPage = (props) => {
       ...formState,
       [name]: value,
     });
+
   };
 
-  // // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    if (!formState.email || !formState.password) return;
     try {
-      const {data} =await login({
-        variables: {...formState}
-      })
-      // Auth.login(data.login.token)
-    }catch(e){
-      console.error(e)
+      const result = await login(formState.email, formState.password);
+      if (result) {
+        navigate('/chat');
+        setFormState({ email: '', password: '' });
+      }
+    } catch (error) {
+      console.error("Login failed: ", error);
     }
-    // clear form values
-    setFormState({
-      email: '',
-      password: '',
-    });
   };
 
   return (
-    <main className='flex-row justify-center mb-4 h-screen' style={{height:'100vh'}}>
-    <div className='form-container h-screen'>
-    <div className="form-content-left">
-      <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{height:'40%'}}/>
-    </div> 
-    <div className='form-content-right col-12 col-md-6'>
-      <form onSubmit={handleFormSubmit} className='form'>
-        <h1>BUAN CHATBOT</h1>
-        <h2>Sign In</h2>
-        
-        <div className='form-inputs'>
-          <label className='form-label'>Email</label>
-          <input
+    <main className='flex-row justify-center mb-4 h-screen' style={{ height: '100vh' }}>
+      <div className='form-container h-screen'>
+        <div className="form-content-left">
+          <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{ height: '40%' }} />
+        </div>
+        <div className='form-content-right col-12 col-md-6'>
+          <form onSubmit={handleFormSubmit} className='form'>
+            <h1>BUAN CHATBOT</h1>
+            <h2>Sign In</h2>
+
+            <div className='form-inputs'>
+              <label className='form-label'>Email</label>
+              <input
                 className='form-input'
                 placeholder='Your email'
                 name='email'
@@ -62,11 +57,11 @@ const LoginPage = (props) => {
                 value={formState.email}
                 onChange={handleChange}
               />
-          {/* {errors.email && <p>{errors.email}</p>} */}
-        </div>
-        <div className='form-inputs'>
-          <label className='form-label'>Password</label>
-          <input
+              {/* {errors.email && <p>{errors.email}</p>} */}
+            </div>
+            <div className='form-inputs'>
+              <label className='form-label'>Password</label>
+              <input
                 className='form-input'
                 placeholder='******'
                 name='password'
@@ -75,27 +70,24 @@ const LoginPage = (props) => {
                 value={formState.password}
                 onChange={handleChange}
               />
-          {/* {errors.password && <p>{errors.password}</p>} */}
-        </div>
-        <Link to="/chat" className='login-btn form-input-btn'>Login</Link>
-        {/* <button className='form-input-btn' type='submit'><a href="/chat">Log in</a></button> */}
-        {/* {error && <div><p style={{color:"red"}}>Login failed</p></div>} */}
+              {/* {errors.password && <p>{errors.password}</p>} */}
+            </div>
 
-        <span className='form-input-login'>
-            Do not have an account? <Link to="/signup">Sign Up
-            {/* {"Don't have an account? Sign Up"} */}
-          </Link>
-          {/* <p>Already have an account? Login <a href='/'>here</a></p> */}
-        </span>
-        <span className='form-input-login'>
-          <Link to="/forgotpassword">
-            {"Forgot password"}
-          </Link>
-          {/* Already have an account? Login <a href='/login'>here</a> */}
-        </span>
-      </form>
-    </div>
-    </div>
+            <button className='form-input-btn' type='submit'>
+              Log in
+            </button>
+
+            <span className='form-input-login'>
+              Do not have an account? <Link to="/signup">Sign Up</Link>
+            </span>
+            <span className='form-input-login'>
+              <Link to="/forgotpassword">
+                Forgot password
+              </Link>
+            </span>
+          </form>
+        </div>
+      </div>
     </main>
   );
 };

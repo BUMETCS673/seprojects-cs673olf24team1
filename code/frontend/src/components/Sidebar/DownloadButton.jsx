@@ -2,10 +2,10 @@
 import React, { useContext, useState } from 'react'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
-import { Context } from '../../context/ContextProvider';
+import { useChat } from '../../context/ChatContext';
 
 const DownloadButton = () => {
-    const { downloadChatHistory } = useContext(Context);
+    const { downloadChatHistory } = useChat();
 
     const handleDownloadChat = () => {
         console.log("Download chat history link");
