@@ -207,8 +207,12 @@
     }
 }
 
+
 /* Profile Pannel */
+
+
 /* Avatar styling */
+
 .avatar-container {
     position: absolute;
     top: 10px;
@@ -216,7 +220,9 @@
     cursor: pointer;
 }
 
+
 /* Profile Panel Styling */
+
 .profile-panel {
     position: fixed;
     top: 0;
@@ -235,13 +241,17 @@
     /* Enables vertical scrolling */
 }
 
+
 /* When the panel is open */
+
 .profile-panel.open {
     right: 0;
     /* Slides the panel into view */
 }
 
+
 /* Close button */
+
 .close-btn {
     background: none;
     border: none;
@@ -252,7 +262,9 @@
     color: #e54500;
 }
 
+
 /* Overlay to darken the background */
+
 .overlay {
     position: fixed;
     top: 0;

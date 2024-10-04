@@ -36,19 +36,19 @@ const LoginPage = (props) => {
   };
 
   return (
-    <main className='flex-row justify-center mb-4 h-screen' style={{ height: '100vh' }}>
-      <div className='form-container h-screen'>
-        <div className="form-content-left">
-          <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{ height: '40%' }} />
-        </div>
-        <div className='form-content-right col-12 col-md-6'>
-          <form onSubmit={handleFormSubmit} className='form'>
-            <h1>BUAN CHATBOT</h1>
-            <h2>Sign In</h2>
-
-            <div className='form-inputs'>
-              <label className='form-label'>Email</label>
-              <input
+    <main className='flex-row justify-center mb-4 h-screen' style={{height:'100vh'}}>
+    <div className='form-container h-screen'>
+    <div className="form-content-left">
+      <img src={eaglelogo} alt="eagle-logo" className='form-img' style={{height:'40%'}}/>
+    </div> 
+    <div className='form-content-right col-10 col-md-6'>
+      <form onSubmit={handleFormSubmit} className='form'>
+        <h1>BUAN CHATBOT</h1>
+        <h2>Sign In</h2>
+        
+        <div className='form-inputs'>
+          <label className='form-label'>Email</label>
+          <input
                 className='form-input'
                 placeholder='Your email'
                 name='email'
