@@ -9,7 +9,7 @@ interface AuthContextType {
     isLoading: boolean;
     signUp: (name: string, email: string, password: string) => Promise<void>;
     login: (email: string, password: string) => Promise<boolean>;
-    logout: () => Promise<void>;
+    logout: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { updateUser, resetUser } = useUser();
     const { loadSessionHistory, clearCachedChatData } = useChat();
-    
+
     const getCachedIsAuth = () => localStorage.getItem('isAuth') === 'true';
     const setCachnedIsAuth = (isAuth: boolean) => localStorage.setItem('isAuth', JSON.stringify(isAuth));
 
@@ -107,12 +107,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const logout = async () => {
-        resetUser();
-        setIsAuth(false);
-        setIsLoading(false);
-        setIsIncorrectPassword(false);
-        localStorage.removeItem('isAuth');
-        clearCachedChatData();
+        // Use API to log the user out
+        const result = true
+        if (result) {
+            resetUser();
+            setIsAuth(false);
+            setIsLoading(false);
+            setIsIncorrectPassword(false);
+            localStorage.removeItem('isAuth');
+            clearCachedChatData();
+        }
+        return result
     };
 
     return (

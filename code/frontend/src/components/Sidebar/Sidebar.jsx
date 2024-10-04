@@ -33,7 +33,7 @@ const Sidebar = () => {
                 <PrintButton />
                 <ShareButton /> */}
                 {/* <DownloadButton /> */}
-                {/* <LogoutButton /> */}
+                <LogoutButton />
             </div>
         </div>
     )

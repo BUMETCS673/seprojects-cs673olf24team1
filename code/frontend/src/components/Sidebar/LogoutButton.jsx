@@ -7,17 +7,21 @@ import { useAuth } from '../../context/AuthContext';
 
 
 const LogoutButton = () => {
-   const navigate = useNavigate();
-   const { logout } = useAuth(); 
+    const navigate = useNavigate();
+    const { logout } = useAuth();
+    const handleLogout = async () => {
+        const result = await logout();
+        if (result) {
+            navigate('/')
+        }
+    }
 
-   return (
-       <div className="bottom-item recent-entry" onClick={logout}>
-           <img src={assets.logout} alt="logout" />
-           <Link to="/" className="logoutButton">
-               <p>Logout</p>
-           </Link>
-       </div>
-   )
+    return (
+        <div className="bottom-item recent-entry" onClick={handleLogout}>
+            <img src={assets.logout} alt="logout" />
+            <span className="logoutButton">Logout</span>
+        </div>
+    )
 }
 
 export default LogoutButton;
