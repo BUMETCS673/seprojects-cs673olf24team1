@@ -13,18 +13,10 @@ import DownloadButton from './DownloadButton'
 
 const Sidebar = () => {
 
-    const [extended, setExtended] = useState(false);
-
-    const handleNewChat = async (prompt) => {
-
-    } 
-
-
-
     return (
         <div className='sidebar'>
             <div className="top">
-            <NewChatButton onNewChat={handleNewChat} />
+            <NewChatButton />
             {/* <ChatHistory /> */}
             </div>
             <div className="bottom">
