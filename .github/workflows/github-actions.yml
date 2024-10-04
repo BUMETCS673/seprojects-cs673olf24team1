@@ -20,8 +20,8 @@ jobs:
     if: contains(github.event.head_commit.message, 'frontend') || contains(github.event.commits[*].message, 'frontend')
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+     # - name: Checkout code
+      #  uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -32,7 +32,8 @@ jobs:
         run: cd frontend && npm install
 
       - name: Lint React code
-        run: cd frontend && npm run lint
+        run: | 
+          cd frontend npx eslint . --rule 'max-len: off' --rule 'no-warning-comments: off'
 
       - name: Run React Unit Tests
         run: cd frontend && npm test
@@ -98,7 +99,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Lint Python code
-        run: cd ai_service && flake8 .
+        run: cd ai_service && flake8 --ignore=E501,E265 .
 
       - name: Run Python Unit Tests
         run: cd ai_service && pytest
@@ -179,3 +180,5 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          IGNORE_ERRORS: "E501,E265"

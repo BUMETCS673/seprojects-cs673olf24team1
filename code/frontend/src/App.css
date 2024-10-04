@@ -74,3 +74,10 @@
 .read-the-docs {
     color: #888;
 } */
+
+/* Prevent scrolling on the body */
+body {
+    margin: 0; /* Remove default margin */
+    overflow: hidden; /* Prevent scrolling */
+    height: 100vh; /* Ensure full viewport height */
+}

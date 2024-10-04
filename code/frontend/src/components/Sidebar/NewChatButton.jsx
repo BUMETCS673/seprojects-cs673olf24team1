@@ -1,22 +1,23 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react'
-import './Sidebar.css'
 import { assets } from '../../assets/assets'
-import { Context } from '../../context/ContextProvider';
+import './Sidebar.css'
+import { useChat } from '../../context/ChatContext'
 
 
 const NewChatButton = () => {
 
-   const [extended, setExtended] = useState(false);
-   const {handleNewChat} = useContext(Context);
+    const { handleCreateNewSession: createNewSession } = useChat();
 
-   return (
-       // <div onClick={()=>handleNewChat()} className="new-chat">
-       <div onClick={handleNewChat} className="new-chat">
-           <img src={assets.newchat} alt="new chat" /> <p>New Chat</p>
-           {/* {extended ? <p>New Chat</p> : null} */}
-       </div>
-   )
+    const handleNewChat = () => {
+        createNewSession();
+    }
+
+    return (
+        <div onClick={handleNewChat} className="new-chat">
+            <img src={assets.newchat} alt="new chat" /> <p>New Chat</p>
+        </div>
+    )
 }
 
 export default NewChatButton;
