@@ -1,22 +1,17 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import InputField from '../InputField/InputField';
+import React, { useState, useRef, useEffect } from 'react';
 import { assets } from '../../assets/assets';
+import { useChat } from '../../context/ChatContext';
+import InputField from '../InputField/InputField';
 import ProfileForm from '../Profile/ProfileForm';
 import ChatBubble from './ChatBubble';
 import './ChatBox.css';
-import { useChat } from '../../context/ChatContext';
 
 const ChatBox = () => {
   const {
-    initChatSession,
     handleSendMessage,
-    loadExistingSession,
-    setIsNewSessionCreated,
-    isNewSessionCreated,
-    activeSessionId,
     messages,
-    isLoading,
+    isSendingMessage,
     error,
   } = useChat();
 
@@ -39,14 +34,6 @@ const ChatBox = () => {
   // Scroll to the bottom when sending a new message
   const chatEndRef = useRef(null);
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages]);
-
-  // Load new messages when only when selecting a new session, not creating a new session
-  useEffect(() => {
-    !isNewSessionCreated ? loadExistingSession(activeSessionId) : setIsNewSessionCreated(false);
-  }, [activeSessionId]);
-
-  // Initialize the chat data when mounted
-  useEffect(() => { initChatSession() }, []);
 
   return (
     <div className='main'>

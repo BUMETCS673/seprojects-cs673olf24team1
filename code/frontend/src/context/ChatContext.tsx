@@ -17,8 +17,9 @@ interface ChatContextType {
   activeSessionId: string;
   messages: Message[];
   error: string;
-  isLoading: boolean;
   sessions: ChatSession[];
+  isSendingMessage: boolean;
+  isFetchingNetworkData: boolean;
   isNewSessionCreated: boolean;
   setIsNewSessionCreated: React.Dispatch<React.SetStateAction<boolean>>;
   createNewSession: () => void;
@@ -59,8 +60,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [activeSessionId, setActiveSessionId] = useState<string>(getCachedActiveId());
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
   const [isNewSessionCreated, setIsNewSessionCreated] = useState<boolean>(true);
+  const [isFetchingNetworkData, setIsFetchingNetworkData] = useState<boolean>(true);
 
   const isValidInput = (input: string) => {
     const isNotEmpty = input.trim() !== ''
@@ -82,7 +84,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       newUserMessage,
     ]);
 
-    setIsLoading(true);
+    setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
     // Example: ChatService.getChatBotResponse(input, ...);
@@ -101,7 +103,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setError('Error occurred while getting the AI response');
     }
-    setIsLoading(false);
+    setIsSendingMessage(false);
   };
 
   const selectActiveSession = (sessionId: string) => {
@@ -109,7 +111,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(`selecting ${sessionId}`)
       setIsNewSessionCreated(false);
       setActiveSessionId(sessionId);
-      setCachedActiveId(sessionId);
     }
   };
 
@@ -134,7 +135,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     selectActiveSession(newSessionId);
     setMessages([greetingMessage]);
     setSessions(updatedSessions);
-    setIsLoading(false);
+    setIsFetchingNetworkData(false);
   };
 
   const loadExistingSession = async (sessionId: string) => {
@@ -174,14 +175,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (existingMessages) {
       setMessages(existingMessages);
-      setIsLoading(false);
     } else {
       setError('Failed to load chat messages');
-      setIsLoading(false);
     }
+    setIsFetchingNetworkData(false);
   }
 
-  const loadSessionHistory = async (userId: string) => {
+  const loadSessionHistory = async () => {
 
     // Get session history from API
     // Example const sessionHistory = await UserService.getSessionHistory();
@@ -196,12 +196,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     setSessions(sessionHistory);
-    setCachedSessions(sessionHistory)
 
   };
 
   const initChatSession = async () => {
     console.log(`init chat session triggered`)
+    // 1. get the data from server
+    // await loadSessionHistory();
+
     const cachedActiveId = getCachedActiveId();
     const storedSessions = getCachedSessions();
     const isNull = !cachedActiveId
@@ -217,7 +219,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const deleteChatHistory = async (sessionId: string) => {
     const updatedSessions = sessions.filter((session) => session.id !== sessionId);
     setSessions(updatedSessions);
-    setCachedSessions(updatedSessions);
 
     // If the deleted session was the active session, reset the active session
     if (activeSessionId === sessionId) {
@@ -243,18 +244,28 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setActiveSessionId(cachedActiveId);
   }
 
+  // Caching
   useEffect(() => {
     setCachedSessions(sessions);
     setCachedActiveId(activeSessionId);
   }, [sessions, activeSessionId]);
+
+  // Load new messages when only when selecting a new session, not when creating a new session
+  useEffect(() => {
+    !isNewSessionCreated ? loadExistingSession(activeSessionId) : setIsNewSessionCreated(false);
+  }, [activeSessionId]);
+
+  // Initialize the chat data when mounted
+  useEffect(() => { initChatSession() }, []);
 
   const exportedValues = {
     activeSessionId,
     messages,
     sessions,
     error,
-    isLoading,
+    isSendingMessage,
     isNewSessionCreated,
+    isFetchingNetworkData,
     setIsNewSessionCreated,
     createNewSession,
     selectActiveSession,
