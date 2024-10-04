@@ -1,145 +1,34 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useUser } from './UserContext';
-/**
- * Message Interface
- *
- * This interface defines the structure of a chat message exchanged in a chat session. 
- * Each message contains the text content, a timestamp of when it was sent, 
- * and a flag indicating whether it was sent by the user or the AI.
- */
+
 interface Message {
-  /**
-   * The text content of the message.
-   * This field contains the actual message text that is being sent or received.
-   */
   text: string;
-
-  /**
-   * The timestamp when the message was created.
-   * This field helps track the timing of the message and can be used 
-   * for displaying message order in the chat interface.
-   */
   timestamp: Date;
-
-  /**
-   * A boolean flag indicating if the message was sent by the user.
-   * If true, the message was sent by the user; if false, it was sent by the AI.
-   */
   isUser: boolean;
 }
 
-/**
- * ChatSession Interface
- *
- * This interface represents a chat session, encapsulating the details 
- * of a specific conversation. Each session has a unique identifier, 
- * a preview for display purposes, and a timestamp for when it was created.
- */
 interface ChatSession {
-  /**
-   * The unique identifier for the chat session.
-   * This ID is used to differentiate between multiple chat sessions 
-   * and allows for session management within the application.
-   */
-  sessionId: string;
-
-  /**
-   * A preview of the chat session.
-   * This field contains a brief description or snippet of the conversation 
-   * that can be displayed in the side panel for easy identification of sessions.
-   */
+  id: string;
   sessionPreview: string;
-
-  /**
-   * The timestamp indicating when the chat session was created.
-   * This field helps track the creation time of the session and can be used 
-   * for sorting or displaying session history.
-   */
   createdTime: Date;
 }
 
-/**
- * ChatContextType Interface
- *
- * This interface defines the shape of the context used for managing chat sessions 
- * and messages in a chat application. It provides the necessary state and methods 
- * to handle chat interactions, including creating new sessions, sending messages, 
- * and managing session history. 
- */
 interface ChatContextType {
-  /**
-   * The ID of the currently active chat session.
-   * This ID is used to identify which chat session is currently being interacted with.
-   */
   activeSessionId: string;
-
-  /**
-   * An array of messages exchanged in the current chat session.
-   * Each message includes the text, timestamp, and whether it was sent by the user or the AI.
-   */
   messages: Message[];
-
-  /**
-   * A string representing any error messages related to chat operations.
-   * This can be used to display errors to the user if something goes wrong.
-   */
   error: string;
-
-  /**
-   * A boolean indicating whether a chat operation is currently loading.
-   * This can be used to show loading indicators in the UI while awaiting responses.
-   */
   isLoading: boolean;
-
-  /**
-   * Creates a new chat session.
-   * This method initializes a new session, sets a greeting message, 
-   * and updates the session state accordingly.
-   */
+  sessions: ChatSession[];
+  isNewSessionCreated: boolean;
+  setIsNewSessionCreated: React.Dispatch<React.SetStateAction<boolean>>; 
   createNewSession: () => void;
-
-  /**
-   * Selects an active chat session by its ID.
-   * This method updates the activeSessionId and sets the associated messages 
-   * for the selected session.
-   *
-   * @param sessionId - The ID of the session to be activated.
-   */
   selectActiveSession: (sessionId: string) => void;
-
-  /**
-   * Sends a message to the chat.
-   * This method validates the input, updates the messages state with the user's 
-   * message, and retrieves a response from the AI. 
-   *
-   * @param input - The text input from the user that will be sent as a message.
-   */
   handleSendMessage: (input: string) => void;
-
-  /**
-   * Initializes the chat session when the component mounts.
-   * This method checks for existing sessions in local storage and either loads 
-   * an existing session or creates a new one based on the stored session ID.
-   */
   initChatSession: () => void;
-
-  /**
-   * Loads the session history for a specific user.
-   * This method retrieves past chat sessions from the server or local storage 
-   * and updates the sessions state.
-   *
-   * @param userId - The ID of the user whose session history should be loaded.
-   * This method is typically called in the authentication context after logging in.
-   */
   loadSessionHistory: (userId: string) => void;
-
-  /**
-   * Clears all cached data related to chat sessions.
-   * This method is used to remove stored session IDs and chat history from local 
-   * storage, effectively resetting the chat context. It is usually called 
-   * when the user logs out of the application.
-   */
+  loadExistingSession: (sessionId: string) => Promise<void>;
   clearCachedChatData: () => void;
+  deleteChatHistory: (sessionId: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -151,12 +40,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isNewSessionCreated, setIsNewSessionCreated] = useState<boolean>(false);
 
   const getCachedActiveId = () => localStorage.getItem('activeSessionId') as string;
   const setCachedActiveId = (sessionId: string) => localStorage.setItem('activeSessionId', sessionId);
   const getCachedSessions = () => JSON.parse(localStorage.getItem('chatSessions') || '[]') as ChatSession[];
   const setCachedSessions = (sessionHistory: ChatSession[]) => localStorage.setItem('chatSessions', JSON.stringify(sessionHistory));
-  const generateSessionId = () => Math.random().toString(36).substring(2, 9);
+  const generateSessionId = () => Math.random().toString(36).substring(2, 16);
 
   const isValidInput = (input: string) => {
     const isNotEmpty = input.trim() !== ''
@@ -201,8 +91,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const selectActiveSession = (sessionId: string) => {
-    setActiveSessionId(sessionId);
-    setCachedActiveId(sessionId);
+    if (sessionId !== activeSessionId) {
+      console.log(`selecting ${sessionId}`)
+      setActiveSessionId(sessionId);
+      setCachedActiveId(sessionId);
+    }
   };
 
   const createNewSession = () => {
@@ -210,7 +103,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     console.log(`initting a new chat session: ${newSessionId}`);
 
     const newSession: ChatSession = {
-      sessionId: activeSessionId,
+      id: activeSessionId,
       sessionPreview: 'New Conversation',
       createdTime: new Date(Date.now()),
     }
@@ -222,8 +115,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const updatedSessions = [...sessions, newSession];
-    setCachedSessions(updatedSessions);
-    setActiveSessionId(newSessionId)
+    setIsNewSessionCreated(true);
+    selectActiveSession(newSessionId);
     setMessages([greetingMessage]);
     setSessions(updatedSessions);
     setIsLoading(false);
@@ -282,7 +175,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     const isNotEmpty = sessionHistory.length > 0;
     if (isNotEmpty) {
-      const lastSessionId = sessionHistory[sessionHistory.length - 1].sessionId
+      const lastSessionId = sessionHistory[sessionHistory.length - 1].id
       setActiveSessionId(lastSessionId);
     }
 
@@ -292,16 +185,34 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const initChatSession = async () => {
+    if (isNewSessionCreated) {
+      setIsNewSessionCreated(false);
+      return;
+    }
+
     const cachedActiveId = getCachedActiveId();
     const storedSessions = getCachedSessions();
     const isEmpty = !cachedActiveId;
-    const isExisted = storedSessions.some((session: ChatSession) => session.sessionId === cachedActiveId);
+    const isExisted = storedSessions.some((session: ChatSession) => session.id === cachedActiveId);
     const isNewSession = !isExisted || isEmpty;
 
     if (isNewSession) {
       createNewSession();
     } else {
       await loadExistingSession(cachedActiveId);
+    }
+  };
+
+  const deleteChatHistory = async (sessionId: string) => {
+    const updatedSessions = sessions.filter((session) => session.id !== sessionId);
+    setSessions(updatedSessions);
+    setCachedSessions(updatedSessions);
+
+    // If the deleted session was the active session, reset the active session
+    if (activeSessionId === sessionId) {
+      setActiveSessionId('');
+      setCachedActiveId('');
+      setMessages([]);
     }
   };
 
@@ -317,14 +228,19 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const exportedValues = {
     activeSessionId,
     messages,
+    sessions,
     error,
     isLoading,
+    isNewSessionCreated,
+    setIsNewSessionCreated,
     createNewSession,
     selectActiveSession,
     handleSendMessage,
     initChatSession,
     loadSessionHistory,
+    loadExistingSession,
     clearCachedChatData,
+    deleteChatHistory,
   };
 
   return <ChatContext.Provider value={exportedValues}>{children}</ChatContext.Provider>;

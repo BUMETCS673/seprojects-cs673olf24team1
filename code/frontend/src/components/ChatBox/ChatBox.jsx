@@ -8,7 +8,18 @@ import './ChatBox.css';
 import { useChat } from '../../context/ChatContext';
 
 const ChatBox = () => {
-  const { initChatSession, messages, handleSendMessage, isLoading, error } = useChat();
+  const {
+    initChatSession,
+    handleSendMessage,
+    loadExistingSession,
+    setIsNewSessionCreated,
+    isNewSessionCreated,
+    activeSessionId,
+    messages,
+    isLoading,
+    error,
+  } = useChat();
+
   const [isProfilePanelOpen, setProfilePanelOpen] = useState(false);
   const [input, setInput] = useState('');
 
@@ -25,14 +36,20 @@ const ChatBox = () => {
     setInput('');
   };
 
-  // Scroll to the bottom when messages change
+  // Scroll to the bottom when sending a new message
   const chatEndRef = useRef(null);
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Load new messages when only when selecting a new session, not creating a new session
+  useEffect(() => {
+    !isNewSessionCreated ? loadExistingSession(activeSessionId) : setIsNewSessionCreated(false);
+  }, [activeSessionId]);
+
   // Initialize the chat data when mounted
   useEffect(() => {
+
     initChatSession();
   }, []);
 

@@ -17,7 +17,7 @@ const Sidebar = () => {
         <div className='sidebar'>
             <div className="top">
             <NewChatButton />
-            {/* <ChatHistory /> */}
+            <ChatHistory />
             </div>
             <div className="bottom">
                 {/* <ClearButton />
