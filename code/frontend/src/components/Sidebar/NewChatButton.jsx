@@ -7,7 +7,7 @@ import { useChat } from '../../context/ChatContext'
 
 const NewChatButton = () => {
 
-    const { createNewSession } = useChat();
+    const { handleCreateNewSession: createNewSession } = useChat();
 
     const handleNewChat = () => {
         createNewSession();

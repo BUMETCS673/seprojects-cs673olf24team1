@@ -10,11 +10,9 @@ interface ContextProviderProps {
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   return (
     <UserProvider>
-      <ChatProvider>
         <AuthProvider>
           {children}
         </AuthProvider>
-      </ChatProvider>
     </UserProvider>
   );
 };

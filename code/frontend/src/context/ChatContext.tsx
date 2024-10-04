@@ -20,17 +20,10 @@ interface ChatContextType {
   sessions: ChatSession[];
   isSendingMessage: boolean;
   isFetchingNetworkData: boolean;
-  isNewSessionCreated: boolean;
-  setIsNewSessionCreated: React.Dispatch<React.SetStateAction<boolean>>;
-  createNewSession: () => void;
-  selectActiveSession: (sessionId: string) => void;
+  handleCreateNewSession: () => void;
+  handleSelectSession: (sessionId: string) => void;
   handleSendMessage: (input: string) => void;
-  initChatSession: () => void;
-  loadSessionHistory: (userId: string) => void;
-  loadExistingSession: (sessionId: string) => Promise<void>;
-  clearCachedChatData: () => void;
-  deleteChatHistory: (sessionId: string) => Promise<void>;
-  loadCachedData: () => void;
+  handleDeleteSessionHistory: (sessionId: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -39,14 +32,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setCachedActiveId = (sessionId: string) => localStorage.setItem('activeSessionId', sessionId);
   const getCachedActiveId = (): string => {
-    const storedId = localStorage.getItem('activeSessionId');
-    return storedId ? storedId : '';
+    const cachedActiveSessionId = localStorage.getItem('activeSessionId');
+    return cachedActiveSessionId ? cachedActiveSessionId : '';
   }
 
   const setCachedSessions = (sessionHistory: ChatSession[]) => localStorage.setItem('chatSessions', JSON.stringify(sessionHistory));
   const getCachedSessions = () => {
-    const sessions = JSON.parse(localStorage.getItem('chatSessions') || '[]') as ChatSession[];
-    return sessions.map(session => ({
+    const cachedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]') as ChatSession[];
+    return cachedSessions.map(session => ({
       ...session,
       createdTime: new Date(session.createdTime),
     }));
@@ -106,7 +99,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSendingMessage(false);
   };
 
-  const selectActiveSession = (sessionId: string) => {
+  const handleSelectSession = (sessionId: string) => {
     if (sessionId !== activeSessionId) {
       console.log(`selecting ${sessionId}`)
       setIsNewSessionCreated(false);
@@ -114,61 +107,38 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const createNewSession = () => {
+  const handleCreateNewSession = () => {
     const newSessionId = generateSessionId();
-    console.log(`initting a new chat session: ${newSessionId}`);
-
+  
     const newSession: ChatSession = {
       id: newSessionId,
       sessionPreview: 'New Conversation',
-      createdTime: new Date(Date.now()),
-    }
-
+      createdTime: new Date(),
+    };
+  
     const greetingMessage: Message = {
       text: `Hi ${user?.firstName}! How can I help you today?`,
       timestamp: new Date(),
       isUser: false,
     };
-
-    const updatedSessions = [...sessions, newSession];
+  
     setIsNewSessionCreated(true);
-    selectActiveSession(newSessionId);
+    setActiveSessionId(newSession.id);
     setMessages([greetingMessage]);
-    setSessions(updatedSessions);
-    setIsFetchingNetworkData(false);
+    setSessions((prevSessions) => [...prevSessions, newSession]); 
   };
+  
 
-  const loadExistingSession = async (sessionId: string) => {
+  const loadExistingChatData = async (sessionId: string) => {
     if (sessionId === '') return;
-    console.log(`initting an existing chat session: ${sessionId}`);
 
     // Load chat messages from the API
     // Example const existingMessages = await ChatContext.getChatHistory();
 
     const existingMessages: Message[] = [
       {
-        text: "Hi John! How can I help you today?",
+        text: "This is the existing chat message from the server",
         timestamp: new Date(Date.UTC(2024, 10, 2, 0)),
-        isUser: false,
-      },
-      {
-        text: "I want to ask about CS675. What is it?",
-        timestamp: new Date(Date.UTC(2024, 10, 2, 1)),
-        isUser: true,
-      },
-      {
-        text: "Sure! It is about blablabla",
-        timestamp: new Date(Date.UTC(2024, 10, 2, 2)),
-        isUser: false,
-      },
-      {
-        text: "Is it hard?",
-        timestamp: new Date(Date.UTC(2024, 10, 2, 3)),
-        isUser: true,
-      },
-      {
-        text: "Not really",
-        timestamp: new Date(Date.UTC(2024, 10, 2, 4)),
         isUser: false,
       },
     ];
@@ -178,57 +148,55 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setError('Failed to load chat messages');
     }
-    setIsFetchingNetworkData(false);
   }
 
-  const loadSessionHistory = async () => {
+  const handleDeleteSessionHistory = async (sessionId: string) => {
+    const updatedSessions = sessions.filter((session) => session.id !== sessionId);
+    setSessions(updatedSessions);
 
+    // If the deleted session was the active session, reset to the latest session
+    if (activeSessionId === sessionId) {
+      if (updatedSessions.length > 0) {
+        const latestSession = updatedSessions.sort((a, b) => new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime())[0];
+        setActiveSessionId(latestSession.id);
+      } else {
+        setActiveSessionId('');
+      }
+    }
+  };
+
+
+
+  const fetchSessionHistory = async () => {
     // Get session history from API
     // Example const sessionHistory = await UserService.getSessionHistory();
 
     // Fake session history
     const sessionHistory: ChatSession[] = [];
 
-    const isNotEmpty = sessionHistory.length > 0;
-    if (isNotEmpty) {
+    if (sessionHistory.length > 0) {
       const lastSessionId = sessionHistory[sessionHistory.length - 1].id
       setActiveSessionId(lastSessionId);
     }
-
     setSessions(sessionHistory);
-
   };
 
-  const initChatSession = async () => {
-    console.log(`init chat session triggered`)
-    // 1. get the data from server
-    // await loadSessionHistory();
+  const onInit = async () => {
 
-    const cachedActiveId = getCachedActiveId();
-    const storedSessions = getCachedSessions();
-    const isNull = !cachedActiveId
-    const isExisted = storedSessions.some((session: ChatSession) => session.id === cachedActiveId);
+    // await fetchSessionHistory();
 
-    if (isNull && !isExisted) {
-      createNewSession();
+    const isNull = !activeSessionId
+    const isExisted = sessions.some((session: ChatSession) => session.id === activeSessionId);
+
+    if (isNull || !isExisted) {
+      handleCreateNewSession();
     } else {
-      await loadExistingSession(cachedActiveId);
+      await loadExistingChatData(activeSessionId);
     }
+    setIsFetchingNetworkData(false); 
   };
 
-  const deleteChatHistory = async (sessionId: string) => {
-    const updatedSessions = sessions.filter((session) => session.id !== sessionId);
-    setSessions(updatedSessions);
-
-    // If the deleted session was the active session, reset the active session
-    if (activeSessionId === sessionId) {
-      setActiveSessionId('');
-      setCachedActiveId('');
-      setMessages([]);
-    }
-  };
-
-  const clearCachedChatData = () => {
+  const onDismount = () => {
     localStorage.removeItem('activeSessionId');
     localStorage.removeItem('chatSessions');
     setSessions([]);
@@ -237,26 +205,22 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setError('');
   };
 
-  const loadCachedData = () => {
-    const cachedSessions = getCachedSessions();
-    const cachedActiveId = getCachedActiveId();
-    setSessions(cachedSessions);
-    setActiveSessionId(cachedActiveId);
-  }
-
-  // Caching
+  // Caching on change
   useEffect(() => {
     setCachedSessions(sessions);
     setCachedActiveId(activeSessionId);
   }, [sessions, activeSessionId]);
 
-  // Load new messages when only when selecting a new session, not when creating a new session
+  // Load new messages on change
   useEffect(() => {
-    !isNewSessionCreated ? loadExistingSession(activeSessionId) : setIsNewSessionCreated(false);
+    !isNewSessionCreated ? loadExistingChatData(activeSessionId) : setIsNewSessionCreated(false);
   }, [activeSessionId]);
 
-  // Initialize the chat data when mounted
-  useEffect(() => { initChatSession() }, []);
+  // Set up and tear down
+  useEffect(() => {
+    onInit();
+    return () => onDismount();
+  }, []);
 
   const exportedValues = {
     activeSessionId,
@@ -264,18 +228,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     sessions,
     error,
     isSendingMessage,
-    isNewSessionCreated,
     isFetchingNetworkData,
-    setIsNewSessionCreated,
-    createNewSession,
-    selectActiveSession,
+    handleCreateNewSession,
+    handleSelectSession,
     handleSendMessage,
-    initChatSession,
-    loadSessionHistory,
-    loadExistingSession,
-    clearCachedChatData,
-    deleteChatHistory,
-    loadCachedData,
+    handleDeleteSessionHistory,
   };
 
   return <ChatContext.Provider value={exportedValues}>{children}</ChatContext.Provider>;

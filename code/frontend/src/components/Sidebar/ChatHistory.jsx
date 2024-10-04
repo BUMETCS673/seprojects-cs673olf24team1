@@ -1,46 +1,50 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { assets } from '../../assets/assets';
 import { useChat } from '../../context/ChatContext';
 import './Sidebar.css';
 
 const ChatHistory = () => {
-
   const {
     sessions,
     activeSessionId,
-    isLoading,
+    isFetchingNetworkData,
     error,
-    deleteChatHistory,
-    selectActiveSession,
-    loadCachedData,
+    handleDeleteSessionHistory,
+    handleSelectSession,
   } = useChat();
 
   const handleDeleteHistory = async (id) => {
     if (window.confirm("Are you sure you want to clear your chat history?")) {
-      await deleteChatHistory(id);
+      await handleDeleteSessionHistory(id);
     }
   };
-
-  useEffect(() => {
-    loadCachedData();
-  }, []);
 
   return (
     <div className="recent">
       <p className='recent-title'>Chat History</p>
       {error && <p className="error-message">{error}</p>}
-      {sessions.length > 0 ? (
+
+      {/* Show loading indicator when fetching data */}
+      {isFetchingNetworkData ? (
+        <p>Loading chat history...</p>
+      ) : sessions.length > 0 ? (
         <>
-          {sessions.map((session, index) => (
-            <div key={session.id} className="recent-entry-history" onClick={() => selectActiveSession(session.id)}>
-              <img src={assets.message_icon} alt="" />
-              <span>{session.createdTime.toUTCString()}</span>
-              <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
-                <img src={assets.clear} alt="clear" />
+          {sessions
+            .sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime)) // Sort by createdTime (latest first)
+            .map((session) => (
+              <div 
+                key={session.id} 
+                className={`recent-entry-history ${activeSessionId === session.id ? 'active' : ''}`} 
+                onClick={() => handleSelectSession(session.id)}
+              >
+                <img src={assets.message_icon} alt="" />
+                <span>{new Date(session.createdTime).toUTCString()}</span> {/* Convert to UTC string */}
+                <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
+                  <img src={assets.clear} alt="clear" />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </>
       ) : (
         <p>No chat history available.</p>

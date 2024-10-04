@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useUser } from './UserContext';
-import { useChat } from './ChatContext';
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -16,7 +15,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { updateUser, resetUser } = useUser();
-    const { loadSessionHistory, clearCachedChatData } = useChat();
 
     const getCachedIsAuth = (): boolean => {
         const cachedAuth = localStorage.getItem('isAuth')
@@ -27,11 +25,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [isAuth, setIsAuth] = useState<boolean>(() => getCachedIsAuth());
     const [isIncorrectPassword, setIsIncorrectPassword] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-
-    useEffect(() => {
-        setCachnedIsAuth(isAuth);
-    }, [isAuth]);
 
     const signUp = async (name: string, email: string, password: string) => {
         setIsLoading(true);
@@ -93,7 +86,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     isNew: false,
                 });
 
-                loadSessionHistory(testUserData.buId)
                 return true;
 
             } else {
@@ -117,10 +109,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setIsLoading(false);
             setIsIncorrectPassword(false);
             localStorage.removeItem('isAuth');
-            clearCachedChatData();
         }
         return result
     };
+
+    useEffect(() => {
+        setCachnedIsAuth(isAuth);
+    }, [isAuth]);
 
     return (
         <AuthContext.Provider value={{ isAuth, isIncorrectPassword, isLoading, signUp, login, logout }}>

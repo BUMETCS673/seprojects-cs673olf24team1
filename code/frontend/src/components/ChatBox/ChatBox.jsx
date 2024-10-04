@@ -13,6 +13,7 @@ const ChatBox = () => {
     messages,
     isSendingMessage,
     error,
+    sessions,
   } = useChat();
 
   const [isProfilePanelOpen, setProfilePanelOpen] = useState(false);
@@ -60,12 +61,21 @@ const ChatBox = () => {
 
       <div className="chat-container">
         <div className="chat-history-container">
-          {messages.map((message, index) => (
-            <ChatBubble key={index} message={message} />
-          ))}
+          {sessions.length === 0 ? (
+            <div className="no-sessions-message">
+              <p style={{ textAlign: 'center', fontSize: '24px', margin: '20px 0' }}>
+                (๑•̀ᄇ•́)و ✧ Let's create a new chat to start!
+              </p>
+            </div>
+          ) : (
+            messages.map((message, index) => (
+              <ChatBubble key={index} message={message} />
+            ))
+          )}
           <div ref={chatEndRef} /> {/* Empty div to scroll to */}
         </div>
-        <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />
+        {sessions.length === 0 ? (null) :
+          <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />}
       </div>
     </div>
   );
