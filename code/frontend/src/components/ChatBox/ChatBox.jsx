@@ -38,9 +38,7 @@ const ChatBox = () => {
 
   // Scroll to the bottom when sending a new message
   const chatEndRef = useRef(null);
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages]);
 
   // Load new messages when only when selecting a new session, not creating a new session
   useEffect(() => {
@@ -48,10 +46,7 @@ const ChatBox = () => {
   }, [activeSessionId]);
 
   // Initialize the chat data when mounted
-  useEffect(() => {
-
-    initChatSession();
-  }, []);
+  useEffect(() => { initChatSession() }, []);
 
   return (
     <div className='main'>

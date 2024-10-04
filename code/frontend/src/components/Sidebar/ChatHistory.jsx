@@ -5,14 +5,26 @@ import { useChat } from '../../context/ChatContext';
 import './Sidebar.css';
 
 const ChatHistory = () => {
-  const { sessions, activeSessionId, deleteChatHistory, selectActiveSession } = useChat();
-  const [error, setError] = useState(null);
+
+  const {
+    sessions,
+    activeSessionId,
+    isLoading,
+    error,
+    deleteChatHistory,
+    selectActiveSession,
+    loadCachedData,
+  } = useChat();
 
   const handleDeleteHistory = async (id) => {
     if (window.confirm("Are you sure you want to clear your chat history?")) {
       await deleteChatHistory(id);
     }
   };
+
+  useEffect(() => {
+    loadCachedData();
+  }, []);
 
   return (
     <div className="recent">

@@ -11,7 +11,7 @@ const ChatPage = () => {
     return (
         <>
             <SideBar />
-            <ChatBox session_id={'123'} />
+            <ChatBox />
         </>
     );
 };
