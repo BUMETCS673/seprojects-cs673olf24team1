@@ -32,21 +32,22 @@ public class ChatbotController {
     @PostMapping("/chat_conversation")
     public Mono<JsonNode> chatConversation(@RequestBody JsonNode request) {
         String username = request.get("user_id").asText();
+        String message = request.get("message").asText();
+
         User user = userService.getUserByUsername(username);
 
-        ObjectNode flaskRequest = objectMapper.createObjectNode();
-        flaskRequest.put("user_id", user.getUsername());
-        flaskRequest.put("student_name", user.getUsername());
-        flaskRequest.put("message", request.get("message").asText());
+        ObjectNode aiRequest = objectMapper.createObjectNode();
+        aiRequest.put("user_id", user.getAuthId());
+        aiRequest.put("student_name", user.getAuthId());
+        aiRequest.put("message", message);
         List<String> courseTaken = convertStringToStringArr(user.getCourse_taken());
-        flaskRequest.set("course_taken", objectMapper.valueToTree(courseTaken));
-        flaskRequest.put("path_interest", user.getPath_interest());
-        flaskRequest.put("course_to_take", user.getCourse_to_take());
+        aiRequest.set("course_taken", objectMapper.valueToTree(courseTaken));
+        aiRequest.put("path_interest", user.getPathInterest());
+        aiRequest.put("course_to_take", user.getCourseToTake());
 
-        System.out.println(flaskRequest);
         return webClient.post()
                 .uri("/api/v1/chatbot")
-                .bodyValue(flaskRequest)
+                .bodyValue(aiRequest)
                 .retrieve()
                 .bodyToMono(JsonNode.class);
     }
@@ -55,17 +56,12 @@ public class ChatbotController {
         if (input == null || input.isEmpty()) {
             return new ArrayList<>();
         }
-
-        // Remove the single quotes and square brackets
         input = input.replaceAll("'", "").replaceAll("\\[", "").replaceAll("\\]", "");
-
-        // Split the string by comma and trim each element
         String[] elements = input.split(",");
         List<String> result = new ArrayList<>();
         for (String element : elements) {
             result.add(element.trim());
         }
-
         return result;
     }
 }

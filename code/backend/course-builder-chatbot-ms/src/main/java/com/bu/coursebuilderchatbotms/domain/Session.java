@@ -3,10 +3,10 @@ package com.bu.coursebuilderchatbotms.domain;
 import lombok.Data;
 
 @Data
-public class ChatHistory {
-    private int chatId;
+public class Session {
+    private int sessionId;
     private int userId;
-    private String timestamp;
+    private String createdAt;
+    private String endChatTime;
     private String conversation;
-    private String metadata;
 }
