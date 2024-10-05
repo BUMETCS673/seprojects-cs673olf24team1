@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react'; // Import necessary 
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., logos and icons)
 import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
 import InputField from '../InputField/InputField'; // Input field component for sending messages
-import ProfileForm from '../Profile/ProfileForm'; // Component for displaying user profile
 import ChatBubble from './ChatBubble'; // Component for individual chat messages
 import './ChatBox.css'; // Import styles for the ChatBox component
 
@@ -63,7 +62,7 @@ const ChatBox = () => {
       <div className={`profile-panel ${isProfilePanelOpen ? 'open' : ''}`}>
         <button className="close-btn" onClick={toggleProfilePanel}>X</button> {/* Close button for the profile panel */}
         <h2>User Profile</h2>
-        <ProfileForm /> {/* Render the ProfileForm component */}
+        {/* <ProfileForm /> */}
       </div>
 
       {/* Overlay to dim background when profile panel is open */}
