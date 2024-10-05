@@ -1,6 +1,7 @@
 package com.bu.coursebuilderchatbotms.dao;
 
 import com.bu.coursebuilderchatbotms.domain.User;
+import com.bu.coursebuilderchatbotms.utils.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,21 +21,22 @@ public class UserDAO {
         this.objectMapper = objectMapper;
     }
 
-    public User createUser(User user) {
-        String sql = "INSERT INTO users (username, email, password_hash, course_taken, path_interest, course_to_take) " +
-                "VALUES (:username, :email, :passwordHash, :courseTaken::jsonb, :pathInterest, :courseToTake)";
-        try (Connection con = sql2o.open()) {
-            int userId = (int) con.createQuery(sql, true)
-                    .addParameter("username", user.getUsername())
+    public void createUser(User user) {
+        String sql = "INSERT INTO users (auth_id, email, password_hash, f_name, l_name, program_code, course_taken, path_interest, course_to_take) " +
+                "VALUES (:authId, :email, :passwordHash, :fName, :lName, :programCode, CAST(:courseTaken AS jsonb), :pathInterest, :courseToTake)";
+
+        try (Connection conn = sql2o.open()) {
+            conn.createQuery(sql)
+                    .addParameter("authId", user.getAuthId())
                     .addParameter("email", user.getEmail())
                     .addParameter("passwordHash", user.getPasswordHash())
-                    .addParameter("courseTaken", user.getCourse_taken())
-                    .addParameter("pathInterest", user.getPath_interest())
-                    .addParameter("courseToTake", user.getCourse_to_take())
-                    .executeUpdate()
-                    .getKey();
-            user.setUserId(userId);
-            return user;
+                    .addParameter("fName", "bu1234")
+                    .addParameter("lName", "bu1234")
+                    .addParameter( "programCode", user.getProgramCode())
+                    .addParameter("courseTaken", user.getCourse_taken()) // This is now a JSON string
+                    .addParameter("pathInterest", user.getPathInterest())
+                    .addParameter("courseToTake", user.getCourseToTake())
+                    .executeUpdate();
         }
     }
 
@@ -44,49 +46,50 @@ public class UserDAO {
             User user = con.createQuery(sql)
                     .addParameter("userId", userId)
                     .addColumnMapping("user_id", "userId")
+                    .addColumnMapping("auth_id", "authId")
                     .addColumnMapping("password_hash", "passwordHash")
+                    .addColumnMapping("f_name", "fName")
+                    .addColumnMapping("l_name", "lName")
+                    .addColumnMapping("program_code", "programCode")
+                    .addColumnMapping("course_taken", "course_taken")
+                    .addColumnMapping("path_interest", "pathInterest")
+                    .addColumnMapping("course_to_take", "courseToTake")
                     .addColumnMapping("created_at", "createdAt")
                     .addColumnMapping("last_login", "lastLogin")
-                    .addColumnMapping("user_preferences", "userPreferences")
-                    .addColumnMapping("course_taken", "course_taken")
-                    .addColumnMapping("path_interest", "path_interest")
-                    .addColumnMapping("course_to_take", "course_to_take")
                     .executeAndFetchFirst(User.class);
+            if (user.getCourse_taken() != null) {
+                String formattedCourseTaken = StringUtils.convertJsonArrayToSingleQuotes(user.getCourse_taken());
+                user.setCourse_taken(formattedCourseTaken);
+            }
+
             return user;
         }
     }
 
     public User getUserByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username=:username";
+        String sql = "SELECT * FROM users WHERE auth_id = :authId";
         try (Connection con = sql2o.open()) {
             User user = con.createQuery(sql)
-                    .addParameter("username", username)
+                    .addParameter("authId", username)
                     .addColumnMapping("user_id", "userId")
+                    .addColumnMapping("auth_id", "authId")
                     .addColumnMapping("password_hash", "passwordHash")
+                    .addColumnMapping("f_name", "fName")
+                    .addColumnMapping("l_name", "lName")
+                    .addColumnMapping("program_code", "programCode")
+                    .addColumnMapping("course_taken", "course_taken")
+                    .addColumnMapping("path_interest", "pathInterest")
+                    .addColumnMapping("course_to_take", "courseToTake")
                     .addColumnMapping("created_at", "createdAt")
                     .addColumnMapping("last_login", "lastLogin")
-                    .addColumnMapping("user_preferences", "userPreferences")
-                    .addColumnMapping("course_taken", "course_taken")
-                    .addColumnMapping("path_interest", "path_interest")
-                    .addColumnMapping("course_to_take", "course_to_take")
                     .executeAndFetchFirst(User.class);
+
+            if (user != null && user.getCourse_taken() != null) {
+                String formattedCourseTaken = StringUtils.convertJsonArrayToSingleQuotes(user.getCourse_taken());
+                user.setCourse_taken(formattedCourseTaken);
+            }
+
             return user;
-        }
-    }
-
-    public List<String> getCourseTakenAsList(User user) {
-        try {
-            return objectMapper.readValue(user.getCourse_taken(), new TypeReference<List<String>>(){});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error processing JSON", e);
-        }
-    }
-
-    public void setCourseTakenFromList(User user, List<String> courseTaken) {
-        try {
-            user.setCourse_taken(objectMapper.writeValueAsString(courseTaken));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error processing JSON", e);
         }
     }
 }

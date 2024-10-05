@@ -1,0 +1,104 @@
+**
+Sessions
+________________________________________________________________________________________________________________________________________
+
+GET http://localhost:8080/api/v1/sessions/user/2
+       - This API returns all the sessions for the logged-in userid with should be userid (e.g. 2)
+       Response:
+                [
+                  {
+                    "sessionId": 2,
+                    "userId": 2,
+                    "createdAt": "2024-10-04 19:32:58.380138",
+                    "endChatTime": "2024-10-01 08:05:00.0",
+                    "conversation": "[{\"user\":\"What courses do you offer?\",\"chatbot\":\"We have a variety of courses in different fields.\"},{\"user\":\"Can you recommend something?\",\"chatbot\":\"Sure! I recommend starting with Python for beginners.\"}]"
+                  },
+                  {
+                    "sessionId": 4,
+                    "userId": 2,
+                    "createdAt": "2024-10-04 21:37:24.34527",
+                    "endChatTime": "2024-10-01 08:05:00.0",
+                    "conversation": "[{\"user\":\"What courses do you offer?\",\"chatbot\":\"We have a variety of courses in different fields.\"},{\"user\":\"Can you recommend something?\",\"chatbot\":\"Sure! I recommend starting with Python for beginners.\"}]"
+                  },
+                  {
+                    "sessionId": 5,
+                    "userId": 2,
+                    "createdAt": "2024-10-04 21:37:24.34527",
+                    "endChatTime": "2024-10-01 08:15:00.0",
+                    "conversation": "[{\"user\":\"What is the duration of the courses?\",\"chatbot\":\"Most courses range from 4 to 12 weeks.\"},{\"user\":\"Are there any prerequisites?\",\"chatbot\":\"Some courses require prior knowledge, but many are beginner-friendly.\"}]"
+                  },
+                  {
+                    "sessionId": 6,
+                    "userId": 2,
+                    "createdAt": "2024-10-04 21:37:24.34527",
+                    "endChatTime": "2024-10-01 08:25:00.0",
+                    "conversation": "[{\"user\":\"Do you offer certificates?\",\"chatbot\":\"Yes, you will receive a certificate upon course completion.\"},{\"user\":\"How do I enroll?\",\"chatbot\":\"You can enroll directly through our website.\"}]"
+                  }
+                ]
+
+
+curl --location 'http://localhost:8080/api/v1/sessions/user/2/conversation' \
+--header 'Content-Type: application/json' \
+--data '{
+  "conversation": "[{\"user\": \"Hello\", \"chatbot\": \"Hi there! How can I help you today?\"}]"
+}'
+       - When you press the save button, based off logged-in userid (e.g. 2) you post the json chat history
+
+
+
+
+
+**
+User
+________________________________________________________________________________________________________________________________________
+GET http://localhost:8080/api/v1/users/user/2
+     - This API returns user information for the logged-in userid with should be userid (e.g. 2)
+     Response:
+             {
+               "userId": 2,
+               "authId": "auth_002",
+               "email": "user2@example.com",
+               "passwordHash": "hashed_password2",
+               "programCode": "CS102",
+               "course_taken": "['522']",
+               "pathInterest": "Web Development",
+               "courseToTake": 2,
+               "fname": "Bob",
+               "lname": "Johnson"
+             }
+
+
+
+curl --location 'http://localhost:8080/api/v1/users/user' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "authId": "bu1234rerer",
+    "email": "bu1234erer@example.com",
+    "passwordHash": "hashed_password5",
+    "fName": "bu1234",
+    "lName": "bu1234",
+    "programCode": "CS105",
+    "courseTaken": ["521"],
+    "pathInterest": "ai/ml",
+    "courseToTake": 3
+}'
+    - This API is how you create a new user
+
+
+
+**
+Chatbot
+________________________________________________________________________________________________________________________________________
+curl --location 'http://localhost:8080/api/v1/chatbot/chat_conversation' \
+--header 'Content-Type: application/json' \
+--data '{
+  "user_id": "bu1234",
+  "student_name": "bu1234",
+  "message": "Can I take that class?"
+}'
+
+    - This API is how you talk to the chatbot, the response below is the response format:
+
+    {
+        "response": "Hey there! It looks like you've already completed CS521, \"Information Structures with Python.\" Typically, you wouldn't retake a course unless there's a specific reason or requirement. If you're interested in exploring more courses related to your AI/ML concentration, I can recommend some options. Just give me a shout if you want more suggestions!"
+    }
