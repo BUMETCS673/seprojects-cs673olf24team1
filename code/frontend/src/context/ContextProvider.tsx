@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { UserProvider } from './UserContext';
 import { AuthProvider } from './AuthContext';
-import { ChatProvider } from './ChatContext';
 
 interface ContextProviderProps {
   children: ReactNode;
