@@ -1,21 +1,18 @@
-<<<<<<< HEAD
--- Created by Natasya Liew
 -- Database: BUAN RELATIONAL DB
-=======
--- Database: BUAN
->>>>>>> origin/develop
-DROP TABLE users;
-DROP TABLE sessions;
-DROP TABLE program_owner;
-DROP TABLE department;
-DROP TABLE course;
-DROP TABLE course_list;
-DROP TABLE course_prerequisite;
-DROP TABLE path_interest;
-DROP TABLE pathinterest_option;
-DROP TABLE programs;
-DROP TABLE student;
-DROP TABLE session_log;
+DROP TABLE IF EXISTS session_log;
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS programs;
+DROP TABLE IF EXISTS pathinterest_registration;
+DROP TABLE IF EXISTS pathinterest_option;
+DROP TABLE IF EXISTS path_interest;
+DROP TABLE IF EXISTS course_prerequisite;
+DROP TABLE IF EXISTS course_registration;
+DROP TABLE IF EXISTS course_list;
+DROP TABLE IF EXISTS course;
+DROP TABLE IF EXISTS dept;
+DROP TABLE IF EXISTS program_owner;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS users;
 
 -- Table: session
 CREATE TABLE sessions (
@@ -38,18 +35,6 @@ CREATE TABLE program_owner (
     title VARCHAR(50)
 );
 
-<<<<<<< HEAD
-=======
--- Table: chathistory
-CREATE TABLE chat_history (
-    chat_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(user_id),
-    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    conversation JSONB NOT NULL,
-    metadata JSONB
-);
-
->>>>>>> origin/develop
 -- Table: department
 CREATE TABLE dept (
     dept_id SERIAL PRIMARY KEY,
@@ -108,7 +93,7 @@ CREATE TABLE pathinterest_registration (
 	pathinterestregistration_id SERIAL PRIMARY KEY,
 	pathinterestoption_id INTEGER NOT NULL REFERENCES pathinterest_option(pathinterestoption_id),
 	pathinterest_id INTEGER NOT NULL REFERENCES path_interest(pathinterest_id)
-)
+);
 
 -- Table: program
 CREATE TABLE programs (
@@ -132,10 +117,7 @@ CREATE TABLE programs (
 -- Table: student
 CREATE TABLE student (
     student_id SERIAL PRIMARY KEY,
-<<<<<<< HEAD
 	user_id INTEGER NOT NULL REFERENCES users(user_id),
-=======
->>>>>>> origin/develop
     program_id INTEGER NOT NULL REFERENCES programs(program_id),
     course_taken INTEGER NOT NULL REFERENCES course_list(courselist_id),
     path_interest INTEGER NOT NULL REFERENCES path_interest(pathinterest_id),
@@ -157,22 +139,14 @@ CREATE TABLE student (
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
 	username VARCHAR(10),
-<<<<<<< HEAD
 	user_role VARCHAR(25) NOT NULL,
-=======
->>>>>>> origin/develop
 	f_name VARCHAR(10) NOT NULL,
 	l_name VARCHAR(25) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password_hash VARCHAR(50) NOT NULL,
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	last_login TIMESTAMP WITH TIME ZONE,
-<<<<<<< HEAD
 	user_preference VARCHAR
-=======
-	user_preference JSONB,
-    student_id INTEGER NOT NULL REFERENCES student(student_id)
->>>>>>> origin/develop
 );
 
 -- Table: session_log (bridge)
@@ -618,23 +592,23 @@ INSERT INTO path_interest (path_name, courselist_id) VALUES ('app development', 
 
 -- Populate path interest option
 INSERT INTO pathinterest_option (pathinterestoption_id, option_notes) 
-VALUES (1, 'MSSD path interests')
+VALUES (1, 'MSSD path interests');
 	
 -- Populate path interest registration
 INSERT INTO pathinterest_registration (pathinterestoption_id, pathinterest_id)
-VALUES (1, 1)
+VALUES (1, 1);
 
 INSERT INTO pathinterest_registration (pathinterestoption_id, pathinterest_id)
-VALUES (1, 2)
+VALUES (1, 2);
 
 INSERT INTO pathinterest_registration (pathinterestoption_id, pathinterest_id)
-VALUES (1, 3)
+VALUES (1, 3);
 
 INSERT INTO pathinterest_registration (pathinterestoption_id, pathinterest_id)
-VALUES (1, 4)
+VALUES (1, 4);
 	
 INSERT INTO pathinterest_registration (pathinterestoption_id, pathinterest_id)
-VALUES (1, 5)
+VALUES (1, 5);
 	
 -- Populate programs table
 INSERT INTO programs (program_id, program_code, program_name, is_certificate, is_degree, program_level, unit_tograduate, prerequisite_program, core_program, elective_program, dept_id, pathinterestoption_id)
@@ -642,7 +616,6 @@ VALUES (1, 'mssd', 'Software Development', false, true, 'graduate', 32, 1, 3, 4,
 
 
 -- Populate student table
-<<<<<<< HEAD
 INSERT INTO student (user_id, program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
 VALUES (1, 1, 10, 1, 3, 'U15811234', 'Fall 2025', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
 
@@ -656,18 +629,361 @@ VALUES ('jdoe', 'student', 'Jane', 'Doe', 'jdoe@bu.edu', 'password_hashed');
 
 INSERT INTO users (username, user_role, f_name, l_name, email, password_hash)
 VALUES ('jsmith','student', 'John', 'Smith', 'jsmith@bu.edu', 'buantest123_hashed');
-=======
-INSERT INTO student (program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
-VALUES (1, 10, 1, 3, 'U15811234', 'Fall 2025', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
 
-INSERT INTO student (program_id, course_taken, path_interest, course_to_take, bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other, other_visastatus, is_parttime, is_full_time)
-VALUES (1, 11, 4, 4, 'U13135556', 'Spring 2026', FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, 'na', FALSE, TRUE);
+-- Stored Procedures
+-- Procedure: Add New Program
+CREATE OR REPLACE FUNCTION add_program(
+    is_certificate BOOLEAN,
+    is_degree BOOLEAN,
+    program_name VARCHAR,
+    prerequisite_program INTEGER,
+    core_program INTEGER,
+    unit_tograduate INTEGER,
+    dept_id INTEGER,
+    pathinterestoption_id INTEGER,
+    program_level VARCHAR,
+    program_code VARCHAR,
+    elective_program INTEGER,
+    concentration_program INTEGER,
+    programowner_id INTEGER,
+    program_notes VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO programs (is_certificate, is_degree, program_name, prerequisite_program, core_program,
+        unit_tograduate, dept_id, pathinterestoption_id, program_level, program_code,
+        elective_program, concentration_program, programowner_id, program_notes)
+    VALUES (is_certificate, is_degree, program_name, prerequisite_program, core_program,
+        unit_tograduate, dept_id, pathinterestoption_id, program_level, program_code,
+        elective_program, concentration_program, programowner_id, program_notes);
+END;
+$$ LANGUAGE plpgsql;
 
 
--- Populate user table
-INSERT INTO users (username, f_name, l_name, email, password_hash, student_id)
-VALUES ('jdoe', 'Jane', 'Doe', 'jdoe@bu.edu', 'password_hashed', 1);
+-- Procedure: Add a New Course
+CREATE OR REPLACE FUNCTION add_course(
+    course_id INTEGER,
+    course_name VARCHAR,
+    credit_unit INTEGER,
+    description VARCHAR,
+    is_active BOOLEAN,
+    dept_id INTEGER,
+    workload_score INTEGER,
+    diff_level INTEGER,
+    is_prerequisite BOOLEAN,
+    prerequisite_course_id INTEGER DEFAULT NULL
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO course (course_id, course_name, credit_unit, description, is_active, dept_id,
+        workload_score, diff_level, is_prerequisite)
+    VALUES (course_id, course_name, credit_unit, description, is_active, dept_id,
+        workload_score, diff_level, is_prerequisite);
 
-INSERT INTO users (username, f_name, l_name, email, password_hash,  student_id)
-VALUES ('jsmith', 'John', 'Smith', 'jsmith@bu.edu', 'buantest123_hashed', 2);
->>>>>>> origin/develop
+    IF prerequisite_course_id IS NOT NULL THEN
+        INSERT INTO course_prerequisite (course_id, courselist_id)
+        VALUES (course_id, prerequisite_course_id);
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Add a New User
+CREATE OR REPLACE FUNCTION add_user(
+    username VARCHAR,
+    user_role VARCHAR,
+    f_name VARCHAR,
+    l_name VARCHAR,
+    email VARCHAR,
+    password_hash VARCHAR
+) RETURNS INTEGER AS $$
+DECLARE
+    new_user_id INTEGER;
+BEGIN
+    INSERT INTO users (username, user_role, f_name, l_name, email, password_hash)
+    VALUES (username, user_role, f_name, l_name, email, password_hash)
+    RETURNING user_id INTO new_user_id;
+
+    RETURN new_user_id; -- return the new user ID
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Add a New Student
+CREATE OR REPLACE FUNCTION add_student(
+    user_id INTEGER,
+    program_id INTEGER,
+    course_taken INTEGER,
+    path_interest INTEGER,
+    course_to_take INTEGER,
+    bu_id VARCHAR,
+    graduate_goal VARCHAR,
+    is_instate BOOLEAN,
+    is_outstate BOOLEAN,
+    is_f1 BOOLEAN,
+    is_j1 BOOLEAN,
+    is_h1b BOOLEAN,
+    is_other BOOLEAN,
+    other_visastatus VARCHAR,
+    is_parttime BOOLEAN,
+    is_full_time BOOLEAN
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO student (user_id, program_id, course_taken, path_interest, course_to_take,
+        bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other,
+        other_visastatus, is_parttime, is_full_time)
+    VALUES (user_id, program_id, course_taken, path_interest, course_to_take,
+        bu_id, graduate_goal, is_instate, is_outstate, is_f1, is_j1, is_h1b, is_other,
+        other_visastatus, is_parttime, is_full_time);
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Update Student Information
+CREATE OR REPLACE FUNCTION update_student(
+    student_id INTEGER,
+    course_taken INTEGER,
+    path_interest INTEGER,
+    course_to_take INTEGER,
+    bu_id VARCHAR,
+    graduate_goal VARCHAR,
+    is_instate BOOLEAN,
+    is_outstate BOOLEAN,
+    is_f1 BOOLEAN,
+    is_j1 BOOLEAN,
+    is_h1b BOOLEAN,
+    is_other BOOLEAN,
+    other_visastatus VARCHAR,
+    is_parttime BOOLEAN,
+    is_full_time BOOLEAN
+) RETURNS VOID AS $$
+DECLARE
+    new_course_list_id INTEGER;
+BEGIN
+    -- Create a new course list
+    INSERT INTO course_list (list_notes)
+    VALUES ('Course list for student ID ' || student_id) RETURNING courselist_id INTO new_course_list_id;
+
+    -- Update student information
+    UPDATE student SET
+        course_taken = new_course_list_id,
+        path_interest = path_interest,
+        course_to_take = course_to_take,
+        bu_id = bu_id,
+        graduate_goal = graduate_goal,
+        is_instate = is_instate,
+        is_outstate = is_outstate,
+        is_f1 = is_f1,
+        is_j1 = is_j1,
+        is_h1b = is_h1b,
+        is_other = is_other,
+        other_visastatus = other_visastatus,
+        is_parttime = is_parttime,
+        is_full_time = is_full_time
+    WHERE student_id = student_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Update User Information
+CREATE OR REPLACE FUNCTION update_user(
+    user_id INTEGER,
+    username VARCHAR,
+    user_role VARCHAR,
+    f_name VARCHAR,
+    l_name VARCHAR,
+    email VARCHAR,
+    password_hash VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE users SET
+        username = username,
+        user_role = user_role,
+        f_name = f_name,
+        l_name = l_name,
+        email = email,
+        password_hash = password_hash
+    WHERE user_id = user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Update Program Information
+CREATE OR REPLACE FUNCTION update_program(
+    program_id INTEGER,
+    is_certificate BOOLEAN,
+    is_degree BOOLEAN,
+    program_name VARCHAR,
+    prerequisite_program INTEGER,
+    core_program INTEGER,
+    unit_tograduate INTEGER,
+    dept_id INTEGER,
+    pathinterestoption_id INTEGER,
+    program_level VARCHAR,
+    program_code VARCHAR,
+    elective_program INTEGER,
+    concentration_program INTEGER,
+    programowner_id INTEGER,
+    program_notes VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE programs SET
+        is_certificate = is_certificate,
+        is_degree = is_degree,
+        program_name = program_name,
+        prerequisite_program = prerequisite_program,
+        core_program = core_program,
+        unit_tograduate = unit_tograduate,
+        dept_id = dept_id,
+        pathinterestoption_id = pathinterestoption_id,
+        program_level = program_level,
+        program_code = program_code,
+        elective_program = elective_program,
+        concentration_program = concentration_program,
+        programowner_id = programowner_id,
+        program_notes = program_notes
+    WHERE program_id = program_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Update Course Information
+CREATE OR REPLACE FUNCTION update_course(
+    course_id INTEGER,
+    course_name VARCHAR,
+    credit_unit INTEGER,
+    description VARCHAR,
+    is_active BOOLEAN,
+    dept_id INTEGER,
+    workload_score INTEGER,
+    diff_level INTEGER,
+    is_prerequisite BOOLEAN
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE course SET
+        course_name = course_name,
+        credit_unit = credit_unit,
+        description = description,
+        is_active = is_active,
+        dept_id = dept_id,
+        workload_score = workload_score,
+        diff_level = diff_level,
+        is_prerequisite = is_prerequisite
+    WHERE course_id = course_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Create New Session Information
+CREATE OR REPLACE FUNCTION create_session(
+    conversation VARCHAR,
+    metadata VARCHAR
+) RETURNS INTEGER AS $$
+DECLARE
+    new_session_id INTEGER;
+BEGIN
+    INSERT INTO sessions (session_created, is_closed, conversation, metadata)
+    VALUES (CURRENT_TIMESTAMP, FALSE, conversation, metadata)
+    RETURNING session_id INTO new_session_id;
+
+    RETURN new_session_id; -- return the new session ID
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Update Session Information
+CREATE OR REPLACE FUNCTION update_session(
+    session_id INTEGER,
+    is_closed BOOLEAN,
+    conversation VARCHAR,
+    metadata VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE sessions SET
+        is_closed = is_closed,
+        session_closed = CURRENT_TIMESTAMP,
+        conversation = conversation,
+        metadata = metadata
+    WHERE session_id = session_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Retrieve Student Course and Program Information
+CREATE OR REPLACE FUNCTION retrieve_student_info(student_id INTEGER)
+RETURNS TABLE(course_taken INTEGER, course_to_take INTEGER, path_interest INTEGER, program_id INTEGER) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT course_taken, course_to_take, path_interest, program_id
+    FROM student
+    WHERE student_id = student_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Retrieve Conversation JSON
+CREATE OR REPLACE FUNCTION retrieve_conversation(session_id INTEGER)
+RETURNS VARCHAR AS $$
+DECLARE
+    conversation_data VARCHAR;
+BEGIN
+    SELECT conversation INTO conversation_data
+    FROM sessions
+    WHERE session_id = session_id;
+
+    RETURN conversation_data;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Retrieve Program information
+CREATE OR REPLACE FUNCTION retrieve_program_info(program_id INTEGER)
+RETURNS TABLE(is_certificate BOOLEAN, is_degree BOOLEAN, program_name VARCHAR, unit_tograduate INTEGER) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT is_certificate, is_degree, program_name, unit_tograduate
+    FROM programs
+    WHERE program_id = program_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Retrieve Course Information
+CREATE OR REPLACE FUNCTION retrieve_course_info(course_id INTEGER)
+RETURNS TABLE(course_name VARCHAR, description VARCHAR, is_active BOOLEAN) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT course_name, description, is_active
+    FROM course
+    WHERE course_id = course_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Procedure: Retrieve Student Information
+CREATE OR REPLACE FUNCTION retrieve_student_info_by_id(student_id INTEGER)
+RETURNS TABLE(user_id INTEGER, program_id INTEGER, course_taken INTEGER, path_interest INTEGER, course_to_take INTEGER) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT user_id, program_id, course_taken, path_interest, course_to_take
+    FROM student
+    WHERE student_id = student_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedure: Retrieve User Information
+CREATE OR REPLACE FUNCTION retrieve_user_info(user_id INTEGER)
+RETURNS TABLE(username VARCHAR, user_role VARCHAR, f_name VARCHAR, l_name VARCHAR, email VARCHAR) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT username, user_role, f_name, l_name, email
+    FROM users
+    WHERE user_id = user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Example of Usage
+-- Example: Add a new program
+SELECT add_program(
+    FALSE, TRUE, 'New Program', NULL, NULL, 32, 1, 1, 'graduate', 'new_prog_code', 
+    NULL, NULL, NULL, 'Notes about the program'
+);
