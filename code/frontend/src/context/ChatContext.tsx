@@ -1,17 +1,8 @@
 import React, { createContext, useState, useEffect, useContext, act } from 'react';
 import { useUser } from './UserContext';
+import { Message } from '../interfaces/Message';
+import { ChatSession } from '../interfaces/ChatSession';
 
-interface Message {
-  text: string;
-  timestamp: Date;
-  isUser: boolean;
-}
-
-interface ChatSession {
-  id: string;
-  sessionPreview: string;
-  createdTime: Date;
-}
 
 interface ChatContextType {
   activeSessionId: string;
