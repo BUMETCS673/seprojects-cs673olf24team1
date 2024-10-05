@@ -12,7 +12,7 @@ CREATE TABLE users (
     program_code VARCHAR(10) NOT NULL,
     course_taken JSONB, -- List of Integer
     path_interest VARCHAR(25),
-    course_to_take INT,
+    course_to_take INT
 );
 
 -- TABLE: sessions
@@ -100,3 +100,121 @@ VALUES
 SELECT *
 FROM sessions
 WHERE user_id = 2;
+
+-- Stored Procedures
+-- Storedproc: Update the `user` table when a new user is created through the sign-up page
+CREATE OR REPLACE PROCEDURE add_user(
+    p_auth_id VARCHAR,
+    p_email VARCHAR,
+    p_password_hash VARCHAR,
+    p_f_name VARCHAR,
+    p_l_name VARCHAR,
+    p_program_code VARCHAR,
+    p_course_taken JSONB,
+    p_path_interest VARCHAR,
+    p_course_to_take INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO users (auth_id, email, password_hash, f_name, l_name, program_code, course_taken, path_interest, course_to_take)
+    VALUES (p_auth_id, p_email, p_password_hash, p_f_name, p_l_name, p_program_code, p_course_taken, p_path_interest, p_course_to_take);
+END;
+$$;
+
+
+-- Storedproc: Retrieve `auth_id` when the user wants to log in
+CREATE OR REPLACE FUNCTION get_auth_id(p_email VARCHAR, p_password_hash VARCHAR)
+RETURNS VARCHAR
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_auth_id VARCHAR;
+BEGIN
+    SELECT auth_id INTO v_auth_id
+    FROM users
+    WHERE email = p_email AND password_hash = p_password_hash;
+    
+    RETURN v_auth_id;
+END;
+$$;
+
+
+-- Storedproc: Insert a new `session` when a new session is created
+CREATE OR REPLACE PROCEDURE add_session(
+    p_user_id INT,
+    p_end_chattime TIMESTAMP WITH TIME ZONE,
+    p_conversation JSONB
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO sessions (user_id, end_chattime, conversation)
+    VALUES (p_user_id, p_end_chattime, p_conversation);
+END;
+$$;
+
+-- Storedproc: Update the `session` table when the `save chat` button is pressed, adding a new JSONB file to the `conversation` field
+CREATE OR REPLACE PROCEDURE update_session_conversation(
+    p_session_id INT,
+    p_new_conversation JSONB
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE sessions
+    SET conversation = conversation || p_new_conversation
+    WHERE session_id = p_session_id;
+END;
+$$;
+
+
+-- Storedproc: Update the `session` table when the `new chat` button is pressed, adding the `end time` timestamp to the field
+CREATE OR REPLACE PROCEDURE update_session_end_time(
+    p_session_id INT,
+    p_end_chattime TIMESTAMP WITH TIME ZONE
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE sessions
+    SET end_chattime = p_end_chattime
+    WHERE session_id = p_session_id;
+END;
+$$;
+
+-- Storedproc: Retrieve `session` information using `auth ID` for the Python AI service
+CREATE OR REPLACE FUNCTION get_session_info(p_auth_id VARCHAR)
+RETURNS TABLE(session_id INT, end_chattime TIMESTAMP WITH TIME ZONE, conversation JSONB)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.session_id, s.end_chattime, s.conversation
+    FROM sessions s
+    INNER JOIN users u ON s.user_id = u.user_id
+    WHERE u.auth_id = p_auth_id;
+END;
+$$;
+
+
+
+-- Examples
+-- Create new User
+CALL add_user('auth_005', 'user5@example.com', 'hashed_password5', 'Eve', 'Adams', 'CS105', '["526, 622"]', 'Cybersecurity', 1);
+
+-- Log in and retrieve the `auth_id`
+SELECT get_auth_id('user5@example.com', 'hashed_password5');
+
+-- Add a new session
+CALL add_session(1, '2024-10-01T12:00:00Z', '[{"user": "Hello", "chatbot": "Hi!"}]');
+
+-- Update the conversation in a session
+CALL update_session_conversation(1, '[{"user": "New message", "chatbot": "Response"}]');
+
+-- Update the end time of a session
+CALL update_session_end_time(1, '2024-10-01T12:30:00Z');
+
+-- Retrieve session info for a user
+SELECT * FROM get_session_info('auth_001');
+
