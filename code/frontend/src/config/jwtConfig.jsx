@@ -11,10 +11,10 @@ import axios from 'axios';
 const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
 
 // Manual Authentication method (fallback until JWT authentication is ready)
-export const manualLogin = async (username, password) => {
+export const manualLogin = async (authId, password) => {
     try {
         const response = await axios.post(`${REACT_APP_API_BASE_URL}/manual/auth/login`, {
-            username,
+            authId,
             password,
         });
 
@@ -32,10 +32,10 @@ export const manualLogin = async (username, password) => {
 
 /*
     // JWT Authentication method
-    export const jwtLogin = async (username, password) => {
+    export const jwtLogin = async (authId, password) => {
         try {
             const response = await axios.post(`${REACT_APP_API_BASE_URL}/jwt/auth/login`, {
-                username,
+                authId,
                 password,
             });
 
