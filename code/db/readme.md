@@ -134,7 +134,7 @@ ORDER BY
 
 ```
 
-Filter chat history for a specific user:
+Filter sessions for a specific user:
 
 ```sql
 SELECT 
@@ -165,8 +165,8 @@ The database includes sample users and sessions data to demonstrate how the appl
 John Doe: A user enrolled in the MS of Software Development program with program_code 'mssd'.
 Jane Smith: A user enrolled in the MS of Software Development program with program_code 'mssd'.
 
-### Example Chat History:
-- Conversations involving course recommendations, prerequisites, and course scheduling for Computer Science.
+### Example Sessions:
+- Conversations involving course recommendations, prerequisites, and course scheduling for MS of Software Development.
 
 ---
 
