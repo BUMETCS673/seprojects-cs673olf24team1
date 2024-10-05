@@ -40,7 +40,7 @@ const ChatBox = () => {
     <div className='main'>
       <div className="nav">
         <div className="branding">
-          <img src={assets.eagle_logo} alt="" />
+          <img src={assets.bu_logo} alt="logo" />
           <p>BUAN CHATBOT</p>
         </div>
         {/* Profile Avatar */}
