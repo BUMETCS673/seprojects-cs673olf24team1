@@ -21,62 +21,31 @@ public class UserService {
     }
 
     public User getUserById(int userId) {
-        User user = userDAO.getUserById(userId);
-        if (user != null) {
-            cleanUserCourseTaken(user);
-        }
-        return user;
+        return userDAO.getUserById(userId);
     }
 
-    public User createUser(UserCreationDTO userDTO) {
+    public void createUser(UserCreationDTO userDTO) {
         User user = new User();
-        user.setUsername(userDTO.getUsername());
+        user.setAuthId(userDTO.getAuthId());
         user.setEmail(userDTO.getEmail());
         user.setPasswordHash(userDTO.getPasswordHash());
+        user.setFName(userDTO.getFName());
+        user.setLName(userDTO.getLName());
+        user.setProgramCode(userDTO.getProgramCode());
 
-        // Parse and clean the course_taken string
-        String courseTaken = parseAndCleanCourseTaken(userDTO.getCourse_taken());
-        user.setCourse_taken(courseTaken);
+        try {
+            String courseTakenJson = objectMapper.writeValueAsString(userDTO.getCourseTaken());
+            user.setCourse_taken(courseTakenJson);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error serializing courseTaken", e);
+        }
 
-        user.setPath_interest(userDTO.getPath_interest());
-        user.setCourse_to_take(userDTO.getCourse_to_take());
-
-        User createdUser = userDAO.createUser(user);
-        cleanUserCourseTaken(createdUser);
-        return createdUser;
+        user.setPathInterest(userDTO.getPathInterest());
+        user.setCourseToTake(userDTO.getCourseToTake());
+        userDAO.createUser(user);
     }
 
     public User getUserByUsername(String username) {
-        User user = userDAO.getUserByUsername(username);
-        if (user != null) {
-            cleanUserCourseTaken(user);
-        }
-        return user;
-    }
-
-    private String parseAndCleanCourseTaken(String courseTaken) {
-        if (courseTaken == null || courseTaken.isEmpty()) {
-            return "[]";
-        }
-        // Remove single quotes and backslashes
-        courseTaken = courseTaken.replaceAll("'", "\"").replaceAll("\\\\", "");
-        // Ensure it's a valid JSON array
-        if (!courseTaken.startsWith("[")) {
-            courseTaken = "[" + courseTaken + "]";
-        }
-        return courseTaken;
-    }
-
-    private void cleanUserCourseTaken(User user) {
-        if (user.getCourse_taken() != null) {
-            user.setCourse_taken(cleanCourseTakenString(user.getCourse_taken()));
-        }
-    }
-
-    private String cleanCourseTakenString(String courseTaken) {
-        if (courseTaken == null || courseTaken.isEmpty()) {
-            return "[]";
-        }
-        return courseTaken.replaceAll("\\\\", "").replaceAll("\"", "'");
+        return userDAO.getUserByUsername(username);
     }
 }
