@@ -38,16 +38,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const resetUser = () => {
         const initialUserState: User = {
+            authId: '',
             buId: '',
-            firstName: '',
-            lastName: '',
+            fName: '',
+            lName: '',
             email: '',
+            password: '',
             programType: '',
-            programName: '',
-            path_interest: '',
-            courses_to_take: 0,
-            courses_taken: [],
-            chat_session_ids: [],
+            programCode: '',
+            pathOfInterest: '',
+            coursesToTake: 0,
+            coursesTaken: [],
+            chatSessionIds: [],
             isNew: true,
         };
         setUser(initialUserState);

@@ -3,7 +3,8 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
-import authService from './authService'; // Importing the authentication service for API calls
+import authService from '../services/authService'; // Importing the authentication service for API calls
+import { UserService } from '../services/userService';
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -33,7 +34,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Provider component for the AuthContext
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
+    const { user, updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
 
     // Helper function to get authentication status from localStorage
     const getCachedIsAuth = (): boolean => {
@@ -69,7 +70,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         try {
             // Call the authentication service to create a new user
-            const newUser = await authService.createUser(authId, email, password, confirmPassword, fName, lName, buId, programType, programCode, pathOfInterest, coursesToTake, coursesTaken);
+            const newUser = await UserService.createUser(user);
 
             if (newUser) {
                 setIsAuth(true); // Set authentication status to true
@@ -116,7 +117,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 setIsIncorrectPassword(false); // Reset incorrect password state
 
                 // Fetch user data to update context
-                const userData = await authService.getUserData(authId); // Fetch user data from your API
+                const userData = await UserService.getUserData(authId); // Fetch user data from your API
                 updateUser({
                     ...userData, // Update user context with fetched user data
                     isNew: false, // Mark user as returning
