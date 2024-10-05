@@ -36,22 +36,25 @@ services:
     depends_on:
       - ai-service
       - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chatbot_db
+      SPRING_DATASOURCE_USERNAME: groupone
+      SPRING_DATASOURCE_PASSWORD: groupOneRocks
+      AI_SERVICE_URL: http://ai-service:9080
 
   # Frontend (React + Vite)
   frontend:
     build:
-      context: ./code/frontend  # Updated context path after moving files
+      context: ./code/frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"  # Exposing port 80 inside container to port 3000 outside
-    volumes:
-      - ./code/frontend:/app
+      - "3000:80"
     depends_on:
       - course-builder-chatbot-ms
-    environment:
-      - NODE_ENV=production
 
 volumes:
   postgres_data:
-  ai-service-data:
-  course-builder-chatbot-ms-data:
+
+networks:
+     default:
+       name: seprojects-cs673olf24team1_default
