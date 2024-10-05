@@ -1,22 +1,25 @@
-import React from 'react';
-import { assets } from '../../assets/assets';
-import './ChatBubble.css';
+import React from 'react'; // Importing React library
+import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
+import './ChatBubble.css'; // Importing styles specific to the ChatBubble component
 
+// ChatBubble component to display individual chat messages
 const ChatBubble = ({ message }) => {
-    const { text, isUser } = message;
+    const { text, isUser } = message; // Destructuring message object to extract text and user status
 
     return (
-        <div className={`chat-bubble ${isUser ? 'user' : 'bot'}`}>
+        <div className={`chat-bubble ${isUser ? 'user' : 'bot'}`}> {/* Conditional className for styling */}
             <div className="result-title">
+                {/* Display user or bot icon based on who sent the message */}
                 <img
-                    src={isUser ? assets.user_icon : assets.bu_logo}
-                    alt={isUser ? "User Icon" : "Bot Icon"}
-                    className="icon"
+                    src={isUser ? assets.user_icon : assets.bu_logo} // Use user icon for messages from the user, bot icon otherwise
+                    alt={isUser ? "User Icon" : "Bot Icon"} // Accessible alt text for icons
+                    className="icon" // CSS class for icon styling
                 />
-                <p className='text-message'>{text}</p>
+                <p className='text-message'>{text}</p> {/* Display the message text */}
             </div>
         </div>
     );
 };
 
-export default ChatBubble;
+export default ChatBubble; // Exporting the ChatBubble component for use in other parts of the application
+
