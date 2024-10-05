@@ -13,7 +13,6 @@ import message_icon from './images/message_icon.png'
 import code_icon from './images/code_icon.png'
 import send_icon from './images/send_icon.png'
 import gemini_icon from './images/gemini_icon.png'
-import eagle_logo from './images/eagle_logo.png'
 import logout from './images/logout.png'
 import clear from './images/clear.png'
 import email from './images/email.png'
@@ -39,7 +38,6 @@ export const assets = {
     code_icon,
     send_icon,
     gemini_icon,
-    eagle_logo,
     logout,
     clear,
     print,

@@ -3,16 +3,16 @@ import { User } from "../interfaces/User";
 const API_BASE_URL = 'https://localhost:8080';
 
 export const UserService = {
-    async getUser(buId: string) {
+    async getUser(authId: string) {
         try {
-            const response = await fetch(`${API_BASE_URL}/user/${buId}`, {
+            const response = await fetch(`${API_BASE_URL}/user/${authId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             if (!response.ok) {
-                throw new Error(`Failed to fetch user with ID ${buId}`);
+                throw new Error(`Failed to fetch user with ID ${authId}`);
             }
             const user = await response.json();
             return user;
