@@ -16,15 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/chatbot")
 public class ChatbotController {
-
-    private final String FAST_API = "http://localhost:9080";
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
     private final UserService userService;
 
     @Autowired
-    public ChatbotController(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, UserService userService) {
-        this.webClient = webClientBuilder.baseUrl(FAST_API).build();
+    public ChatbotController(WebClient webClient, ObjectMapper objectMapper, UserService userService) {
+        this.webClient = webClient;
         this.objectMapper = objectMapper;
         this.userService = userService;
     }
