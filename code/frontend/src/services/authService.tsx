@@ -8,29 +8,6 @@ const API_BASE_URL = 'some auth API endpoint through JWT Auth';
 
 // Service to manage authentication-related operations
 const authService = {
-    // Sign up a new user
-    createUser: async (authId: string, fName: string, lName: string, email: string, password: string): Promise<User | null> => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-                method: 'POST', // HTTP method for creating a user
-                headers: {
-                    'Content-Type': 'application/json', // Specify content type for JSON
-                },
-                body: JSON.stringify({ authId, fName, lName, email, password }), // User details in JSON format
-            });
-
-            // Check if the response indicates failure
-            if (!response.ok) {
-                throw new Error('Failed to create user'); // Throw error for non-200 responses
-            }
-
-            const data = await response.json(); // Parse the response data
-            return data.user; // Return the user object from the response
-        } catch (error) {
-            console.error('Error during sign-up:', error); // Log any errors encountered
-            return null; // Return null in case of an error
-        }
-    },
 
     // Login an existing user
     loginUser: async (authId: string, password: string): Promise<User | null> => {

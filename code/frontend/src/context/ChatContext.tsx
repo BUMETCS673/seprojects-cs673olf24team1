@@ -108,7 +108,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     };
   
     const greetingMessage: Message = {
-      text: `Hi ${user?.firstName}! How can I help you today?`,
+      text: `Hi ${user?.fName}! How can I help you today?`,
       timestamp: new Date(),
       isUser: false,
     };
