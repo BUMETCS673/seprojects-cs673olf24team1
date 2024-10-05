@@ -48,4 +48,30 @@ public class LoginStepDefinitions {
         // Quit the driver after the test completes.
         driver.quit();
     }
+
+    @Then("I should see an error message {string}")
+    public void verifyErrorMessage(String expectedMessage) {
+        WebElement errorElement = driver.findElement(By.cssSelector(".error-message"));
+        String actualMessage = errorElement.getText();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Given("I am logged in with username {string} and password {string}")
+    public void login(String username, String password) throws Exception {
+        navigateToLoginPage();
+        enterCredentials(username, password);
+        verifyHomepage();
+    }
+
+    @When("I click the logout button")
+    public void clickLogout() {
+        WebElement logoutButton = driver.findElement(By.cssSelector(".logout-btn"));
+        logoutButton.click();
+    }
+
+    @Then("I should be on the login page")
+    public void verifyLoginPage() {
+        assertTrue(driver.getCurrentUrl().contains("/login"));
+        driver.quit();
+    }
 }
