@@ -21,6 +21,7 @@ import share from './images/share.png'
 import print from './images/print.png'
 import newchat from './images/newchat.png'
 import download from './images/download.png'
+import bu_logo from './images/bu_logo.png'
 
 export const assets = {
     history_icon,
@@ -45,5 +46,6 @@ export const assets = {
     email,
     share,
     newchat,
-    download
+    download,
+    bu_logo,
 }

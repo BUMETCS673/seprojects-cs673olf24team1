@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
-import eaglelogo from '../assets/images/eagle_logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import the icons
 
 // import styling
 import '../assets/styles/SignupPage.scss';
+import { assets } from '../assets/assets';
 
 const SignupPage = () => {
   const [formState, setFormState] = useState({
@@ -102,7 +102,7 @@ const handleFormSubmit = async (event) => {
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
       <div className="form-container h-screen">
         <div className="form-content-left">
-          <img src={eaglelogo} alt="eagle-logo" className="form-img" style={{ height: '40%' }} />
+          <img src={assets.bu_logo} alt="bu-logo" className="form-img" style={{ height: '40%' }} />
         </div>
         <div className="form-content-right col-10 col-md-6">
           <form onSubmit={handleFormSubmit} className="form">

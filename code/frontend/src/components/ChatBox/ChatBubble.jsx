@@ -9,7 +9,7 @@ const ChatBubble = ({ message }) => {
         <div className={`chat-bubble ${isUser ? 'user' : 'bot'}`}>
             <div className="result-title">
                 <img
-                    src={isUser ? assets.user_icon : assets.eagle_logo}
+                    src={isUser ? assets.user_icon : assets.bu_logo}
                     alt={isUser ? "User Icon" : "Bot Icon"}
                     className="icon"
                 />
