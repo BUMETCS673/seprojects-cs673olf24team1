@@ -24,7 +24,7 @@ public class UserService {
         return userDAO.getUserById(userId);
     }
 
-    public void createUser(UserCreationDTO userDTO) {
+    public int createUser(UserCreationDTO userDTO) {
         User user = new User();
         user.setAuthId(userDTO.getAuthId());
         user.setEmail(userDTO.getEmail());
@@ -43,6 +43,7 @@ public class UserService {
         user.setPathInterest(userDTO.getPathInterest());
         user.setCourseToTake(userDTO.getCourseToTake());
         userDAO.createUser(user);
+        return userDAO.getUserByUsername(user.getAuthId()).getUserId();
     }
 
     public User getUserByUsername(String username) {
