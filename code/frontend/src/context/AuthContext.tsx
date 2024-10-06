@@ -5,6 +5,7 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService';
+import { User } from '../interfaces/User';
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -15,7 +16,6 @@ interface AuthContextType {
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        confirmPassword: string,      // Confirm password for validation
         fName: string,                // User's first name
         lName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
@@ -24,7 +24,7 @@ interface AuthContextType {
         pathOfInterest: string,       // User's area of interest (e.g., "AI/ML", "Web Development", can be dynamic)
         coursesToTake: number,        // Number of courses the user plans to take for the semester
         coursesTaken: string[]        // Array of course IDs or names representing completed courses
-    ) => Promise<void>; // Function to sign up a new user
+    ) => Promise<boolean>; // Function to sign up a new user
     login: (authId: string, password: string) => Promise<boolean>; // Function to log in an existing user
     logout: () => Promise<boolean>;  // Function to log out the user
 }
@@ -34,7 +34,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Provider component for the AuthContext
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { user, updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
+    const { updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
 
     // Helper function to get authentication status from localStorage
     const getCachedIsAuth = (): boolean => {
@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        confirmPassword: string,      // Confirm password for validation
         fName: string,                // User's first name
         lName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
@@ -64,41 +63,57 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         pathOfInterest: string,       // User's area of interest (e.g., "AI/ML", "Web Development", can be dynamic)
         coursesToTake: number,        // Number of courses the user plans to take for the semester
         coursesTaken: string[]        // Array of course IDs or names representing completed courses
-    ) => {
+    ): Promise<boolean> => {
         setIsLoading(true); // Set loading state to true
         setIsIncorrectPassword(false); // Reset incorrect password state
 
+        const newUser: User = {
+            authId: authId,
+            userId: -1, // place holder
+            email: email,
+            password: password,
+            fName: fName,
+            lName: lName,
+            buId: buId,
+            programType: programType,
+            programCode: programCode,
+            pathOfInterest: pathOfInterest,
+            coursesToTake: coursesToTake,
+            coursesTaken: coursesTaken,
+            chatSessionIds: [],
+            isNew: true,
+        };
+
         try {
             // Call the authentication service to create a new user
-            const newUser = await UserService.createUser(user);
+            // const authResult = authService.signup();
 
-            if (newUser) {
-                setIsAuth(true); // Set authentication status to true
-                setIsLoading(false); // Reset loading state
+            // Push the new user to the backend
+            const userId = await UserService.createUser(newUser);
+
+            console.log(userId);
+
+            if (userId > 0) {
+                newUser.userId = userId;
+
                 // Update user context with new user details
-                updateUser({
-                    fName: fName,
-                    lName: lName,
-                    email: email,
-                    buId: buId, // Added BU ID
-                    programType: programType, // Added program type
-                    programCode: programCode, // Added program code
-                    pathOfInterest: pathOfInterest, // Added path of interest
-                    coursesToTake: coursesToTake, // Added courses to take
-                    coursesTaken: coursesTaken, // Added courses taken
-                    isNew: true, // Mark user as new
-                });
+                updateUser(newUser);
 
                 // Uncomment when JWT is ready
                 // localStorage.setItem('token', newUser.token); // Store JWT token in local storage
+                setIsAuth(true);
+                setIsLoading(false);
+                return true;
             } else {
                 console.log('An error occurred when signing up the user'); // Log error
                 setIsAuth(false); // Set authentication status to false
                 setIsLoading(false); // Reset loading state
+                return false;
             }
         } catch (error) {
             console.error('Sign-up failed:', error); // Log error during sign-up
             setIsLoading(false); // Reset loading state
+            return false;
         }
     };
 
@@ -142,7 +157,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Function to log out the user
     const logout = async () => {
         // Use API to log the user out
-        const result = await authService.logoutUser(); // Call the logout function in authService
+        // const result = await authService.logoutUser(); // Call the logout function in authService
+        const result = true;
         if (result) {
             resetUser(); // Reset user context
             setIsAuth(false); // Set authentication status to false

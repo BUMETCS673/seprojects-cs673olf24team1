@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, act } from 'reac
 import { useUser } from './UserContext';
 import { Message } from '../interfaces/Message';
 import { ChatSession } from '../interfaces/ChatSession';
+import ChatService from '../services/chatService';
 
 
 interface ChatContextType {
@@ -15,11 +16,15 @@ interface ChatContextType {
   handleSelectSession: (sessionId: string) => void;
   handleSendMessage: (input: string) => void;
   handleDeleteSessionHistory: (sessionId: string) => Promise<void>;
+  handleSaveChatSession: () => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
+
+  // hard-coded value for the returned session id
+  const [s, setS] = useState<number>(1);
 
   const setCachedActiveId = (sessionId: string) => localStorage.setItem('activeSessionId', sessionId);
   const getCachedActiveId = (): string => {
@@ -54,7 +59,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     return isNotEmpty && wordCount <= 200;
   };
 
-  const handleSendMessage = (input: string) => {
+  const handleSendMessage = async (input: string) => {
     if (!isValidInput(input)) return;
 
     const newUserMessage: Message = {
@@ -71,13 +76,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
-    // Example: ChatService.getChatBotResponse(input, ...);
+    const response = await ChatService.getChatBotResponse(input, user.fName, user.authId);
 
     const fakeResponse = "Hi there. This is a fake AI response message";
 
-    if (fakeResponse) {
+    if (response) {
       const newAIMessage: Message = {
-        text: fakeResponse,
+        text: response.text,
         timestamp: new Date(),
         isUser: false,
       };
@@ -99,13 +104,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleCreateNewSession = () => {
-    const newSessionId = generateSessionId();
-  
-    const newSession: ChatSession = {
-      id: newSessionId,
-      sessionPreview: 'New Conversation',
-      createdTime: new Date(),
-    };
+    console.log(activeSessionId);
   
     const greetingMessage: Message = {
       text: `Hi ${user?.fName}! How can I help you today?`,
@@ -114,9 +113,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     };
   
     setIsNewSessionCreated(true);
-    setActiveSessionId(newSession.id);
+    setActiveSessionId("new");
     setMessages([greetingMessage]);
-    setSessions((prevSessions) => [...prevSessions, newSession]); 
   };
   
 
@@ -156,8 +154,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-
-
   const fetchSessionHistory = async () => {
     // Get session history from API
     // Example const sessionHistory = await UserService.getSessionHistory();
@@ -171,6 +167,19 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setSessions(sessionHistory);
   };
+
+  const handleSaveChatSession = async () => {
+
+    const sessionId = await ChatService.saveChatSession(user.userId, messages, s);
+
+    const newSession: ChatSession = {
+      id: sessionId.toString(),
+      createdTime: new Date(),
+    }
+
+    setS(sessionId);
+    setSessions((prevSessions) => [...prevSessions, newSession]); 
+  }
 
   const onInit = async () => {
 
@@ -224,6 +233,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     handleSelectSession,
     handleSendMessage,
     handleDeleteSessionHistory,
+    handleSaveChatSession,
   };
 
   return <ChatContext.Provider value={exportedValues}>{children}</ChatContext.Provider>;

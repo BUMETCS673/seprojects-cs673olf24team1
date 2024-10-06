@@ -42,7 +42,6 @@ public class ChatbotController {
             User user = userService.getUserByUsername(username);
             System.out.println("Processing request for user: " + username);
             System.out.println("User retrieved: " + user);
-
             ObjectNode aiRequest = objectMapper.createObjectNode();
             aiRequest.put("user_id", user.getAuthId());
             aiRequest.put("student_name", user.getAuthId());
