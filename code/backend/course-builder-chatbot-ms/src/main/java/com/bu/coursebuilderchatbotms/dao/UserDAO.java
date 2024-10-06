@@ -33,7 +33,7 @@ public class UserDAO {
                     .addParameter("fName", "bu1234")
                     .addParameter("lName", "bu1234")
                     .addParameter( "programCode", user.getProgramCode())
-                    .addParameter("courseTaken", user.getCourse_taken()) // This is now a JSON string
+                    .addParameter("courseTaken", user.getCourse_taken())
                     .addParameter("pathInterest", user.getPathInterest())
                     .addParameter("courseToTake", user.getCourseToTake())
                     .executeUpdate();
