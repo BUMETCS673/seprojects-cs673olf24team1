@@ -3,6 +3,7 @@ package com.bu.coursebuilderchatbotms.controller;
 import com.bu.coursebuilderchatbotms.domain.User;
 import com.bu.coursebuilderchatbotms.dto.UserCreationDTO;
 import com.bu.coursebuilderchatbotms.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/user/{userId}")
@@ -22,6 +25,7 @@ public class UserController {
 
     @PostMapping("/user")
     public int createUser(@RequestBody UserCreationDTO userDTO) {
+        userDTO.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
         return userService.createUser(userDTO);
     }
 }
