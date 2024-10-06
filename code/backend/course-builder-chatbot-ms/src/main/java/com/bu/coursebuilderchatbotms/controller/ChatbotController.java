@@ -43,6 +43,8 @@ public class ChatbotController {
         aiRequest.put("path_interest", user.getPathInterest());
         aiRequest.put("course_to_take", user.getCourseToTake());
 
+        System.out.println(aiRequest);
+
         return webClient.post()
                 .uri("/api/v1/chatbot")
                 .bodyValue(aiRequest)

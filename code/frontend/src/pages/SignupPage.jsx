@@ -12,8 +12,11 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Imp
 import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
 // import CourseTakenField from '../components/Profile/CourseTakenField';
-import useSignUpForm from '../hooks/useSignupForm';
+
+
 import { useAuth } from '../context/AuthContext';
+import { useSignUpForm } from './useSignUpForm';
+
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -283,3 +286,9 @@ const SignupPage = () => {
 };
 
 export default SignupPage; // Export SignupPage component for use in other parts of the application
+
+
+
+
+
+

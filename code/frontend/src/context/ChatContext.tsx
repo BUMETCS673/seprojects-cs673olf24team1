@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, act } from 'reac
 import { useUser } from './UserContext';
 import { Message } from '../interfaces/Message';
 import { ChatSession } from '../interfaces/ChatSession';
+import ChatService from '../services/chatService';
 
 
 interface ChatContextType {
@@ -54,7 +55,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     return isNotEmpty && wordCount <= 200;
   };
 
-  const handleSendMessage = (input: string) => {
+  const handleSendMessage = async (input: string) => {
     if (!isValidInput(input)) return;
 
     const newUserMessage: Message = {
@@ -71,13 +72,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
-    // Example: ChatService.getChatBotResponse(input, ...);
+    const response = await ChatService.getChatBotResponse(input, user.fName, user.authId);
 
     const fakeResponse = "Hi there. This is a fake AI response message";
 
-    if (fakeResponse) {
+    if (response) {
       const newAIMessage: Message = {
-        text: fakeResponse,
+        text: response.text,
         timestamp: new Date(),
         isUser: false,
       };

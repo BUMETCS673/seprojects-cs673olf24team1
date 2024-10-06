@@ -21,7 +21,7 @@ interface FormState {
     coursesTaken: string[];
 }
 
-const useSignUpForm = () => {
+export const useSignUpForm = () => {
 
     const { signUp } = useAuth();
     // State to manage form data
@@ -155,5 +155,3 @@ const useSignUpForm = () => {
         handleRemoveCourse,
     };
 };
-
-export default useSignUpForm;
