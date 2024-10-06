@@ -40,7 +40,8 @@ export const UserService = {
             }
 
             const data = await response.json(); // Parse the response data
-            return data.user; // Return the user object from the response
+
+            return data; // Return the user object from the response
         } catch (error) {
             console.error('Error during sign-up:', error); // Log any errors encountered
             return -1; // Return null in case of an error

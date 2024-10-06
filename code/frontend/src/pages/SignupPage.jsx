@@ -3,7 +3,7 @@
 // Created by Natt 
 //Updated, integrated, and annotated by Natasya Liew
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
@@ -13,8 +13,10 @@ import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
 // import CourseTakenField from '../components/Profile/CourseTakenField';
 import useSignUpForm from '../hooks/useSignupForm';
+import { useAuth } from '../context/AuthContext';
 
 const SignupPage = () => {
+  const navigate = useNavigate();
   const {
     formState,
     showPassword,
@@ -30,6 +32,14 @@ const SignupPage = () => {
     handleCourseSelect,
     handleRemoveCourse,
   } = useSignUpForm();
+
+  const { isAuth } = useAuth();
+
+  useEffect(() => {
+    if (isAuth === true) {
+      navigate('/chat');
+    }
+  }, [isAuth]);
 
 
   return (

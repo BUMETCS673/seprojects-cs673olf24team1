@@ -84,8 +84,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             isNew: true,
         };
 
-        console.log(newUser);
-
         try {
             // Call the authentication service to create a new user
             // const authResult = authService.signup();
@@ -93,7 +91,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             // Push the new user to the backend
             const userId = await UserService.createUser(newUser);
 
-            if (newUser) {
+            console.log(userId);
+
+            if (userId > 0) {
                 newUser.userId = userId;
 
                 // Update user context with new user details
@@ -157,7 +157,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Function to log out the user
     const logout = async () => {
         // Use API to log the user out
-        const result = await authService.logoutUser(); // Call the logout function in authService
+        // const result = await authService.logoutUser(); // Call the logout function in authService
+        const result = true;
         if (result) {
             resetUser(); // Reset user context
             setIsAuth(false); // Set authentication status to false
