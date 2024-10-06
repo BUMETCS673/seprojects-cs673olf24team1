@@ -39,6 +39,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const resetUser = () => {
         const initialUserState: User = {
             authId: '',
+            userId: -1,
             buId: '',
             fName: '',
             lName: '',

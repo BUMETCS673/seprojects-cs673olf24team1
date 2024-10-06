@@ -4,7 +4,6 @@
 //Updated, integrated, and annotated by Natasya Liew
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
@@ -12,86 +11,26 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Imp
 // Import styling for the Signup page
 import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
+// import CourseTakenField from '../components/Profile/CourseTakenField';
+import useSignUpForm from '../hooks/useSignupForm';
 
 const SignupPage = () => {
-  // State to manage form data
-  const [formState, setFormState] = useState({
-    authId: '', // Username
-    email: '', // User email
-    password: '', // User password
-    confirmPassword: '', // Password confirmation
-    fName: '', // User's first name
-    lName: '', // User's last name
-    buId: '', // Student's BU ID
-    programType: 'MS degree', // Default program type
-    programCode: 'mssd', // Default program code
-    courseTaken: [], // Array to hold courses taken (initially empty)
-    pathOfInterest: 'web development', // Default path of interest
-    coursesToTake: 3 // Default number of courses to take
-  });
-  
-  // State to manage password visibility
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
-  const [successMessage, setSuccessMessage] = useState(''); // Message to show on successful signup
-  const navigate = useNavigate(); // Hook to programmatically navigate
+  const {
+    formState,
+    showPassword,
+    showConfirmPassword,
+    togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
+    handleChange,
+    handleFormSubmit,
+    successMessage,
+    inputValue,
+    filteredCourses,
+    handleInputChange,
+    handleCourseSelect,
+    handleRemoveCourse,
+  } = useSignUpForm();
 
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  // Toggle confirm password visibility
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  // Handle changes to form input fields
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value, // Update the corresponding field in formState
-    });
-  };
-
-  // Handle form submission
-  const handleFormSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    // Check if passwords match before sending the request
-    if (formState.password !== formState.confirmPassword) {
-      alert("Passwords don't match");
-      return;
-    }
-
-    try {
-      // Log the form data for debugging
-      console.log('Form data:', formState);
-      
-      // Make POST request to signup API
-      const response = await axios.post('http://localhost:8080/api/signup', formState);
-
-      // Log the response from the backend
-      console.log('API response:', response);
-
-      // If signup is successful, show success message and navigate to login
-      if (response.status === 201) {
-        setSuccessMessage('Signup successful! Please go to the login page.');
-        
-        // Redirect to login after a short delay
-        setTimeout(() => {
-          navigate('/login');
-        }, 3000); // Redirect after 3 seconds
-      } else {
-        alert('Signup failed. Please try again.');
-      }
-    } catch (e) {
-      // Log any errors encountered during signup
-      console.error(e);
-      alert('Signup failed. Please try again.');
-    }
-  };
 
   return (
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
@@ -100,7 +39,7 @@ const SignupPage = () => {
           <img src={assets.bu_logo} alt="bu-logo" className="form-img" style={{ height: '40%' }} />
         </div>
         <div className="form-content-right col-10 col-md-6">
-          <form onSubmit={handleFormSubmit} className="form">
+          <form className="form" onSubmit={handleFormSubmit}>
             <h1>BUAN CHATBOT</h1>
             <h2>Sign Up</h2>
 
@@ -275,8 +214,46 @@ const SignupPage = () => {
               </select>
             </div>
 
+            {/* <CourseTakenField /> */}
+            <div className="course-taken-container">
+              <label>Courses Taken:</label>      {formState.coursesTaken.length > 0 ? (
+                <div className="course-list">
+                  <ul>
+                    {formState.coursesTaken.map(course => (
+                      <li key={course}>
+                        {course}
+                        <span
+                          onClick={() => handleRemoveCourse(course)}
+                          className="remove-course-icon"
+                        >
+                          X
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (null)}
+              <div className="add-course-container">
+                <input
+                  type="text"
+                  placeholder="Type to search courses..."
+                  value={inputValue}
+                  onChange={handleInputChange}
+                />
+                {filteredCourses.length > 0 && (
+                  <ul className="dropdown">
+                    {filteredCourses.map(course => (
+                      <li key={course} onClick={() => handleCourseSelect(course)}>
+                        {course}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+
             {/* Submit Button to trigger form submission */}
-            <button className="form-input-btn" type="submit">
+            <button className="form-input-btn" type='submit'>
               Sign Up
             </button>
 
@@ -287,6 +264,7 @@ const SignupPage = () => {
             <span className="form-input-login">
               Already have an account? <Link to="/login">Log in</Link>
             </span>
+            <div className="spacer"></div>
           </form>
         </div>
       </div>

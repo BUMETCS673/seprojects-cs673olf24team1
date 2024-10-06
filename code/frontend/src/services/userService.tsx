@@ -1,4 +1,5 @@
 import { User } from "../interfaces/User";
+import { mapUserToAPIBody } from "../utils/mappers";
 
 const API_BASE_URL = 'https://localhost:8080';
 
@@ -24,14 +25,14 @@ export const UserService = {
 
 
      // Sign up a new user
-     createUser: async (user: User): Promise<boolean> => {
+     createUser: async (user: User): Promise<number> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+            const response = await fetch(`${API_BASE_URL}/users/user`, {
                 method: 'POST', // HTTP method for creating a user
                 headers: {
                     'Content-Type': 'application/json', // Specify content type for JSON
                 },
-                body: JSON.stringify(user), // User details in JSON format
+                body: mapUserToAPIBody(user), // User details in JSON format
             });
 
             // Check if the response indicates failure
@@ -43,7 +44,7 @@ export const UserService = {
             return data.user; // Return the user object from the response
         } catch (error) {
             console.error('Error during sign-up:', error); // Log any errors encountered
-            return false; // Return null in case of an error
+            return -1; // Return null in case of an error
         }
     },
 };

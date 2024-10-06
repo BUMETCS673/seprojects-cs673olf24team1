@@ -4,6 +4,7 @@
 // User interface representing the structure of a user object in the application
 export interface User {
     authId: string;               // Username for the user account
+    userId: number;
     email: string;                // User's email address
     password: string;             // User's password (not typically stored, usually for temporary use during login)
     fName: string;            // User's first name
