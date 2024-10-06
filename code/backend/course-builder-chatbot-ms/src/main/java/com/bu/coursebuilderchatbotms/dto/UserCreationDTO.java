@@ -13,6 +13,7 @@ import java.util.List;
 public class UserCreationDTO {
     private String authId;
     private String email;
+    private String password;
     private String passwordHash;
     private String fName;
     private String lName;
