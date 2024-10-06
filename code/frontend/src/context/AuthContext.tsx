@@ -86,8 +86,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         console.log(newUser);
 
-        return false;
-
         try {
             // Call the authentication service to create a new user
             // const authResult = authService.signup();

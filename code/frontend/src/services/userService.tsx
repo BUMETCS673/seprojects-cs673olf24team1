@@ -1,7 +1,7 @@
 import { User } from "../interfaces/User";
 import { mapUserToAPIBody } from "../utils/mappers";
 
-const API_BASE_URL = 'https://localhost:8080';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 
 export const UserService = {
     async getUserData(authId: string) {
@@ -22,7 +22,6 @@ export const UserService = {
             throw error;
         }
     },
-
 
      // Sign up a new user
      createUser: async (user: User): Promise<number> => {
