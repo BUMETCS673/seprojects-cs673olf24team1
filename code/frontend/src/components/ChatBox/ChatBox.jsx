@@ -5,6 +5,7 @@ import { assets } from '../../assets/assets'; // Import asset resources (e.g., l
 import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
 import InputField from '../InputField/InputField'; // Input field component for sending messages
 import ChatBubble from './ChatBubble'; // Component for individual chat messages
+import PacmanLoader from 'react-spinners/PacmanLoader'
 import './ChatBox.css'; // Import styles for the ChatBox component
 
 // ChatBox component to manage the chat interface and interactions
@@ -40,7 +41,7 @@ const ChatBox = () => {
 
   // Scroll to the bottom when sending a new message
   const chatEndRef = useRef(null); // Ref to track the end of the chat history
-  useEffect(() => { 
+  useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); // Smoothly scroll to the bottom of chat history
   }, [messages]); // Dependency on messages to trigger the effect when they change
 
@@ -84,9 +85,10 @@ const ChatBox = () => {
             ))
           )}
           <div ref={chatEndRef} /> {/* Empty div to enable scrolling to the bottom */}
+          {isSendingMessage ? <div className='loading-indicator'><PacmanLoader color="#e54500" /></div> : null}
         </div>
         {/* Input field only visible when there are sessions */}
-        {sessions.length === 0 ? null : 
+        {sessions.length === 0 ? null :
           <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />
         }
       </div>

@@ -1,10 +1,12 @@
 import React from 'react'; // Importing React library
 import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
 import './ChatBubble.css'; // Importing styles specific to the ChatBubble component
+import { useChat } from '../../context/ChatContext';
 
 // ChatBubble component to display individual chat messages
 const ChatBubble = ({ message }) => {
     const { text, isUser } = message; // Destructuring message object to extract text and user status
+    const { isSendingMessage } = useChat();
 
     return (
         <div className={`chat-bubble ${isUser ? 'user' : 'bot'}`}> {/* Conditional className for styling */}
