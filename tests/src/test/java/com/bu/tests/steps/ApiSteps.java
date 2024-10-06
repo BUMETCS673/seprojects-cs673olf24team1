@@ -50,8 +50,38 @@ public class ApiSteps {
         assertEquals(expectedStatusCode, response.statusCode());
     }
 
-    
+    @When("I send a POST HTTP request with an empty message")
+    public void sendPostWithEmptyMessage() throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("message", "");
 
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Then("I should receive an error code {int} for empty message")
+    public void i_should_receive_an_error_code_for_empty_message(int expectedErrorCode) {
+        assertEquals(expectedErrorCode, response.statusCode());
+    }
+
+    @When("I send a POST HTTP request without credentials")
+    public void sendPostWithoutCredentials() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{}"))
+                .build();
+
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    @Then("I should receive an unauthorized code {int} for no credentials")
+    public void i_should_receive_an_unauthorized_code_for_no_credentials(int expectedStatusCode) {
+        assertEquals(expectedStatusCode, response.statusCode());
+    }
 }
-
-
