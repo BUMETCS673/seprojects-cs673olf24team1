@@ -73,7 +73,7 @@ const ChatBox = () => {
       <div className="chat-container">
         <div className="chat-history-container">
           {/* Conditional rendering based on the presence of chat sessions */}
-          {sessions.length === 0 ? (
+          {messages.length === 0 ? (
             <div className="no-sessions-message">
               <p style={{ textAlign: 'center', fontSize: '24px', margin: '20px 0' }}>
                 (๑•̀ᄇ•́)و ✧ Let's create a new chat to start!
@@ -88,7 +88,7 @@ const ChatBox = () => {
           {isSendingMessage ? <div className='loading-indicator'><PacmanLoader color="#e54500" /></div> : null}
         </div>
         {/* Input field only visible when there are sessions */}
-        {sessions.length === 0 ? null :
+        {messages.length === 0 ? null :
           <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />
         }
       </div>

@@ -1,5 +1,6 @@
 import { Message } from '../interfaces/Message';
 import { ChatSession } from '../interfaces/ChatSession';
+import { createChatJson } from '../utils/mappers';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 
@@ -49,19 +50,21 @@ const ChatService = {
     },
 
     // Uploads a chat message to the API
-    uploadChatMessage: async (sessionId: string, message: Message): Promise<boolean> => {
+    saveChatSession: async (userId: number, messages: Message[], prevSessionId: number): Promise<number> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/chat/sessions/${sessionId}/messages`, {
+            const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}/conversation`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(message),
+                body: JSON.stringify({
+                    conversation: createChatJson(messages),
+                }),
             });
-            return response.ok;
+            return prevSessionId + 1;
         } catch (error) {
             console.error(error);
-            return false;
+            return 0;
         }
     },
 };
