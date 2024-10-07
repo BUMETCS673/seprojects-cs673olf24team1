@@ -22,10 +22,17 @@ const ChatService = {
 
     // Sends a message to the chat API and retrieves the response
     getChatBotResponse: async (input: string, studentName: string, userId: string): Promise<Message | null> => {
+        const token = sessionStorage.getItem('token');
+        
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
         try {
             const response = await fetch(`${API_BASE_URL}/chatbot/chat_conversation`, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

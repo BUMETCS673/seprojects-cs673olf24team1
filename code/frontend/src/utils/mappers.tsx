@@ -15,7 +15,7 @@ export function mapUserToAPIBody(user: User): string {
     return JSON.stringify({
         "authId": user.authId,
         "email": user.email,
-        "passwordHash": user.password,
+        "password": user.password,
         "fName": user.fName,
         "lName": user.lName,
         "programCode": user.programCode,

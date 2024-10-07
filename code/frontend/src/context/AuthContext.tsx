@@ -36,14 +36,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
 
-    // Helper function to get authentication status from localStorage
+    // Helper function to get authentication status from sessionStorage
     const getCachedIsAuth = (): boolean => {
-        const cachedAuth = localStorage.getItem('isAuth');
+        const cachedAuth = sessionStorage.getItem('isAuth');
         return cachedAuth === 'true' ? JSON.parse(cachedAuth) : false; // Parse boolean value
     };
 
-    // Helper function to set authentication status in localStorage
-    const setCachedIsAuth = (isAuth: boolean) => localStorage.setItem('isAuth', JSON.stringify(isAuth));
+    // Helper function to set authentication status in sessionStorage
+    const setCachedIsAuth = (isAuth: boolean) => sessionStorage.setItem('isAuth', JSON.stringify(isAuth));
 
     // State variables to manage authentication state
     const [isAuth, setIsAuth] = useState<boolean>(() => getCachedIsAuth());
@@ -100,7 +100,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 updateUser(newUser);
 
                 // Uncomment when JWT is ready
-                // localStorage.setItem('token', newUser.token); // Store JWT token in local storage
+                // sessionStorage.setItem('token', newUser.token); // Store JWT token in local storage
                 setIsAuth(true);
                 setIsLoading(false);
                 return true;
@@ -127,6 +127,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const isLoggedIn = await authService.loginUser(authId, password);
 
             if (isLoggedIn) {
+                console.log("here")
+                console.log(sessionStorage.getItem('token'));
+                
                 setIsAuth(true); // Set authentication status to true
                 setIsLoading(false); // Reset loading state
                 setIsIncorrectPassword(false); // Reset incorrect password state
@@ -139,7 +142,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 });
 
                 // Uncomment when JWT is ready
-                // localStorage.setItem('token', userData.token); // Store JWT token in local storage
+                // sessionStorage.setItem('token', userData.token); // Store JWT token in local storage
 
                 return true; // Indicate successful login
             } else {
@@ -164,16 +167,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setIsAuth(false); // Set authentication status to false
             setIsLoading(false); // Reset loading state
             setIsIncorrectPassword(false); // Reset incorrect password state
-            localStorage.removeItem('isAuth'); // Clear authentication status from localStorage
+            sessionStorage.removeItem('isAuth'); // Clear authentication status from sessionStorage
             // Clear JWT token from local storage if applicable
-            // localStorage.removeItem('token'); // Uncomment when JWT is ready
+            // sessionStorage.removeItem('token'); // Uncomment when JWT is ready
         }
         return result; // Return logout result
     };
 
-    // Effect to update cached authentication status in localStorage
+    // Effect to update cached authentication status in sessionStorage
     useEffect(() => {
-        setCachedIsAuth(isAuth); // Update localStorage whenever isAuth changes
+        setCachedIsAuth(isAuth); // Update sessionStorage whenever isAuth changes
     }, [isAuth]);
 
     // Provide the authentication context to child components
