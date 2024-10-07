@@ -20,7 +20,6 @@ const ChatService = {
                 createdTime: new Date(session.createdAt),
             }));
 
-            console.log(history);
             return history;
         } catch (error) {
             throw new Error(error);

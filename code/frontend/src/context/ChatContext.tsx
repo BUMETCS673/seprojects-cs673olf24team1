@@ -83,7 +83,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleSelectSession = async (sessionId: string) => {
-    console.log(`selecting ${sessionId}`)
 
     const messages = await ChatService.getMessageHistory(user.userId.toString(), sessionId);
 
@@ -124,6 +123,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const onInit = async () => {
     handleCreateNewSession();
     setIsFetchingNetworkData(false);
+    
+    const history = await ChatService.getSessionHistory(user.userId.toString());
+    setHistory(history);
   };
 
   const onDismount = () => {

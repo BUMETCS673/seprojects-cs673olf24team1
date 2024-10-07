@@ -40,9 +40,9 @@ const ChatHistory = () => {
               >
                 <img src={assets.message_icon} alt="" />
                 <span>{session.createdTime.toUTCString()}</span> {/* Convert to UTC string */}
-                <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
+                {/* <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
                   <img src={assets.clear} alt="clear" />
-                </div>
+                </div> */}
               </div>
             ))}
         </>
