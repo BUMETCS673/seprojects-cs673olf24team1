@@ -175,14 +175,14 @@ This section provides a simple way to set up and run the project locally using D
 
 ### AI Model Service Details
 The AI model service exposes two main API endpoints:
-- **Language Model Route**: Handles requests to the ChatGPT4.0 via Langchain API-based chatbot.
+- **Language Model Route**: Handles requests to the ChatGPT4o via Langchain API-based chatbot.
 - **Course Recommendation Route**: Returns course suggestions using a custom algorithm.
 
 ---
 
 ## Deployment
 
-The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production. While deploying, please make sure that the Postgres DB is running at that the user and session tables are not empty.
+The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production. While deploying, please make sure that the Postgres DB script is running locally and that the user and session tables are not empty.
 
 ---
 
