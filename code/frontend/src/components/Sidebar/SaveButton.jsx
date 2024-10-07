@@ -14,7 +14,7 @@ const SaveButton = () => {
     return (
         <div className="bottom-item recent-entry" onClick={handleSaveChat}>
             <img src={assets.share} alt="save chat" />
-            <p>Save</p>
+            <p>Save to History</p>
             {/* {extended ? <p>Share</p> : null} */}
         </div>
     )
