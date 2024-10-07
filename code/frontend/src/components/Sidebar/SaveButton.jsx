@@ -8,7 +8,6 @@ const SaveButton = () => {
     const {handleSaveChatSession} = useChat();
 
     const handleSaveChat = () => {
-        console.log('saving chat...')
         handleSaveChatSession();
     };
 
