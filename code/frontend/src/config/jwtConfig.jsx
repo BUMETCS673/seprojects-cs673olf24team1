@@ -8,7 +8,7 @@
 import axios from 'axios';
 
 // Load environment variables for API configuration
-const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
 // Manual Authentication method (fallback until JWT authentication is ready)
 export const manualLogin = async (authId, password) => {
@@ -30,32 +30,30 @@ export const manualLogin = async (authId, password) => {
     }
 };
 
-/*
-    // JWT Authentication method
-    export const jwtLogin = async (authId, password) => {
-        try {
-            const response = await axios.post(`${REACT_APP_API_BASE_URL}/jwt/auth/login`, {
-                authId,
-                password,
-            });
+export const jwtLogin = async (authId, password) => {
+    try {
+        const response = await axios.post(`${REACT_APP_API_BASE_URL}/v1/auth/login`, {
+            authId,
+            password,
+        });
 
-            if (response.status === 200) {
-                const { token } = response.data; // Assuming the token is returned in the response
-                localStorage.setItem('token', token); // Store JWT token in local storage
-                console.log('JWT login successful:', response.data);
-            } else {
-                // Handle login error
-                console.error('JWT login failed:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error during JWT login:', error);
+        if (response.status === 200) {
+            console.log(response)
+            const { token } = response.data; // Assuming the token is returned in the response
+            sessionStorage.setItem('token', token); // Store JWT token in local storage
+            console.log('JWT login successful:', response.data);
+        } else {
+            // Handle login error
+            console.error('JWT login failed:', response.data.message);
         }
-    };
-*/
+    } catch (error) {
+        console.error('Error during JWT login:', error);
+    }
+};
 
 // Utility function to get authorization header with JWT token for API calls
 export const getAuthHeader = () => {
-    const token = localStorage.getItem('token'); // Retrieve the token from local storage
+    const token = sessionStorage.getItem('token'); // Retrieve the token from local storage
     return token ? { 'Authorization': `Bearer ${token}` } : {}; // Return the authorization header if token exists
 };
 

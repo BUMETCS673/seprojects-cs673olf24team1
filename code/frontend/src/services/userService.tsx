@@ -5,10 +5,17 @@ const API_BASE_URL = 'http://localhost:8080/api/v1';
 
 export const UserService = {
     async getUserData(authId: string) {
+        const token = sessionStorage.getItem('token'); // Retrieve token from localStorage
+        
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
         try {
-            const response = await fetch(`${API_BASE_URL}/user/${authId}`, {
+            const response = await fetch(`${API_BASE_URL}/users/user/${authId}`, {
                 method: 'GET',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
             });

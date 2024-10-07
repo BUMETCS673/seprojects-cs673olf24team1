@@ -29,16 +29,10 @@ public class ChatbotController {
     }
 
     @PostMapping("/chat_conversation")
-    public Mono<JsonNode> chatConversation(@RequestBody JsonNode request, Authentication authentication) {
+    public Mono<JsonNode> chatConversation(@RequestBody JsonNode request) {
         return Mono.fromCallable(() -> {
-            System.out.println("Authentication: " + authentication);
-            if (authentication == null || !authentication.isAuthenticated()) {
-                throw new RuntimeException("User is not authenticated");
-            }
-
-            String username = authentication.getName();
             String message = request.get("message").asText();
-
+            String username = request.get("user_id").asText();
             User user = userService.getUserByUsername(username);
             System.out.println("Processing request for user: " + username);
             System.out.println("User retrieved: " + user);
