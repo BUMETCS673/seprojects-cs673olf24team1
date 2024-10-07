@@ -26,7 +26,7 @@ const ChatBox = () => {
 
   // Toggle the visibility of the profile panel
   const toggleProfilePanel = () => {
-    setProfilePanelOpen(!isProfilePanelOpen);
+    // setProfilePanelOpen(!isProfilePanelOpen);
   };
 
   // Handle changes to the input field
