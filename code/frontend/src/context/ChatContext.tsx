@@ -25,9 +25,9 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
-  const setCachedSessions = (sessionHistory: ChatSession[]) => localStorage.setItem('chatSessions', JSON.stringify(sessionHistory));
+  const setCachedSessions = (sessionHistory: ChatSession[]) => sessionStorage.setItem('chatSessions', JSON.stringify(sessionHistory));
   const getCachedSessions = () => {
-    const cachedSessions = JSON.parse(localStorage.getItem('chatSessions') || '[]') as ChatSession[];
+    const cachedSessions = JSON.parse(sessionStorage.getItem('chatSessions') || '[]') as ChatSession[];
     return cachedSessions.map(session => ({
       ...session,
       createdTime: new Date(session.createdTime),
@@ -93,7 +93,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleCreateNewSession = () => {
     const greetingMessage: Message = {
-      text: `Hi ${user?.fName}! How can I help you today?`,
+      text: `Hi ${user["fname"]}! How can I help you today?`,
       timestamp: new Date(),
       isUser: false,
     };
@@ -129,8 +129,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const onDismount = () => {
-    localStorage.removeItem('activeSessionId');
-    localStorage.removeItem('chatSessions');
+    sessionStorage.removeItem('activeSessionId');
+    sessionStorage.removeItem('chatSessions');
     setHistory([]);
     setMessages([]);
     setError('');

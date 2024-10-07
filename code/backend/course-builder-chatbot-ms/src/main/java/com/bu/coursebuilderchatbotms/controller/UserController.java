@@ -18,9 +18,9 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/user/{userId}")
-    public User getUserById(@PathVariable int userId) {
-        return userService.getUserById(userId);
+    @GetMapping("/user/{authid}")
+    public User getUserById(@PathVariable String authid) {
+        return userService.getUserByUsername(authid);
     }
 
     @PostMapping("/user")
