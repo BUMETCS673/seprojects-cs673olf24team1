@@ -1,15 +1,15 @@
 
-# 🦅 Course Builder Chatbot
+# 🦅 Academic Advising Chatbot
 
-This project provides a web application designed to help students select courses based on their preferences and the AI-driven recommendations. It integrates a chatbot built with Llama 2 and GPT-4 to enhance user interactions. The app leverages AI to recommend courses and store the data in MongoDB and PostgreSQL for efficient tracking.
+This project provides a web application designed to enhance BU MET students' experience in getting information on their CS program and courses, with additional features such as: selecting courses based on their career interests and preferences using our custom-made recommendation algorithm and answering questions from visa-related issues as an International Student to other student life queries. By creating this product, we can help the student advising team scale their accessibility to enrich their service to assist the students within the BU MET CS department. Our application integrates a chatbot built with ChatGPT-4o via Langchain API service and the Langchain tooling services for RAG retrieval from our courses.csv, programs.csv, and promptlib.json files to enhance users' scope of query capability. 
 
 ## Core Features
 - **AI-Driven Recommendations**: AI model integrated with Python, Langchain, and GPT-4o for personalized course suggestions.
 - **Spring Boot Backend**: Java-based backend handling application logic and communication between components.
 - **Frontend**: React-based UI for seamless interaction with users.
 - **Databases**:
-    - Pinecone's Vector Storage for storing course and program data.
-    - PostgreSQL for chat history.
+    - FAISS's Vector Storage for storing course, program, and prompt library data.
+    - PostgreSQL for user and chat session history.
 
 ## Project Structure
 ```
@@ -81,11 +81,11 @@ SEPROJECTS-CS673OLF24TEAM1
 ### Technologies Used:
 - **Frontend**: React + Vite
 - **Backend**: Java (Spring Boot)
-- **AI Models**: Tree Algorithm, OpenAI's GPT-4o, LangChain
+- **AI Models**: Custom Course Builder Algorithm, OpenAI's GPT-4o, LangChain
 - **Databases**:
-    - Pinecode's Vector Storage: For course and program data.
-    - PostgreSQL: For storing chat history.
-- **Authentication**: Okta Authentication
+    - FAISS's Vector Storage: For course and program data.
+    - PostgreSQL: For storing user and chat session history.
+- **Authentication**: JWT Authentication
 - **Deployment**: Docker (containerized for local and cloud development)
 
 ## Getting Started
@@ -175,14 +175,14 @@ This section provides a simple way to set up and run the project locally using D
 
 ### AI Model Service Details
 The AI model service exposes two main API endpoints:
-- **Language Model Route**: Handles requests to the Llama 2-based chatbot.
-- **Course Recommendation Route**: Returns course suggestions using a decision tree algorithm.
+- **Language Model Route**: Handles requests to the ChatGPT4o via Langchain API-based chatbot.
+- **Course Recommendation Route**: Returns course suggestions using a custom algorithm.
 
 ---
 
 ## Deployment
 
-The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production.
+The project is containerized for easy deployment. Docker Compose handles multi-service orchestration. Make sure the required environment variables are set before deploying to production. While deploying, please make sure that the Postgres DB script is running locally and that the user and session tables are not empty.
 
 ---
 
@@ -201,16 +201,25 @@ This section outlines the completed updates from Iteration 2, the planned implem
 
 ### 2. **Frontend**
 - **UI/UX Improvements**: Enhanced the overall UI design to improve the user experience.
-- **New Pages**: Added **Profile** and **Settings** pages to increase user interaction options.
-- **Download Feature**: Introduced a new button to download content as a **PDF**, providing more utility for users.
+- **Save Chat Feature**: Ability to save chat sessions into the Postgres DB.
+- **Integration with Backend**: Frontend is officially connected to the SB Backend and Python AI service.
+- **Sign up New User**: Users are now able to create a new user.
+- **Login with JWT Authentication**: Users are now logged in using the JWT Auth mechanism rather than manually as it was in Iteration 1.
+- **Chatbot connected to Python AI Service**: Users are now able to use the Chatbot feature, which is now connected with the Python AI Service rather than having to use Postman for the UI.
 
-### 3. **Backend**
+### 3. **SB Backend**
 - **Data Handling**: Improved data processing for increased robustness and efficiency.
 - **Authentication**: Added an authentication feature with **JWT (JSON Web Token)** to strengthen security measures.
+- **Security**: Having password hashed to increase user authentication security layer.
 
 ### 4. **AI-Service**
-- **Prompt Library**: Built a prompt library using **Retrieval-Augmented Generation (RAG)** to improve the response quality.
+- **Prompt Library**: Built a 600+ entry prompt library using **Retrieval-Augmented Generation (RAG)** to improve the scope of query and response quality. This increased the scope of query from being limited to the cs department programs and courses to other topics including but not limited to Immigration status, Student work-life balance, Communication with Instructors and other students, and many more topics.
 - **Chatbox Enhancements**: Enhanced chatbox response handling to ensure accurate and contextually relevant interactions.
+
+### 5. **Postgres Database**
+- **Storedproc**: Adding stored procedure for easy future use, functions created for easy table insertion, update, and retrieval.
+- **Working DB for future iteration**: Functional database ready for future use to integrate with the Python AI service, to replace the current courses.csv and programs.csv files usage as RAG sources. This change allows easy scalability for expanding the coverage of the chatbot service for new programs and courses added, or the expansion of service for the other departments within BU MET College.
+  
 
 ---
 
@@ -221,18 +230,20 @@ This section outlines the completed updates from Iteration 2, the planned implem
 - **Unit Testing**: Introduce more comprehensive unit tests for higher code quality and reliability.
 
 ### 2. **Frontend**
-- **Backend Integration**: Complete the integration with the backend services to facilitate seamless data exchange.
+- **Backend Integration**: Complete the full integration with the backend services to facilitate seamless data exchange.
 - **UI/UX Enhancements**: Apply further UI/UX refinements based on user feedback to enhance the overall usability.
+- **Download Feature**: Introduced a new button to download content as a **PDF**, providing more utility for users.
 
-### 3. **Backend**
-- **Security**: Continue to enhance security features to protect sensitive user data.
-- **End-to-End Integration**: Establish robust end-to-end integration with the frontend for real-time data interactions.
+### 3. **SB Backend**
+- **Security**: Continue to enhance our security features to protect sensitive user data, possibly the introduction of Captcha.
+- **End-to-end Integration**: Establish robust end-to-end integration for real-time data interactions with the frontend service.
 
 ### 4. **AI-Service**
 - **No Additional Implementations**: The current functionality of the AI service is sufficient for this iteration.
 
 ### 5. **Code Quality**
 - **Linting**: Implement linting checks and custom lint rules tailored to our codebase to ensure code consistency and maintainability.
+- **Formatting**: Reformatting and cleaning up files and irrelevant code.
 
 ### 6. **Continuous Integration (CI)**
 - **CI Process**: Enhance the CI process to streamline development, testing, and deployment workflows.
@@ -241,7 +252,7 @@ This section outlines the completed updates from Iteration 2, the planned implem
 
 ## 📅 Summary
 With each iteration, we continue to improve the project's performance, security, and user experience. 
-Iteration 2 focuses on enhancing integration and testing, while Iteration 3 will expand on these improvements to provide a fully integrated and secure application.
+Iteration 2 focuses on enhancing integration and testing, while Iteration 3 will expand on these improvements to provide a fully integrated, secure, and tested application.
 
 --- 
 
