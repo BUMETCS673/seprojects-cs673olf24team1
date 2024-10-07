@@ -3,6 +3,7 @@ import availableCourses from '../assets/availableCourses';
 import { useUser } from '../context/UserContext';
 import { useAuth } from '../context/AuthContext';
 import { User } from '../interfaces/User';
+import { useNavigate } from 'react-router-dom';
 
 
 // Define the type for the form state
@@ -22,6 +23,8 @@ interface FormState {
 }
 
 export const useSignUpForm = () => {
+
+    const navigate = useNavigate();
 
     const { signUp } = useAuth();
     // State to manage form data
@@ -92,8 +95,10 @@ export const useSignUpForm = () => {
             formState.coursesTaken,
         );
 
-        // Your logic to submit the form goes here...
-        setSuccessMessage('Signup successful!'); // Example success message
+        if (result) {
+            navigate('/login');
+        }
+
     };
 
     // Handle input change for course selection

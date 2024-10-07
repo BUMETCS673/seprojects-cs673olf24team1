@@ -8,8 +8,22 @@ const ChatService = {
 
     // Fetches chat history for a given session ID
     getSessionHistory: async (userId: string): Promise<ChatSession[]> => {
+        const token = sessionStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
         try {
-            const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                },
+            );
             if (!response.ok) {
                 throw new Error('Failed to fetch chat history');
             }
@@ -28,8 +42,22 @@ const ChatService = {
 
     // Fetches chat history for a given session ID
     getMessageHistory: async (userId: string, sessionId: string): Promise<Message[]> => {
+        const token = sessionStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
         try {
-            const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}`);
+            const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    }
+                },
+            );
             if (!response.ok) {
                 throw new Error('Failed to fetch chat history');
             }
@@ -73,7 +101,7 @@ const ChatService = {
     // Sends a message to the chat API and retrieves the response
     getChatBotResponse: async (input: string, studentName: string, userId: string): Promise<Message | null> => {
         const token = sessionStorage.getItem('token');
-        
+
         if (!token) {
             throw new Error('No authentication token found');
         }
@@ -108,12 +136,19 @@ const ChatService = {
 
     // Uploads a chat message to the API
     saveChatSession: async (userId: number, messages: Message[]): Promise<boolean> => {
+        const token = sessionStorage.getItem('token');
+
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
         messages.shift(); // remove the greeting message.
         try {
             const response = await fetch(`${API_BASE_URL}/sessions/user/${userId}/conversation`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     conversation: createChatJson(messages),
