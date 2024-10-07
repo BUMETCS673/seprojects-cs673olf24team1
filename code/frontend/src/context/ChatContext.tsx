@@ -6,12 +6,14 @@ import ChatService from '../services/chatService';
 
 
 interface ChatContextType {
-  activeSessionId: string;
   messages: Message[];
   error: string;
-  sessions: ChatSession[];
+  history: ChatSession[];
+  isActive: boolean;
   isSendingMessage: boolean;
   isFetchingNetworkData: boolean;
+  selectedSession: string;
+  isNewlyCreated: boolean;
   handleCreateNewSession: () => void;
   handleSelectSession: (sessionId: string) => void;
   handleSendMessage: (input: string) => void;
@@ -23,15 +25,6 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
-  // hard-coded value for the returned session id
-  const [s, setS] = useState<number>(1);
-
-  const setCachedActiveId = (sessionId: string) => sessionStorage.setItem('activeSessionId', sessionId);
-  const getCachedActiveId = (): string => {
-    const cachedActiveSessionId = sessionStorage.getItem('activeSessionId');
-    return cachedActiveSessionId ? cachedActiveSessionId : '';
-  }
-
   const setCachedSessions = (sessionHistory: ChatSession[]) => sessionStorage.setItem('chatSessions', JSON.stringify(sessionHistory));
   const getCachedSessions = () => {
     const cachedSessions = JSON.parse(sessionStorage.getItem('chatSessions') || '[]') as ChatSession[];
@@ -41,16 +34,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }));
   };
 
-  const generateSessionId = () => Math.random().toString(36).substring(2, 16);
-
-
   const { user } = useUser();
-  const [sessions, setSessions] = useState<ChatSession[]>(getCachedSessions());
-  const [activeSessionId, setActiveSessionId] = useState<string>(getCachedActiveId());
+  const [selectedSession, setSelectesSession] = useState<string>('none');
+  const [history, setHistory] = useState<ChatSession[]>(getCachedSessions());
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const [isNewlyCreated, setIsNewlyCreated] = useState<boolean>(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState<string>('');
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
-  const [isNewSessionCreated, setIsNewSessionCreated] = useState<boolean>(true);
   const [isFetchingNetworkData, setIsFetchingNetworkData] = useState<boolean>(true);
 
   const isValidInput = (input: string) => {
@@ -68,17 +59,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       isUser: true,
     };
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      newUserMessage,
-    ]);
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
     setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
     const response = await ChatService.getChatBotResponse(input, user.fName, user.authId);
-
-    const fakeResponse = "Hi there. This is a fake AI response message";
 
     if (response) {
       const newAIMessage: Message = {
@@ -93,14 +79,16 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       setError('Error occurred while getting the AI response');
     }
     setIsSendingMessage(false);
+    setIsNewlyCreated(false);
   };
 
-  const handleSelectSession = (sessionId: string) => {
-    if (sessionId !== activeSessionId) {
-      console.log(`selecting ${sessionId}`)
-      setIsNewSessionCreated(false);
-      setActiveSessionId(sessionId);
-    }
+  const handleSelectSession = async (sessionId: string) => {
+
+    const messages = await ChatService.getMessageHistory(user.userId.toString(), sessionId);
+
+    setIsActive(false);
+    setMessages(messages);
+    setSelectesSession(sessionId);
   };
 
   const handleCreateNewSession = () => {
@@ -109,110 +97,49 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       timestamp: new Date(),
       isUser: false,
     };
-  
-    setIsNewSessionCreated(true);
-    setActiveSessionId("new");
+
+    setIsActive(true);
     setMessages([greetingMessage]);
+    setSelectesSession('none');
+    setIsNewlyCreated(true);
   };
-  
-
-  const loadExistingChatData = async (sessionId: string) => {
-    if (sessionId === '') return;
-
-    // Load chat messages from the API
-    // Example const existingMessages = await ChatContext.getChatHistory();
-
-    const existingMessages: Message[] = [
-      {
-        text: "This is the existing chat message from the server",
-        timestamp: new Date(Date.UTC(2024, 10, 2, 0)),
-        isUser: false,
-      },
-    ];
-
-    if (existingMessages) {
-      setMessages(existingMessages);
-    } else {
-      setError('Failed to load chat messages');
-    }
-  }
 
   const handleDeleteSessionHistory = async (sessionId: string) => {
-    const updatedSessions = sessions.filter((session) => session.id !== sessionId);
-    setSessions(updatedSessions);
-
-    // If the deleted session was the active session, reset to the latest session
-    if (activeSessionId === sessionId) {
-      if (updatedSessions.length > 0) {
-        const latestSession = updatedSessions.sort((a, b) => new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime())[0];
-        setActiveSessionId(latestSession.id);
-      } else {
-        setActiveSessionId('');
-      }
-    }
-  };
-
-  const fetchSessionHistory = async () => {
-    // Get session history from API
-    // Example const sessionHistory = await UserService.getSessionHistory();
-
-    // Fake session history
-    const sessionHistory: ChatSession[] = [];
-
-    if (sessionHistory.length > 0) {
-      const lastSessionId = sessionHistory[sessionHistory.length - 1].id
-      setActiveSessionId(lastSessionId);
-    }
-    setSessions(sessionHistory);
+    return; // need db implementation
+    const updatedSessions = history.filter((session) => session.id !== sessionId);
+    setHistory(updatedSessions);
   };
 
   const handleSaveChatSession = async () => {
-
-    const sessionId = await ChatService.saveChatSession(user.userId, messages, s);
-
-    const newSession: ChatSession = {
-      id: sessionId.toString(),
-      createdTime: new Date(),
+    if (isNewlyCreated) return;
+    const result = await ChatService.saveChatSession(user.userId, messages);
+    if (result) {
+      const history = await ChatService.getSessionHistory(user.userId.toString());
+      setHistory(history);
+      handleCreateNewSession();
     }
-
-    setS(sessionId);
-    setSessions((prevSessions) => [...prevSessions, newSession]); 
   }
 
   const onInit = async () => {
-
-    // await fetchSessionHistory();
-
-    const isNull = !activeSessionId
-    const isExisted = sessions.some((session: ChatSession) => session.id === activeSessionId);
-
-    if (isNull || !isExisted) {
-      handleCreateNewSession();
-    } else {
-      await loadExistingChatData(activeSessionId);
-    }
-    setIsFetchingNetworkData(false); 
+    handleCreateNewSession();
+    setIsFetchingNetworkData(false);
+    
+    const history = await ChatService.getSessionHistory(user.userId.toString());
+    setHistory(history);
   };
 
   const onDismount = () => {
     sessionStorage.removeItem('activeSessionId');
     sessionStorage.removeItem('chatSessions');
-    setSessions([]);
-    setActiveSessionId('');
+    setHistory([]);
     setMessages([]);
     setError('');
   };
 
   // Caching on change
   useEffect(() => {
-    setCachedSessions(sessions);
-    setCachedActiveId(activeSessionId);
-  }, [sessions, activeSessionId]);
-
-  // Load new messages on change
-  useEffect(() => {
-    !isNewSessionCreated ? loadExistingChatData(activeSessionId) : setIsNewSessionCreated(false);
-  }, [activeSessionId]);
+    setCachedSessions(history);
+  }, [history]);
 
   // Set up and tear down
   useEffect(() => {
@@ -221,12 +148,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const exportedValues = {
-    activeSessionId,
     messages,
-    sessions,
+    history,
     error,
+    isNewlyCreated,
+    isActive,
     isSendingMessage,
     isFetchingNetworkData,
+    selectedSession,
     handleCreateNewSession,
     handleSelectSession,
     handleSendMessage,

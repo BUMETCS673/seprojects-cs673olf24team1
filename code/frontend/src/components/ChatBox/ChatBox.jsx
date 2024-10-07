@@ -14,9 +14,10 @@ const ChatBox = () => {
   const {
     handleSendMessage, // Function to handle sending messages
     messages,          // Array of chat messages
+    isActive,
     isSendingMessage,  // Boolean indicating if a message is currently being sent
     error,             // Error messages (if any)
-    sessions,          // Array of chat sessions
+    history,          // Array of chat sessions
   } = useChat(); // Accessing the chat context
 
   // Local state management for the profile panel and input field
@@ -25,7 +26,7 @@ const ChatBox = () => {
 
   // Toggle the visibility of the profile panel
   const toggleProfilePanel = () => {
-    setProfilePanelOpen(!isProfilePanelOpen);
+    // setProfilePanelOpen(!isProfilePanelOpen);
   };
 
   // Handle changes to the input field
@@ -88,9 +89,7 @@ const ChatBox = () => {
           {isSendingMessage ? <div className='loading-indicator'><PacmanLoader color="#e54500" /></div> : null}
         </div>
         {/* Input field only visible when there are sessions */}
-        {messages.length === 0 ? null :
-          <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />
-        }
+        {isActive ? <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} /> : null}
       </div>
     </div>
   );
