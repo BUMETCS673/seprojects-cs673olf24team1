@@ -1,5 +1,5 @@
 
-# 🦅 Academic Advising Chatbot
+# 🦅 Academic Navigator Chatbot
 
 This project provides a web application designed to enhance BU MET students' experience in getting information on their CS program and courses, with additional features such as: selecting courses based on their career interests and preferences using our custom-made recommendation algorithm and answering questions from visa-related issues as an International Student to other student life queries. By creating this product, we can help the student advising team scale their accessibility to enrich their service to assist the students within the BU MET CS department. Our application integrates a chatbot built with ChatGPT-4o via Langchain API service and the Langchain tooling services for RAG retrieval from our courses.csv, programs.csv, and promptlib.json files to enhance users' scope of query capability. 
 
