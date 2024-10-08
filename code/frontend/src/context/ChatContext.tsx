@@ -93,7 +93,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleCreateNewSession = () => {
     const greetingMessage: Message = {
-      text: `Hi ${user["fname"]}! How can I help you today?`,
+      text: `Hi! How can I help you today?`,
       timestamp: new Date(),
       isUser: false,
     };

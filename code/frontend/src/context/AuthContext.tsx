@@ -85,25 +85,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         };
 
         try {
-            // Call the authentication service to create a new user
-            // const authResult = authService.signup();
-
             // Push the new user to the backend
             const userId = await UserService.createUser(newUser);
-
-            console.log(userId);
 
             if (userId > 0) {
                 newUser.userId = userId;
 
-                // Update user context with new user details
-                updateUser(newUser);
-
-                // Uncomment when JWT is ready
-                // sessionStorage.setItem('token', newUser.token); // Store JWT token in local storage
-                setIsAuth(true);
-                setIsLoading(false);
-                return true;
+                const isLoggedIn = await authService.loginUser(authId, password);
+                if (isLoggedIn) {
+                    updateUser(newUser);
+                    setIsAuth(true);
+                    setIsLoading(false);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 console.log('An error occurred when signing up the user'); // Log error
                 setIsAuth(false); // Set authentication status to false
@@ -127,9 +123,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             const isLoggedIn = await authService.loginUser(authId, password);
 
             if (isLoggedIn) {
-                console.log("here")
-                console.log(sessionStorage.getItem('token'));
-                
                 setIsAuth(true); // Set authentication status to true
                 setIsLoading(false); // Reset loading state
                 setIsIncorrectPassword(false); // Reset incorrect password state
@@ -149,6 +142,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 setIsAuth(false); // Set authentication status to false
                 setIsLoading(false); // Reset loading state
                 setIsIncorrectPassword(true); // Indicate incorrect password
+                alert("'Invalid username or password'")
                 throw new Error('Invalid username or password'); // Throw error for invalid credentials
             }
         } catch (error) {

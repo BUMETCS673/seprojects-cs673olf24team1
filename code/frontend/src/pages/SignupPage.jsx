@@ -19,7 +19,6 @@ import { useSignUpForm } from './useSignUpForm';
 
 
 const SignupPage = () => {
-  const navigate = useNavigate();
   const {
     formState,
     showPassword,
@@ -35,14 +34,6 @@ const SignupPage = () => {
     handleCourseSelect,
     handleRemoveCourse,
   } = useSignUpForm();
-
-  const { isAuth } = useAuth();
-
-  useEffect(() => {
-    if (isAuth === true) {
-      navigate('/chat');
-    }
-  }, [isAuth]);
 
 
   return (
