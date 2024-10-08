@@ -1,0 +1,46 @@
+version: '3'
+services:
+  selenium-hub:
+    image: selenium/hub:4.5.0
+    ports:
+      - "4444:4444"
+    environment:
+      - GRID_MAX_SESSION=5
+      - GRID_BROWSER_TIMEOUT=3000
+      - GRID_TIMEOUT=3000
+
+  chrome-node:
+    image: selenium/node-chrome:4.5.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - NODE_MAX_SESSION=5
+      - NODE_MAX_INSTANCES=5
+
+  firefox-node:
+    image: selenium/node-firefox:4.5.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - NODE_MAX_SESSION=5
+      - NODE_MAX_INSTANCES=5
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - selenium-hub
+    environment:
+      - SELENIUM_HUB_HOST=selenium-hub
+    ports:
+      - "8080:8080"  # Expose port if your app needs it
+    volumes:
+      - .:/app
+    command: ["mvn", "clean", "test"]

@@ -1,0 +1,93 @@
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.profile-form-container form {
+    /* background-color: #f8f9fa; */
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0px auto;
+}
+
+.user-avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.user-avatar {
+    max-width: 100%;
+    height: auto;
+}
+
+.profile-form-container label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+.profile-form-container input[type="text"],
+.profile-form-container input[type="email"],
+.profile-form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #555;
+    transition: border-color 0.3s ease;
+}
+
+
+/* Change border color when input is focused */
+
+.profile-form-container input[type="text"]:focus,
+.profile-form-container input[type="email"]:focus,
+.profile-form-container select:focus {
+    border-color: #e54500;
+    outline: none;
+}
+
+.profile-form-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #e54500;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+/* Change button color on hover */
+
+button:hover {
+    background-color: #019a76;
+}
+
+
+/* Responsive design: Make form take full width on smaller screens */
+
+@media (max-width: 600px) {
+    form {
+        padding: 15px;
+        max-width: 100%;
+    }
+    button {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,282 @@
+.main {
+    flex: 1;
+    /* min-height: 100vh; */
+    max-height: 100vh;
+    padding-bottom: 15vh;
+    position: relative;
+}
+
+.main .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 22px;
+    padding: 20px;
+    color: #e54500;
+}
+
+.main .nav img {
+    width: 40px;
+    border-radius: 20%;
+}
+
+.branding {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.greet {
+    margin: 30px 0px;
+    font-size: 56px;
+    color: #c4c7c5;
+    font-weight: 500;
+    padding: 0px;
+}
+
+.greet span {
+    background: -webkit-linear-gradient(16deg, #4b90ff, #ff5546);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 18px;
+}
+
+.search-box div {
+    display: flex;
+    gap: 15px;
+}
+
+.search-box img {
+    width: 24px;
+    cursor: pointer;
+}
+
+.bottom-info {
+    font-size: 13px;
+    margin: 15px auto;
+    text-align: center;
+    font-weight: 300;
+}
+
+.result {
+    padding: 0% 5%;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+
+.result::-webkit-scrollbar {
+    display: none;
+}
+
+.result-title {
+    margin: 20px 0px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.result img {
+    width: 20px;
+    border-radius: 20%;
+}
+
+.result-data {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+}
+
+.loader {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.animated-bg {
+    border-radius: 4px;
+    border: none;
+    animation: loader 3s infinite linear;
+    background-color: #f6f7f8;
+    background: linear-gradient(to right, #9ed7ff, #ffffff, #9ed7ff);
+    background-size: 800px 50px;
+    height: 20px;
+}
+
+.chat-container {
+    display: flex;
+    /* Enable flexbox for layout */
+    flex-direction: column;
+    /* Stack children vertically */
+    max-width: 800px;
+    /* Set a maximum width for the container */
+    margin: 0px auto;
+    /* Center the container horizontally */
+    height: 100%;
+    /* Use full viewport height */
+    padding: 20px;
+    /* Add padding inside the container */
+    box-sizing: border-box;
+    /* Include padding in height and width */
+}
+
+.chat-history-container {
+    flex: 1;
+    /* Allow the chat history to take up available space */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Adjust padding as needed */
+    scrollbar-width: none;
+}
+
+/* Hide scrollbar for Webkit browsers */
+.chat-history-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, and Edge */
+}
+
+.no-sessions-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #888;
+}
+
+.no-session-message p {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+.new-chat-icon {
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+}
+
+
+@media (max-width: 600px) {
+    .chat-container {
+        max-width: 100%;
+        /* Make it full width on smaller screens */
+        padding: 10px;
+        /* Reduce padding */
+    }
+}
+
+
+@keyframes loader {
+    0% {
+        background-position: -800px 0
+    }
+
+    100% {
+        background-position: 800px 0
+    }
+}
+
+
+@media (max-width:600px) {
+    .main-bottom input {
+        flex: none;
+        width: 140px;
+    }
+
+    .main-bottom img {
+        width: 20px;
+    }
+
+    .search-box {
+        padding: 5px 10px;
+    }
+
+    .search-box div {
+        gap: 5px;
+    }
+}
+
+
+/* Profile Pannel */
+
+
+/* Avatar styling */
+
+.avatar-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+/* Profile Panel Styling */
+
+.profile-panel {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    /* Initially hidden on the right */
+    width: 500px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* Enables vertical scrolling */
+}
+
+
+/* When the panel is open */
+
+.profile-panel.open {
+    right: 0;
+    /* Slides the panel into view */
+}
+
+
+/* Close button */
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-bottom: 20px;
+    color: #e54500;
+}
+
+
+/* Overlay to darken the background */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 500;
+}

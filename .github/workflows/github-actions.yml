@@ -1,0 +1,184 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - stage
+      - develop
+    paths:
+      - "frontend/**"
+      - "backend/**"
+      - "ai_service/**"
+      - "tests/**"            # Ensure tests folder is included
+
+jobs:
+  # Job 1: Lint and Test React Frontend
+  frontend:
+    name: React Frontend Linting and Testing
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'frontend') || contains(github.event.commits[*].message, 'frontend')
+    
+    steps:
+     # - name: Checkout code
+      #  uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: cd frontend && npm install
+
+      - name: Lint React code
+        run: | 
+          cd frontend npx eslint . --rule 'max-len: off' --rule 'no-warning-comments: off'
+
+      - name: Run React Unit Tests
+        run: cd frontend && npm test
+
+  # Job 2: Build and Test Spring Boot Backend
+  backend:
+    name: Spring Boot Backend Build and Test
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'backend') || contains(github.event.commits[*].message, 'backend')
+    
+    services:
+      mongo:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: chat_db
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+
+      - name: Build and Test Spring Boot
+        run: |
+          cd backend
+          ./mvnw clean install
+          ./mvnw test
+
+      - name: Run Integration Tests
+        run: cd backend && ./mvnw verify
+
+  # Job 3: Lint, Test, and Deploy Python AI Service
+  python-ai-service:
+    name: Python AI Service Linting and Testing
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'ai_service') || contains(github.event.commits[*].message, 'ai_service')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          cd ai_service
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Lint Python code
+        run: cd ai_service && flake8 --ignore=E501,E265 .
+
+      - name: Run Python Unit Tests
+        run: cd ai_service && pytest
+
+      - name: Run Integration Test for Hugging Face API
+        run: |
+          cd ai_service
+          source venv/bin/activate
+          python test_huggingface_integration.py
+
+  # Job 4: Cucumber BDD Tests (UI + API)
+  bdd-tests:
+    name: Cucumber BDD Testing (UI and API)
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'tests') || contains(github.event.commits[*].message, 'tests')
+
+    services:
+      mongo:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: chat_db
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Install Java
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+
+      # Install Google Chrome
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # Set up ChromeDriver
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          version: latest
+
+      # Install Maven and run Cucumber tests
+      - name: Install Maven and Run Tests
+        run: |
+          cd tests
+          mvn clean install
+          mvn test
+
+      # Archive Cucumber reports
+      - name: Archive Cucumber Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: cucumber-reports
+          path: tests/target/cucumber-reports/
+
+  # Shared Job: Super-Linter
+  super-lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          IGNORE_ERRORS: "E501,E265"

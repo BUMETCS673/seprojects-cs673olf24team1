@@ -1,0 +1,13 @@
+.search-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: #ffd0bc; /* Background color for the input field */
+    padding: 10px 20px; /* Padding inside the input field */
+    border-radius: 50px; /* Rounded corners */
+    position: sticky; /* Stick to the bottom of the container */
+    bottom: 0; /* Position it at the bottom */
+    z-index: 1; /* Ensure it stays above the chat history */
+    width: 100%;  
+}

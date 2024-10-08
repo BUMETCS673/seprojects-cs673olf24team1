@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: chatbot_db
+      POSTGRES_USER: groupone
+      POSTGRES_PASSWORD: groupOneRocks
+
+  # AI Service (FastAPI)
+  ai-service:
+    build: 
+      context: ./code/ai-service/fast-api
+      dockerfile: Dockerfile
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./code/ai-service/fast-api:/app
+    env_file:
+      - .env
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9080"]
+
+  # Backend (Spring Boot)
+  course-builder-chatbot-ms:
+    build:
+      context: ./code/backend/course-builder-chatbot-ms
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chatbot_db
+      SPRING_DATASOURCE_USERNAME: groupone
+      SPRING_DATASOURCE_PASSWORD: groupOneRocks
+      AI_SERVICE_URL: http://ai-service:9080
+
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./code/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - course-builder-chatbot-ms
+
+volumes:
+  postgres_data:
+
+networks:
+     default:
+       name: seprojects-cs673olf24team1_default
