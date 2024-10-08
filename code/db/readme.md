@@ -85,6 +85,163 @@ CREATE INDEX idx_sessions_created_at ON sessions(created_at);
 
 ```
 
+## 📜 Stored Procedures
+### Storedproc: Update the `user` table when a new user is created through the sign-up page
+This procedure adds a new user to the `users` table.
+```sql
+CREATE OR REPLACE PROCEDURE add_user(
+    p_auth_id VARCHAR,
+    p_email VARCHAR,
+    p_password_hash VARCHAR,
+    p_f_name VARCHAR,
+    p_l_name VARCHAR,
+    p_program_code VARCHAR,
+    p_course_taken JSONB,
+    p_path_interest VARCHAR,
+    p_course_to_take INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO users (auth_id, email, password_hash, f_name, l_name, program_code, course_taken, path_interest, course_to_take)
+    VALUES (p_auth_id, p_email, p_password_hash, p_f_name, p_l_name, p_program_code, p_course_taken, p_path_interest, p_course_to_take);
+END;
+$$;
+
+```
+
+### Storedproc: Retrieve `auth_id` when the user wants to log in
+This function retrieves the `auth_id` for a user based on their `email` and `password hash`, which can be used to verify the user's identity.
+``` sql
+CREATE OR REPLACE FUNCTION get_auth_id(p_email VARCHAR, p_password_hash VARCHAR)
+RETURNS VARCHAR
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_auth_id VARCHAR;
+BEGIN
+    SELECT auth_id INTO v_auth_id
+    FROM users
+    WHERE email = p_email AND password_hash = p_password_hash;
+    
+    RETURN v_auth_id;
+END;
+$$;
+```
+
+### Storedproc: Insert a new `session` when a new session is created
+This procedure creates a new entry in the `sessions` table for user interactions.
+```sql
+CREATE OR REPLACE PROCEDURE add_session(
+    p_user_id INT,
+    p_end_chattime TIMESTAMP WITH TIME ZONE,
+    p_conversation JSONB
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO sessions (user_id, end_chattime, conversation)
+    VALUES (p_user_id, p_end_chattime, p_conversation);
+END;
+$$;
+
+```
+
+### Storedproc: Update the `session` table when the save chat button is pressed, adding a new JSONB file to the conversation field
+This procedure appends new chat messages to an existing `conversation` in the `sessions` table.
+```sql
+CREATE OR REPLACE PROCEDURE update_session_conversation(
+    p_session_id INT,
+    p_new_conversation JSONB
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE sessions
+    SET conversation = conversation || p_new_conversation
+    WHERE session_id = p_session_id;
+END;
+$$;
+
+```
+### Storedproc: Update the `session` table when the new chat button is pressed, adding the `end time` timestamp to the field
+This procedure updates the `end time` of a `session` when a new chat is started.
+```sql
+CREATE OR REPLACE PROCEDURE update_session_end_time(
+    p_session_id INT,
+    p_end_chattime TIMESTAMP WITH TIME ZONE
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE sessions
+    SET end_chattime = p_end_chattime
+    WHERE session_id = p_session_id;
+END;
+$$;
+
+```
+### Storedproc: Retrieve `session information` using `auth ID` for the Python AI service
+This function retrieves session information, including the `session ID`, `end chat time`, and `conversation history` for a specified user.
+```sql
+CREATE OR REPLACE FUNCTION get_session_info(p_auth_id VARCHAR)
+RETURNS TABLE(session_id INT, end_chattime TIMESTAMP WITH TIME ZONE, conversation JSONB)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT s.session_id, s.end_chattime, s.conversation
+    FROM sessions s
+    INNER JOIN users u ON s.user_id = u.user_id
+    WHERE u.auth_id = p_auth_id;
+END;
+$$;
+
+
+```
+
+### Example of Usage
+Create new `User`: To add a new user to the users table, call the add_user procedure with the required parameters.
+```sql
+CALL add_user('auth_005', 'user5@example.com', 'hashed_password5', 'Eve', 'Adams', 'CS105', '["526, 622"]', 'Cybersecurity', 1);
+```
+Description: This command creates a new user named Eve Adams with their authentication ID, email, hashed password, program code, and other details.
+
+
+Log in and retrieve the `auth_id`: To authenticate a user and get their auth_id, use the get_auth_id function.
+```sql
+SELECT get_auth_id('user5@example.com', 'hashed_password5');
+```
+Description: This command checks the credentials of the user and returns their auth_id if the email and password hash match.
+
+Add a new `session`: To create a new session when a user interacts with the system, call the add_session procedure.
+```sql
+CALL add_session(1, '2024-10-01T12:00:00Z', '[{"user": "Hello", "chatbot": "Hi!"}]');
+```
+Description: This command creates a new session for the user with ID 1, setting the end chat time and initial conversation data.
+
+Update the `conversation` in a `session`: When a user saves their chat, append the new messages to the existing conversation.
+```sql
+CALL update_session_conversation(1, '[{"user": "New message", "chatbot": "Response"}]');
+```
+Description: This command updates the conversation in the session with ID 1 by adding a new JSON object with the user's message and chatbot response.
+
+Update the `end time` of a session: To mark the end time of a chat session, use the update_session_end_time procedure.
+```sql
+CALL update_session_end_time(1, '2024-10-01T12:30:00Z');
+```
+Description: This command sets the end chat time for the session with ID 1 to the specified timestamp.
+
+Retrieve `session info` using `auth_id` for using the Python AI service: To get all session details for a specific user, use the get_session_info function.
+```sql
+SELECT * FROM get_session_info('auth_001');
+```
+This command retrieves all session records associated with the user ID 1, including the session ID, end chat time, and conversation data.
+
+
+
+
+
 ## 📊 Sample Queries
 
 ### 1. **Basic Select Queries**

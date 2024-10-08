@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { assets } from '../../assets/assets';
 import { useChat } from '../../context/ChatContext';
 import './Sidebar.css';
 
 const ChatHistory = () => {
   const {
-    sessions,
-    activeSessionId,
+    history,
     isFetchingNetworkData,
     error,
+    selectedSession,
     handleDeleteSessionHistory,
     handleSelectSession,
   } = useChat();
@@ -28,27 +28,25 @@ const ChatHistory = () => {
       {/* Show loading indicator when fetching data */}
       {isFetchingNetworkData ? (
         <p>Loading chat history...</p>
-      ) : sessions.length > 0 ? (
+      ) : history.length > 0 ? (
         <>
-          {sessions
+          {history
             .sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime)) // Sort by createdTime (latest first)
             .map((session) => (
-              <div 
-                key={session.id} 
-                className={`recent-entry-history ${activeSessionId === session.id ? 'active' : ''}`} 
+              <div
+                key={session.id}
+                className={`recent-entry-history ${selectedSession === session.id ? 'active' : ''}`}
                 onClick={() => handleSelectSession(session.id)}
               >
                 <img src={assets.message_icon} alt="" />
-                <span>{new Date(session.createdTime).toUTCString()}</span> {/* Convert to UTC string */}
-                <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
+                <span>{session.createdTime.toUTCString()}</span> {/* Convert to UTC string */}
+                {/* <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
                   <img src={assets.clear} alt="clear" />
-                </div>
+                </div> */}
               </div>
             ))}
         </>
-      ) : (
-        <p>No chat history available.</p>
-      )}
+      ) : null}
     </div>
   );
 }

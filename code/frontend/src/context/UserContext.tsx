@@ -1,18 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-
-interface User {
-    buId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    programType: string;
-    programName: string;
-    path_interest: string;
-    courses_to_take: number;
-    courses_taken: string[];
-    chat_session_ids: string[];
-    isNew: boolean;
-}
+import { User } from '../interfaces/User';
 
 interface UserContextType {
     user: User;
@@ -24,7 +11,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User>(() => {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = sessionStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : {
             buId: '',
             firstName: '',
@@ -40,9 +27,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         };
     });
 
-    // Save user data to localStorage whenever it changes
+    // Save user data to sessionStorage whenever it changes
     useEffect(() => {
-        localStorage.setItem('user', JSON.stringify(user));
+        sessionStorage.setItem('user', JSON.stringify(user));
     }, [user]);
 
     const updateUser = (newUser: Partial<User>) => {
@@ -51,20 +38,23 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const resetUser = () => {
         const initialUserState: User = {
+            authId: '',
+            userId: -1,
             buId: '',
-            firstName: '',
-            lastName: '',
+            fName: '',
+            lName: '',
             email: '',
+            password: '',
             programType: '',
-            programName: '',
-            path_interest: '',
-            courses_to_take: 0,
-            courses_taken: [],
-            chat_session_ids: [],
+            programCode: '',
+            pathOfInterest: '',
+            coursesToTake: 0,
+            coursesTaken: [],
+            chatSessionIds: [],
             isNew: true,
         };
         setUser(initialUserState);
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
     };
 
     return (

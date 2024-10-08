@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
+// Created by Poom
 import React, { useState } from 'react';
 // import './ProfileForm.css';
 import { assets } from '../assets/assets';
-import eaglelogo from '../assets/images/eagle_logo.png';
+import bu_logo from '../assets/images/bu_logo.png';
 import '../assets/styles/NewProfilePage.css'
 import '../components/Profile/ProfileForm.css'
 import CourseTakenField from '../components/Profile/CourseTakenField'
@@ -10,13 +11,15 @@ import { Link } from 'react-router-dom';
 
 function NewProfilePage() {
   const [formData, setFormData] = useState({
-    userName: 'John Doe',
-    email: 'john@bu.edu',
-    id: 'U123456',
+    password: 'johndoe_password',
+    fName: 'John',
+    lName: 'Doe',
+    buId: 'U123456',
     programType: 'MS degree',
-    programName: '',
-    pathOfInterest: '',
-    coursesToTake: '3'
+    programCode: 'mssd',
+    courseTaken: [],
+    pathOfInterest: 'ai/ml',
+    coursesToTake: 3
   });
 
   const handleChange = (e) => {
@@ -37,7 +40,7 @@ function NewProfilePage() {
         {/* left panel: Profile section */}
         <div className='profile-sidebar'>
             <div className="top">
-                <img src={eaglelogo} alt="eagle-logo" className="profile-sidebar-logo" />
+                <img src={bu_logo} alt="bu-logo" className="profile-sidebar-logo" />
             </div>
         </div>
         
@@ -57,24 +60,36 @@ function NewProfilePage() {
                             {/* row 1 */}
                             <div className='d-flex flex-row'>
                                 <div className='form-profile d-flex'>
-                                    {/* username */}
+
+                                    {/* password */}
                                     <div className='col-3 me-3'>
-                                        <label htmlFor="">Username</label>
+                                        <label>Password</label>
                                         <input
-                                            type="text"
-                                            name="userName"
-                                            value={formData.userName}
+                                            type="password"
+                                            name="password"
+                                            value={formData.password}
                                             onChange={handleChange}
                                         />
                                     </div>
 
-                                    {/* email address */}
+                                    {/* f_name */}
                                     <div className='col-3 me-3'>
-                                        <label>Email</label>
+                                        <label>First Name</label>
                                         <input
-                                            type="email"
-                                            name="email"
-                                            value={formData.email}
+                                            type="first name"
+                                            name="fName"
+                                            value={formData.fName}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+
+                                    {/* l_name */}
+                                    <div className='col-3 me-3'>
+                                        <label>Last Name</label>
+                                        <input
+                                            type="last name"
+                                            name="lName"
+                                            value={formData.lName}
                                             onChange={handleChange}
                                         />
                                     </div>
@@ -84,8 +99,8 @@ function NewProfilePage() {
                                     <label>BU ID</label>
                                         <input
                                             type="text"
-                                            name="id"
-                                            value={formData.id}
+                                            name="buId"
+                                            value={formData.buId}
                                             onChange={handleChange}
                                         />
                                     </div>
@@ -105,6 +120,18 @@ function NewProfilePage() {
                                             onChange={handleChange}
                                         >
                                             <option value="MS degree">MS degree</option>
+                                        </select>
+                                    </div>
+
+                                    {/* program type */}
+                                    <div className='col-4 me-3'>
+                                        <label>Program Name</label>
+                                        <select
+                                            name="programCode"
+                                            value={formData.programCode}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="mssd">MS of Software Development</option>
                                         </select>
                                     </div>
 
@@ -129,25 +156,19 @@ function NewProfilePage() {
                             {/* row 3 */}
                             <div className='d-flex flex-row'>
                                 <div className='form-profile d-flex'>
-                                    {/* program name */}
-                                    <div className='col-4 me-3'>
-                                        <label>Program Name</label>
-                                        <select
-                                            name="programName"
-                                            value={formData.programType}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="MS in Computer Science">MS in Computer Science</option>
-                                        </select>
-                                    </div>
-
                                     {/* Course to take */}
                                     <div className='col-4'>
-                                        <label>Courses to Take</label>
+                                        <label>Number of Courses to Take for the Semester</label>
                                         <select
                                             name="coursesToTake"
                                             value={formData.coursesToTake}
-                                            onChange={handleChange}
+                                            onChange={(e) => handleChange({ 
+                                                ...e, 
+                                                target: { 
+                                                    ...e.target, 
+                                                    value: Number(e.target.value) // Convert to integer
+                                                } 
+                                            })}
                                         >
                                             <option value="1">1</option>
                                             <option value="2">2</option>

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -29,25 +30,30 @@ public class ChatbotController {
 
     @PostMapping("/chat_conversation")
     public Mono<JsonNode> chatConversation(@RequestBody JsonNode request) {
-        String username = request.get("user_id").asText();
-        String message = request.get("message").asText();
+        return Mono.fromCallable(() -> {
+            String message = request.get("message").asText();
+            String username = request.get("user_id").asText();
+            User user = userService.getUserByUsername(username);
+            System.out.println("Processing request for user: " + username);
+            System.out.println("User retrieved: " + user);
+            ObjectNode aiRequest = objectMapper.createObjectNode();
+            aiRequest.put("user_id", user.getAuthId());
+            aiRequest.put("student_name", user.getAuthId());
+            aiRequest.put("message", message);
+            aiRequest.set("course_taken", objectMapper.valueToTree(convertStringToStringArr(user.getCourse_taken())));
+            aiRequest.put("path_interest", user.getPathInterest());
+            aiRequest.put("course_to_take", user.getCourseToTake());
 
-        User user = userService.getUserByUsername(username);
+            System.out.println("Request Body: " + aiRequest);
 
-        ObjectNode aiRequest = objectMapper.createObjectNode();
-        aiRequest.put("user_id", user.getAuthId());
-        aiRequest.put("student_name", user.getAuthId());
-        aiRequest.put("message", message);
-        List<String> courseTaken = convertStringToStringArr(user.getCourse_taken());
-        aiRequest.set("course_taken", objectMapper.valueToTree(courseTaken));
-        aiRequest.put("path_interest", user.getPathInterest());
-        aiRequest.put("course_to_take", user.getCourseToTake());
-
-        return webClient.post()
-                .uri("/api/v1/chatbot")
-                .bodyValue(aiRequest)
-                .retrieve()
-                .bodyToMono(JsonNode.class);
+            return aiRequest;
+        }).flatMap(aiRequest ->
+                webClient.post()
+                        .uri("/api/v1/chatbot")
+                        .bodyValue(aiRequest)
+                        .retrieve()
+                        .bodyToMono(JsonNode.class)
+        ).doOnError(error -> System.err.println("Error in chatConversation: " + error.getMessage()));
     }
 
     private List<String> convertStringToStringArr(String input) {
