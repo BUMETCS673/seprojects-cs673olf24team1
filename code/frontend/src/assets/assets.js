@@ -13,7 +13,6 @@ import message_icon from './images/message_icon.png'
 import code_icon from './images/code_icon.png'
 import send_icon from './images/send_icon.png'
 import gemini_icon from './images/gemini_icon.png'
-import eagle_logo from './images/eagle_logo.png'
 import logout from './images/logout.png'
 import clear from './images/clear.png'
 import email from './images/email.png'
@@ -21,6 +20,7 @@ import share from './images/share.png'
 import print from './images/print.png'
 import newchat from './images/newchat.png'
 import download from './images/download.png'
+import bu_logo from './images/bu_logo.png'
 
 export const assets = {
     history_icon,
@@ -38,12 +38,12 @@ export const assets = {
     code_icon,
     send_icon,
     gemini_icon,
-    eagle_logo,
     logout,
     clear,
     print,
     email,
     share,
     newchat,
-    download
+    download,
+    bu_logo,
 }

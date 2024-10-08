@@ -1,0 +1,47 @@
+.chat-bubble {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 15px;
+    max-width: 70%;
+  }
+  
+  /* User messages */
+  .chat-bubble.user {
+    /* background-color: #f1f1f1; */
+    justify-content: flex-start;
+    margin-right: auto;
+  }
+  
+  /* Bot messages */
+  .chat-bubble.bot {
+    /* background-color: #f1f1f1; */
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+  
+  /* Container for icon and text */
+  .result-title {
+    display: flex; /* Use flexbox for the title layout */
+    align-items: center; /* Center items vertically */
+  }
+  
+  /* Change the order based on message type */
+  .chat-bubble.bot .result-title {
+    flex-direction: row-reverse; /* Reverse the order for bot messages */
+  }
+  
+  /* Common styles for the icon */
+  .icon {
+    margin: 0 10px; /* Space between icon and text */
+    width: 30px;
+  }
+  
+  /* Message text */
+  .text-message {
+    font-size: 16px; /* Set font size */
+    color: #333; /* Set text color */
+  }
+  

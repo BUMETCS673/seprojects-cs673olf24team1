@@ -1,40 +1,47 @@
 /* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
-import './InputField.css'
-import { assets } from '../../assets/assets'
+import React from 'react'; // Import React library
+import PropTypes from 'prop-types'; // Import PropTypes for type checking
+import './InputField.css'; // Import styles for the InputField component
+import { assets } from '../../assets/assets'; // Import asset resources (e.g., send icon)
 
-const InputField = ({ onSend }) => {
-
-  const [input, setInput] = useState('');
-
-  const handleSend = () => {
-    if (input.trim()) {
-      onSend(input);  // Pass the input message to parent component
-      setInput('');   // Clear the input field after sending
+// InputField component for handling user input and sending messages
+const InputField = ({ input, onSend, onChange }) => {
+  
+  // Handle key press event to send message on 'Enter' key
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') { // Check if the pressed key is 'Enter'
+      onSend(); // Trigger the send function
     }
   };
 
   return (
-    <div className="main-bottom">
-      <div className="search-box">
-        <input
-          onChange={(e) => setInput(e.target.value)}
-          value={input}
-          type="text"
-          placeholder='Type your message'
+    <div className="search-box"> {/* Container for input field and send button */}
+      <input
+        onChange={onChange} // Update input state when the user types
+        onKeyDown={handleKeyPress} // Trigger send on 'Enter' key press
+        value={input} // Controlled input to reflect current value
+        type="text" // Text input for message
+        placeholder='Type your message' // Placeholder text for the input
+      />
+      <div>
+        <img
+          onClick={onSend} // Trigger the send function on icon click
+          src={assets.send_icon} // Source for the send icon
+          width={30} // Set icon width
+          alt="Send Icon" // Accessible alt text for the icon
+          style={{ opacity: input ? 1 : 0.5, cursor: input ? 'pointer' : 'not-allowed' }} // Change icon opacity and cursor based on input
         />
-        <div>
-          {/* <img src={assets.gallery_icon} width={30} alt="Gallery Icon" />
-          <img src={assets.mic_icon} width={30} alt="Mic Icon" /> */}
-          {/* {input ? <img onClick={handleSend} src={assets.send_icon} width={30} alt="Send Icon" /> : null} */}
-          <img onClick={handleSend} src={assets.send_icon} width={30} alt="Send Icon" />
-        </div>
       </div>
     </div>
   );
 };
 
-export default InputField;
+// PropTypes for type-checking props passed to InputField component
+InputField.propTypes = {
+  input: PropTypes.string.isRequired, // Expected input as a string
+  onSend: PropTypes.func.isRequired, // Expected onSend as a function
+  onChange: PropTypes.func.isRequired, // Expected onChange as a function
+};
 
+export default InputField; // Exporting the InputField component for use in other parts of the application

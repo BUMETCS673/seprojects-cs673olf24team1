@@ -4,35 +4,25 @@ import NewChatButton from './NewChatButton'
 // import ClearButton from './ClearButton'
 // import EmailButton from './EmailButton'
 // import PrintButton from './PrintButton'
-// import ShareButton from './ShareButton'
 import LogoutButton from './LogoutButton'
 import ChatHistory from './ChatHistory'
 import './Sidebar.css'
-import { assets } from '../../assets/assets'
-import { Context } from '../../context/ContextProvider';
 import DownloadButton from './DownloadButton'
+import SaveButton from './SaveButton'
 
 const Sidebar = () => {
-
-    const [extended, setExtended] = useState(false);
-    const {onSent,prevPrompts,setRecentPrompt, handleNewChat} = useContext(Context);
-
-    const loadPrompt = async (prompt) => {
-        await onSent(prompt);
-        setRecentPrompt(prompt);
-    } 
 
     return (
         <div className='sidebar'>
             <div className="top">
-            <NewChatButton onNewChat={handleNewChat} /> {/* Pass handleNewChat here */}
+            <NewChatButton />
             <ChatHistory />
             </div>
             <div className="bottom">
-                {/* <ClearButton />
-                <EmailButton />
-                <PrintButton />
-                <ShareButton /> */}
+                {/* <ClearButton /> */}
+                {/* <EmailButton /> */}
+                {/* <PrintButton /> */}
+                <SaveButton/>
                 <DownloadButton />
                 <LogoutButton />
             </div>

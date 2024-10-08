@@ -1,424 +1,63 @@
-// /* eslint-disable no-undef */
-// /* eslint-disable no-unused-vars */
-// import React, { useState } from 'react';
-// import eaglelogo from '../assets/images/eagle_logo.png';
-// import { Link, useNavigate } from 'react-router-dom';
-// import axios from 'axios'; // to send HTTP requests
-
-// // import styling
-// import '../assets/styles/SignupPage.scss';
-
-// const SignupPage = () => {
-//   const [formState, setFormState] = useState({
-//     email: '',
-//     password: '',
-//     confirmPassword: '',
-//   });
-
-//   const navigate = useNavigate();
-
-//   // Update state based on form input changes
-//   const handleChange = (event) => {
-//     const { name, value } = event.target;
-
-//     setFormState({
-//       ...formState,
-//       [name]: value,
-//     });
-//   };
-
-//   // Submit form
-//   const handleFormSubmit = async (event) => {
-//     event.preventDefault();
-
-//     if (formState.password !== formState.confirmPassword) {
-//       alert('Passwords do not match!');
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post('http://localhost:8080/api/auth/signup', {
-//         email: formState.email,
-//         password: formState.password,
-//       });
-
-//       if (response.status === 200) {
-//         alert('User registered successfully!');
-//         navigate('/login'); // Redirect to login page
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       alert('Error during signup: ' + e.response.data.message);
-//     }
-
-//     // Clear form values
-//     setFormState({
-//       email: '',
-//       password: '',
-//       confirmPassword: '',
-//     });
-//   };
-
-//   return (
-//     <main className='flex-row justify-center mb-4 h-screen' style={{ height: '100vh' }}>
-//       <div className='form-container h-screen'>
-//         <div className="form-content-left">
-//           <img src={eaglelogo} alt="eaglelogo" className='form-img' style={{ height: '40%' }} />
-//         </div>
-//         <div className='form-content-right col-12 col-md-6'>
-//           <form onSubmit={handleFormSubmit} className='form'>
-//             <h1>BUAN CHATBOT</h1>
-//             <h2>Sign Up</h2>
-
-//             <div className='form-inputs'>
-//               <label className='form-label'>Email</label>
-//               <input
-//                 className='form-input'
-//                 placeholder='Your email'
-//                 name='email'
-//                 type='email'
-//                 id='email'
-//                 value={formState.email}
-//                 onChange={handleChange}
-//               />
-//             </div>
-
-//             <div className='form-inputs'>
-//               <label className='form-label'>Password</label>
-//               <input
-//                 className='form-input'
-//                 placeholder='******'
-//                 name='password'
-//                 type='password'
-//                 id='password'
-//                 value={formState.password}
-//                 onChange={handleChange}
-//               />
-//             </div>
-
-//             <div className='form-inputs'>
-//               <label className='form-label'>Confirm Password</label>
-//               <input
-//                 className='form-input'
-//                 placeholder='******'
-//                 name='confirmPassword'
-//                 type='password'
-//                 id='confirmPassword'
-//                 value={formState.confirmPassword}
-//                 onChange={handleChange}
-//               />
-//             </div>
-
-//             <button className='form-input-btn' type='submit'>
-//               Sign Up
-//             </button>
-
-//             <span className='form-input-login'>
-//               Already have an account? <Link to="/login">Log In</Link>
-//             </span>
-//           </form>
-//         </div>
-//       </div>
-//     </main>
-//   );
-// };
-
-// export default SignupPage;
-
-
-// /* eslint-disable no-undef */
-// /* eslint-disable no-unused-vars */
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import eaglelogo from '../assets/images/eagle_logo.png';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import the icons
-
-// // import styling
-// import '../assets/styles/SignupPage.scss';
-
-// const SignupPage = () => {
-//   const [formState, setFormState] = useState({
-//     fullName: '',
-//     email: '',
-//     password: '',
-//     confirmPassword: ''
-//   });
-//   const [showPassword, setShowPassword] = useState(false); // state for password visibility
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // state for confirm password visibility
-//   const [successMessage, setSuccessMessage] = useState('');
-//   const navigate = useNavigate();
-
-//   // Toggle password visibility
-//   const togglePasswordVisibility = () => {
-//     setShowPassword(!showPassword);
-//   };
-
-//   // Toggle confirm password visibility
-//   const toggleConfirmPasswordVisibility = () => {
-//     setShowConfirmPassword(!showConfirmPassword);
-//   };
-
-//   // Handle form input changes
-//   const handleChange = (event) => {
-//     const { name, value } = event.target;
-//     setFormState({
-//       ...formState,
-//       [name]: value,
-//     });
-//   };
-
-//   // Handle form submission
-//   const handleFormSubmit = async (event) => {
-//     event.preventDefault();
-    
-//     if (formState.password !== formState.confirmPassword) {
-//       alert("Passwords don't match");
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post('http://localhost:8080//api/signup', formState);
-//       if (response.status === 201) {
-//         setSuccessMessage('Signup successful! Please go to the login page.');
-//         setFormState({ fullName: '', email: '', password: '', confirmPassword: '' });
-//         // Show the popup for success
-//         setTimeout(() => {
-//           navigate('/login');
-//         }, 3000); // Redirect after 3 seconds
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       alert('Signup failed. Please try again.');
-//     }
-//   };
-
-//   return (
-//     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
-//       <div className="form-container h-screen">
-//         <div className="form-content-left">
-//           <img src={eaglelogo} alt="eagle-logo" className="form-img" style={{ height: '40%' }} />
-//         </div>
-//         <div className="form-content-right col-12 col-md-6">
-//           <form onSubmit={handleFormSubmit} className="form">
-//             <h1>BUAN CHATBOT</h1>
-//             <h2>Sign Up</h2>
-
-//             {/* Full Name Input */}
-//             <div className="form-inputs">
-//               <label className="form-label">Full Name</label>
-//               <input
-//                 className="form-input"
-//                 placeholder="Your full name"
-//                 name="fullName"
-//                 type="text"
-//                 id="fullName"
-//                 value={formState.fullName}
-//                 onChange={handleChange}
-//                 required
-//               />
-//             </div>
-
-//             {/* Email Input */}
-//             <div className="form-inputs">
-//               <label className="form-label">Email</label>
-//               <input
-//                 className="form-input"
-//                 placeholder="Your email"
-//                 name="email"
-//                 type="email"
-//                 id="email"
-//                 value={formState.email}
-//                 onChange={handleChange}
-//                 required
-//               />
-//             </div>
-
-//             {/* Password Input */}
-//             <div className="form-inputs">
-//               <label className="form-label">Password</label>
-//               <div className="password-container">
-//                 <input
-//                   className="form-input"
-//                   placeholder="******"
-//                   name="password"
-//                   type={showPassword ? 'text' : 'password'} // Toggle between text and password
-//                   id="password"
-//                   value={formState.password}
-//                   onChange={handleChange}
-//                   required
-//                 />
-//                 <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
-//                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-//                 </span>
-//               </div>
-//             </div>
-
-//             {/* Confirm Password Input */}
-//             <div className="form-inputs">
-//               <label className="form-label">Confirm Password</label>
-//               <div className="password-container">
-//                 <input
-//                   className="form-input"
-//                   placeholder="******"
-//                   name="confirmPassword"
-//                   type={showConfirmPassword ? 'text' : 'password'} // Toggle between text and password
-//                   id="confirmPassword"
-//                   value={formState.confirmPassword}
-//                   onChange={handleChange}
-//                   required
-//                 />
-//                 <span className="password-toggle-icon" onClick={toggleConfirmPasswordVisibility}>
-//                   <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-//                 </span>
-//               </div>
-//             </div>
-
-//             {/* Submit Button */}
-//             <button className="form-input-btn" type="submit">
-//               Sign Up
-//             </button>
-
-//             {/* Success Message */}
-//             {successMessage && <div className="success-message">{successMessage}</div>}
-
-//             <span className="form-input-login">
-//               Already have an account? <Link to="/login">Log in</Link>
-//             </span>
-//           </form>
-//         </div>
-//       </div>
-//     </main>
-//   );
-// };
-
-// export default SignupPage;
-
-
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import axios from 'axios';
-import eaglelogo from '../assets/images/eagle_logo.png';
+// Integrated code from depreciated_NewProfilePage.jsx created by Poom.
+// Created by Natt 
+//Updated, integrated, and annotated by Natasya Liew
+
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import the icons
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
 
-// import styling
+// Import styling for the Signup page
 import '../assets/styles/SignupPage.scss';
+import { assets } from '../assets/assets'; // Import asset resources
+// import CourseTakenField from '../components/Profile/CourseTakenField';
+
+
+import { useAuth } from '../context/AuthContext';
+import { useSignUpForm } from './useSignUpForm';
+
 
 const SignupPage = () => {
-  const [formState, setFormState] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [showPassword, setShowPassword] = useState(false); // state for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // state for confirm password visibility
-  const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate();
+  const {
+    formState,
+    showPassword,
+    showConfirmPassword,
+    togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
+    handleChange,
+    handleFormSubmit,
+    successMessage,
+    inputValue,
+    filteredCourses,
+    handleInputChange,
+    handleCourseSelect,
+    handleRemoveCourse,
+  } = useSignUpForm();
 
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  // Toggle confirm password visibility
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  // Handle form input changes
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
-  // Handle form submission
-//   const handleFormSubmit = async (event) => {
-//     event.preventDefault();
-    
-//     if (formState.password !== formState.confirmPassword) {
-//       alert("Passwords don't match");
-//       return;
-//     }
-
-//     try {
-//       const response = await axios.post('http://localhost:8080/api/signup', formState);
-//       if (response.status === 201) {
-//         setSuccessMessage('Signup successful! Please go to the login page.');
-//         setFormState({ fullName: '', email: '', password: '', confirmPassword: '' });
-//         // Show the popup for success
-//         setTimeout(() => {
-//           navigate('/login');
-//         }, 3000); // Redirect after 3 seconds
-//       }
-//     } catch (e) {
-//       console.error(e);
-//       alert('Signup failed. Please try again.');
-//     }
-//   };
-const handleFormSubmit = async (event) => {
-  event.preventDefault();
-
-  if (formState.password !== formState.confirmPassword) {
-    alert("Passwords don't match");
-    return;
-  }
-
-  try {
-    // Log the form state before making the request
-    console.log('Form data:', formState);
-    
-    const response = await axios.post('http://localhost:8080/api/signup', formState);
-
-    // Log the response from the backend
-    console.log('API response:', response);
-
-    if (response.status === 201) {
-      setSuccessMessage('Signup successful! Please go to the login page.');
-      setFormState({ fullName: '', email: '', password: '', confirmPassword: '' });
-
-      // Show the popup for success
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000); // Redirect after 3 seconds
-    } else {
-      alert('Signup failed. Please try again.');
-    }
-  } catch (e) {
-    console.error(e);
-    alert('Signup failed. Please try again.');
-  }
-};
 
   return (
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
       <div className="form-container h-screen">
         <div className="form-content-left">
-          <img src={eaglelogo} alt="eagle-logo" className="form-img" style={{ height: '40%' }} />
+          <img src={assets.bu_logo} alt="bu-logo" className="form-img" style={{ height: '40%' }} />
         </div>
-        <div className="form-content-right col-12 col-md-6">
-          <form onSubmit={handleFormSubmit} className="form">
+        <div className="form-content-right col-10 col-md-6">
+          <form className="form" onSubmit={handleFormSubmit}>
             <h1>BUAN CHATBOT</h1>
             <h2>Sign Up</h2>
 
-            {/* Full Name Input */}
+            {/* AuthId/Username Input */}
             <div className="form-inputs">
-              <label className="form-label">Full Name</label>
+              <label className="form-label">Username</label>
               <input
                 className="form-input"
-                placeholder="Your full name"
-                name="fullName"
+                placeholder="Insert your desired username [text]: "
+                name="authId" // Input name matches the state variable
                 type="text"
-                id="fullName"
-                value={formState.fullName}
-                onChange={handleChange}
+                id="authId"
+                value={formState.authId} // Controlled input
+                onChange={handleChange} // Update state on change
                 required
               />
             </div>
@@ -428,12 +67,12 @@ const handleFormSubmit = async (event) => {
               <label className="form-label">Email</label>
               <input
                 className="form-input"
-                placeholder="Your email"
-                name="email"
+                placeholder="Insert your email [text]: "
+                name="email" // Input name matches the state variable
                 type="email"
                 id="email"
-                value={formState.email}
-                onChange={handleChange}
+                value={formState.email} // Controlled input
+                onChange={handleChange} // Update state on change
                 required
               />
             </div>
@@ -445,11 +84,11 @@ const handleFormSubmit = async (event) => {
                 <input
                   className="form-input"
                   placeholder="******"
-                  name="password"
+                  name="password" // Input name matches the state variable
                   type={showPassword ? 'text' : 'password'} // Toggle between text and password
                   id="password"
-                  value={formState.password}
-                  onChange={handleChange}
+                  value={formState.password} // Controlled input
+                  onChange={handleChange} // Update state on change
                   required
                 />
                 <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
@@ -465,11 +104,11 @@ const handleFormSubmit = async (event) => {
                 <input
                   className="form-input"
                   placeholder="******"
-                  name="confirmPassword"
+                  name="confirmPassword" // Input name matches the state variable
                   type={showConfirmPassword ? 'text' : 'password'} // Toggle between text and password
                   id="confirmPassword"
-                  value={formState.confirmPassword}
-                  onChange={handleChange}
+                  value={formState.confirmPassword} // Controlled input
+                  onChange={handleChange} // Update state on change
                   required
                 />
                 <span className="password-toggle-icon" onClick={toggleConfirmPasswordVisibility}>
@@ -478,17 +117,158 @@ const handleFormSubmit = async (event) => {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <button className="form-input-btn" type="submit">
+            {/* New Fields from Profile Page */}
+            <div className="form-inputs">
+              <label className="form-label">First Name</label>
+              <input
+                className="form-input"
+                placeholder="Insert your first name"
+                name="fName" // Input name matches the state variable
+                type="text"
+                value={formState.fName} // Controlled input
+                onChange={handleChange} // Update state on change
+                required
+              />
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">Last Name</label>
+              <input
+                className="form-input"
+                placeholder="Insert your last name"
+                name="lName" // Input name matches the state variable
+                type="text"
+                value={formState.lName} // Controlled input
+                onChange={handleChange} // Update state on change
+                required
+              />
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">BU ID</label>
+              <input
+                className="form-input"
+                placeholder="Insert your BU ID"
+                name="buId" // Input name matches the state variable
+                type="text"
+                value={formState.buId} // Controlled input
+                onChange={handleChange} // Update state on change
+                required
+              />
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">Program Type</label>
+              <select
+                name="programType" // Input name matches the state variable
+                value={formState.programType} // Controlled input
+                onChange={handleChange} // Update state on change
+                className="form-input"
+              >
+                <option value="MS degree">MS degree</option>
+              </select>
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">Program Name</label>
+              <select
+                name="programCode" // Input name matches the state variable
+                value={formState.programCode} // Controlled input
+                onChange={handleChange} // Update state on change
+                className="form-input"
+              >
+                <option value="mssd">MS of Software Development</option>
+              </select>
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">Path of Interest</label>
+              <select
+                name="pathOfInterest" // Input name matches the state variable
+                value={formState.pathOfInterest}  // Controlled input
+                onChange={handleChange}
+                className="form-input"
+              >
+                <option value="app development">App Development</option>
+                <option value="web development">Web Development</option>
+                <option value="secure software development">Secure Software Development</option>
+                <option value="data science">Data Science</option>
+                <option value="ai/ml">Artificial Intelligence and Machine Learning</option>
+              </select>
+            </div>
+
+            <div className="form-inputs">
+              <label className="form-label">Number of Courses to Take for the Semester</label>
+              <select
+                name="coursesToTake" // Input name matches the state variable
+                value={formState.coursesToTake} // Controlled input
+                onChange={(e) => handleChange({
+                  ...e,
+                  target: {
+                    ...e.target,
+                    value: Number(e.target.value) // Convert selected value to integer
+                  }
+                })}
+                className="form-input"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+
+            {/* <CourseTakenField /> */}
+            <div className="course-taken-container">
+              <label>Courses Taken:</label>      {formState.coursesTaken.length > 0 ? (
+                <div className="course-list">
+                  <ul>
+                    {formState.coursesTaken.map(course => (
+                      <li key={course}>
+                        {course}
+                        <span
+                          onClick={() => handleRemoveCourse(course)}
+                          className="remove-course-icon"
+                        >
+                          X
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (null)}
+              <div className="add-course-container">
+                <input
+                  type="text"
+                  placeholder="Type to search courses..."
+                  value={inputValue}
+                  onChange={handleInputChange}
+                />
+                {filteredCourses.length > 0 && (
+                  <ul className="dropdown">
+                    {filteredCourses.map(course => (
+                      <li key={course} onClick={() => handleCourseSelect(course)}>
+                        {course}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button to trigger form submission */}
+            <button className="form-input-btn" type='submit'>
               Sign Up
             </button>
 
-            {/* Success Message */}
+            {/* Display success message if signup is successful */}
             {successMessage && <div className="success-message">{successMessage}</div>}
 
+            {/* Link to navigate to the login page if the user already has an account */}
             <span className="form-input-login">
               Already have an account? <Link to="/login">Log in</Link>
             </span>
+            <div className="spacer"></div>
           </form>
         </div>
       </div>
@@ -496,4 +276,10 @@ const handleFormSubmit = async (event) => {
   );
 };
 
-export default SignupPage;
+export default SignupPage; // Export SignupPage component for use in other parts of the application
+
+
+
+
+
+

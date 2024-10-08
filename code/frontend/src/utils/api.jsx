@@ -27,9 +27,9 @@ const OPENAI_API_KEY = 'your-openai-api-key';
 const OPENAI_URL = 'https://api.openai.com/v1/completions';
 
 // Auth API Calls
-export const login = async(email, password) => {
+export const login = async(authId, password) => {
     try {
-        const response = await axios.post(`${BACKEND_URL}/login`, { email, password });
+        const response = await axios.post(`${BACKEND_URL}/login`, { authId, password });
         return response.data; // { token, user }
     } catch (error) {
         throw error.response.data.message || "Login failed";
@@ -45,9 +45,9 @@ export const signup = async(userDetails) => {
     }
 };
 
-export const forgotPassword = async(email) => {
+export const forgotPassword = async(authId) => {
     try {
-        const response = await axios.post(`${BACKEND_URL}/forgot-password`, { email });
+        const response = await axios.post(`${BACKEND_URL}/forgot-password`, { authId });
         return response.data;
     } catch (error) {
         throw error.response.data.message || "Error sending reset link";

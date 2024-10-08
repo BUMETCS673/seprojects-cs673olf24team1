@@ -1,8 +1,0 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="AutomationTestSuite" parallel="false">
-    <test name="BDD Cucumber Tests">
-        <classes>
-            <class name="runner.CucumberRunner" />
-        </classes>
-    </test>
-</suite>
