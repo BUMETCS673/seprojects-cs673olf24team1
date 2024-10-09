@@ -1,9 +1,11 @@
 {
     "name": "buan",
     "private": true,
+    "homepage": "https://github.com/BUMETCS673/seprojects-cs673olf24team1",
     "version": "0.0.0",
     "type": "module",
     "scripts": {
+        "deploy": "gh-pages -d build",
         "dev": "vite",
         "build": "vite build",
         "lint": "eslint .",
