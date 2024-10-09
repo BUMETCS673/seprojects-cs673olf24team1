@@ -3,9 +3,7 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - main
-      - stage
-      - develop
+      - '**'
     paths:
       - "code/frontend/**"
       - "code/backend/**"
