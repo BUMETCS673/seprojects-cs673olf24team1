@@ -1,6 +1,2 @@
 flask
 requests
-fastapi
-uvicorn
-pytest
-flake8  # Make sure this is included
