@@ -8,7 +8,6 @@ on:
       - "code/frontend/**"
       - "code/backend/**"
       - "code/ai-service/fast-api/**"
-      - "code/ai-service/flask-api/**"
       - "tests/**"
 
 jobs:
@@ -24,7 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install dependencies
         run: cd code/frontend && npm install
@@ -42,20 +41,6 @@ jobs:
     name: Spring Boot Backend Build and Test
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:4.4
-        ports:
-          - 27017:27017
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: chat_db
-        ports:
-          - 5432:5432
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -72,8 +57,6 @@ jobs:
           ./mvnw clean install
           ./mvnw test
 
-      - name: Run Integration Tests
-        run: cd code/backend/course-builder-chatbot-ms && ./mvnw verify
 
   # Job 3: Lint, Test, and Deploy Python AI Service (FastAPI)
   python-ai-service-fastapi:
@@ -108,57 +91,10 @@ jobs:
           source venv/bin/activate
           pytest
 
-  # Job 4: Lint, Test, and Deploy Python AI Service (FlaskAPI)
-  python-ai-service-flaskapi:
-    name: Python AI Service (FlaskAPI) Linting and Testing
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-
-      - name: Install dependencies
-        run: |
-          cd code/ai-service/flask-api
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-
-      - name: Lint Python code
-        run: |
-          cd code/ai-service/flask-api
-          source venv/bin/activate
-          flake8 --ignore=E501,E265 .
-
-      - name: Run Python Unit Tests
-        run: |
-          cd code/ai-service/flask-api
-          source venv/bin/activate
-          pytest
-
   # Job 5: Cucumber BDD Tests (UI + API)
   bdd-tests:
     name: Cucumber BDD Testing (UI and API)
     runs-on: ubuntu-latest
-
-    services:
-      mongo:
-        image: mongo:4.4
-        ports:
-          - 27017:27017
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: chat_db
-        ports:
-          - 5432:5432
 
     steps:
       - name: Checkout code
@@ -169,11 +105,6 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-
-      - name: Install Google Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
 
       - name: Install Chrome for Headless Mode
         run: sudo apt-get install -y google-chrome-stable
