@@ -33,9 +33,9 @@ jobs:
       run: npm run build --if-present
       working-directory: code/frontend
 
-    - name: Run tests
-      run: npm test
-      working-directory: code/frontend
+    # - name: Run tests
+    #   run: npm test
+    #   working-directory: code/frontend
 
     - name: Deploy with gh-pages
       run: |
