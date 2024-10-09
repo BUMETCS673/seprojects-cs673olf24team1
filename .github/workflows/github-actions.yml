@@ -27,12 +27,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: 16  # Use a stable Node.js version (LTS)
 
       - name: Install dependencies
         run: |
           cd code/frontend
           npm install
+
+      - name: Install ESLint
+        run: |
+          cd code/frontend
+          npm install eslint eslint-plugin-react eslint-plugin-react-hooks --save-dev
 
       - name: Lint React code
         run: |
@@ -64,6 +69,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+          pip install flake8  # Install flake8 explicitly if it's not in requirements.txt
 
       - name: Lint Python code
         run: |
