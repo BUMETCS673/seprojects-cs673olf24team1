@@ -40,7 +40,7 @@ services:
     environment:
       - SELENIUM_HUB_HOST=selenium-hub
     ports:
-      - "8080:8080"  # Expose port if your app needs it
+      - "8081:8080"  # Expose port if your app needs it
     volumes:
       - .:/app
     command: ["mvn", "clean", "test"]
