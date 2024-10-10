@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="96e9bebf-1705-4a49-9a7a-b526f0d57ed3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/code/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/src/test/java/com/bu/tests/steps/ApiSteps.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/test/java/com/bu/tests/steps/ApiSteps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/src/test/java/com/bu/tests/steps/LoginStepDefinitions.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/test/java/com/bu/tests/steps/LoginStepDefinitions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/src/test/resources/features/api_tests.feature" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/test/resources/features/api_tests.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/src/test/resources/features/ui_tests.feature" beforeDir="false" afterPath="$PROJECT_DIR$/tests/src/test/resources/features/ui_tests.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/classes/com/bu/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/tests/target/classes/com/bu/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/test-classes/com/bu/tests/steps/ApiSteps.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/test-classes/com/bu/tests/steps/CucumberTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/tests/target/test-classes/com/bu/tests/steps/CucumberTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/test-classes/com/bu/tests/steps/LoginStepDefinitions.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/test-classes/features/api_tests.feature" beforeDir="false" afterPath="$PROJECT_DIR$/tests/target/test-classes/features/api_tests.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/target/test-classes/features/ui_tests.feature" beforeDir="false" afterPath="$PROJECT_DIR$/tests/target/test-classes/features/ui_tests.feature" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2nDhOSN5E4NKRuMCMhhWevVDQyp" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TestNG.ChatHistoryCachingStepDefinitions.executor": "Debug",
+    "TestNG.ChatHistoryCachingStepDefinitions.testChatHistoryCaching.executor": "Run",
+    "TestNG.CucumberTest.executor": "Run",
+    "TestNG.TestRunner.executor": "Run",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="TestNG.TestRunner">
+    <configuration name="ChatHistoryCachingStepDefinitions" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="testautomation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bu.tests.steps.ChatHistoryCachingStepDefinitions" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bu.tests.steps" />
+      <option name="MAIN_CLASS_NAME" value="com.bu.tests.steps.ChatHistoryCachingStepDefinitions" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatHistoryCachingStepDefinitions.testChatHistoryCaching" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="testautomation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bu.tests.steps.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bu.tests.steps" />
+      <option name="MAIN_CLASS_NAME" value="com.bu.tests.steps.ChatHistoryCachingStepDefinitions" />
+      <option name="METHOD_NAME" value="testChatHistoryCaching" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CucumberTest" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="testautomation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bu.tests.steps.ChatHistoryCachingStepDefinitions" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bu.tests.steps" />
+      <option name="MAIN_CLASS_NAME" value="com.bu.tests.steps.CucumberTest" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestRunner" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="testautomation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bu.tests.steps.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bu.tests.steps" />
+      <option name="MAIN_CLASS_NAME" value="com.bu.tests.steps.TestRunner" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="TestNG.TestRunner" />
+        <item itemvalue="TestNG.ChatHistoryCachingStepDefinitions.testChatHistoryCaching" />
+        <item itemvalue="TestNG.ChatHistoryCachingStepDefinitions" />
+        <item itemvalue="TestNG.CucumberTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="96e9bebf-1705-4a49-9a7a-b526f0d57ed3" name="Changes" comment="" />
+      <created>1728513524814</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728513524814</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/seprojects_cs673olf24team1$ChatHistoryCachingStepDefinitions.ic" NAME="ChatHistoryCachingStepDefinitions Coverage Results" MODIFIED="1728526527798" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.bu.tests.steps.ChatHistoryCachingStepDefinitions</FILTER>
+    </SUITE>
+  </component>
+</project>
