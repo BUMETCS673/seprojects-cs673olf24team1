@@ -14,14 +14,14 @@ router = APIRouter()
 
 # Create data retrivers
 course_retriever = create_course_storage().as_retriever(
-    search_kwargs={'k': 80})  # Need to be optimized
+    search_kwargs={'k': 20})  # Need to be optimized
 prompt_retriever = create_prompt_storage().as_retriever(search_kwargs={'k': 4})
 
 
 # Define language models
 smart_llm = ChatOpenAI(
     temperature=0,
-    model="gpt-4o",
+    model="gpt-4o-mini",
     max_tokens=None,
     timeout=None,
     max_retries=2,
@@ -29,7 +29,7 @@ smart_llm = ChatOpenAI(
 
 fast_llm = ChatOpenAI(
     temperature=0,
-    model="gpt-3.5-turbo",
+    model="gpt-4o-mini",
     max_tokens=None,
     timeout=None,
     max_retries=2,
