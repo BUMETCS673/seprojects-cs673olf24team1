@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react'; // Natt: remove useState - unused variable
 import './CourseTakenField.css'; // Import the CSS file
 import useSignUpForm from '../../pages/useSignUpForm';
 

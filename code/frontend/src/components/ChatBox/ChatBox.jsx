@@ -77,7 +77,7 @@ const ChatBox = () => {
           {messages.length === 0 ? (
             <div className="no-sessions-message">
               <p style={{ textAlign: 'center', fontSize: '24px', margin: '20px 0' }}>
-                (๑•̀ᄇ•́)و ✧ Let's create a new chat to start!
+                (๑•̀ᄇ•́)و ✧ Let&apos;s create a new chat to start!
               </p>
             </div>
           ) : (
