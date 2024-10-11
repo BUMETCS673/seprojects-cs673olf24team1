@@ -12,7 +12,7 @@ COPY . .
 RUN mvn clean install -DskipTests
 
 # Expose the port that your web app runs on (change if needed)
-EXPOSE 8080
+EXPOSE 8081
 
 # Start the application and then run your API tests
 ENTRYPOINT ["sh", "-c", "mvn spring-boot:run & sleep 10 && mvn clean test"]
