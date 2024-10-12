@@ -202,13 +202,7 @@ const SignupPage = () => {
               <select
                 name="coursesToTake" // Input name matches the state variable
                 value={formState.coursesToTake} // Controlled input
-                onChange={(e) => handleChange({
-                  ...e,
-                  target: {
-                    ...e.target,
-                    value: Number(e.target.value) // Convert selected value to integer
-                  }
-                })}
+                onChange={handleChange}
                 className="form-input"
               >
                 <option value="1">1</option>
