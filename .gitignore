@@ -11,3 +11,6 @@ venv.bak/
 # System files
 .DS_Store
 Thumbs.db
+
+# Node.js modules
+node_modules/
