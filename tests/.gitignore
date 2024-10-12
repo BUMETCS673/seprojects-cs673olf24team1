@@ -18,6 +18,7 @@
 # Maven and BDD specific directories
 target/
 surefire-reports/
+surefire-reports/
 
 # IDE-specific files and directories (if any IDE-specific files are generated in tests)
 .idea/
@@ -31,3 +32,4 @@ Thumbs.db
 
 # Environment files
 .env
+
