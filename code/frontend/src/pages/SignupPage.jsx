@@ -3,19 +3,15 @@
 // Created by Natt 
 //Updated, integrated, and annotated by Natasya Liew
 
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
 
 // Import styling for the Signup page
 import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
-// import CourseTakenField from '../components/Profile/CourseTakenField';
+import { useSignUpForm } from '../hooks/useSignUpForm';
 
-
-import { useAuth } from '../context/AuthContext';
-import { useSignUpForm } from './useSignUpForm';
 
 
 const SignupPage = () => {
@@ -35,6 +31,19 @@ const SignupPage = () => {
     handleRemoveCourse,
   } = useSignUpForm();
 
+  const [errorMessage, setErrorMessage] = useState(''); // State to manage error messages
+
+  const onFormSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    try {
+      await handleFormSubmit(); // Call the form submission handler
+      // Handle success (e.g., redirect or show success message)
+    } catch (error) {
+      setErrorMessage(error.message); // Set error message based on the caught error
+    }
+  };
+
 
   return (
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
@@ -43,7 +52,7 @@ const SignupPage = () => {
           <img src={assets.bu_logo} alt="bu-logo" className="form-img" style={{ height: '40%' }} />
         </div>
         <div className="form-content-right col-10 col-md-6">
-          <form className="form" onSubmit={handleFormSubmit}>
+          <form className="form" onSubmit={onFormSubmit}>
             <h1>BUAN CHATBOT</h1>
             <h2>Sign Up</h2>
 
@@ -60,6 +69,7 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errorMessage && errorMessage.includes("username") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             {/* Email Input */}
@@ -75,6 +85,7 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errorMessage && errorMessage.includes("email") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             {/* Password Input */}
@@ -95,6 +106,7 @@ const SignupPage = () => {
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
+              {errorMessage && errorMessage.includes("password") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             {/* Confirm Password Input */}
@@ -115,6 +127,7 @@ const SignupPage = () => {
                   <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
+              {errorMessage && errorMessage.includes("confirm password") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             {/* New Fields from Profile Page */}
@@ -129,6 +142,7 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errorMessage && errorMessage.includes("first name") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             <div className="form-inputs">
@@ -142,31 +156,7 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
-            </div>
-
-            <div className="form-inputs">
-              <label className="form-label">BU ID</label>
-              <input
-                className="form-input"
-                placeholder="Insert your BU ID"
-                name="buId" // Input name matches the state variable
-                type="text"
-                value={formState.buId} // Controlled input
-                onChange={handleChange} // Update state on change
-                required
-              />
-            </div>
-
-            <div className="form-inputs">
-              <label className="form-label">Program Type</label>
-              <select
-                name="programType" // Input name matches the state variable
-                value={formState.programType} // Controlled input
-                onChange={handleChange} // Update state on change
-                className="form-input"
-              >
-                <option value="MS degree">MS degree</option>
-              </select>
+              {errorMessage && errorMessage.includes("last name") && <div className="error-message">{errorMessage}</div>}
             </div>
 
             <div className="form-inputs">
@@ -257,6 +247,9 @@ const SignupPage = () => {
 
             {/* Display success message if signup is successful */}
             {successMessage && <div className="success-message">{successMessage}</div>}
+
+            {/* Display error message if any */}
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
 
             {/* Link to navigate to the login page if the user already has an account */}
             <span className="form-input-login">

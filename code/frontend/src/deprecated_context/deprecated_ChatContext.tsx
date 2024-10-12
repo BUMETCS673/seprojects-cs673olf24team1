@@ -1,7 +1,6 @@
-import React, { createContext, useState, useEffect, useContext, act } from 'react';
-import { useUser } from './UserContext';
-import { Message } from '../interfaces/Message';
-import { ChatSession } from '../interfaces/ChatSession';
+/*import React, { createContext, useState, useEffect, useContext, act } from 'react';
+import { useUser } from './deprecated_UserContext';
+import { ChatSession, Message } from '../interfaces/ChatSession';
 import ChatService from '../services/chatService';
 
 
@@ -173,3 +172,4 @@ export const useChat = () => {
   }
   return context;
 };
+*/

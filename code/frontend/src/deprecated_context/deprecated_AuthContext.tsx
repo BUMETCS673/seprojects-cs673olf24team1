@@ -1,11 +1,10 @@
 // Created by Poom
 // Updated and Annotated by Natasya Liew
-
+/*
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService';
-import { User } from '../interfaces/User';
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -18,8 +17,6 @@ interface AuthContextType {
         password: string,             // User's password
         fName: string,                // User's first name
         lName: string,                // User's last name
-        buId: string,                 // Unique identifier for the user (BU ID)
-        programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
         pathOfInterest: string,       // User's area of interest (e.g., "AI/ML", "Web Development", can be dynamic)
         coursesToTake: number,        // Number of courses the user plans to take for the semester
@@ -33,6 +30,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Provider component for the AuthContext
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { updateUser, resetUser } = useUser(); // Destructure user update functions from UserContext
 
@@ -57,8 +55,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         password: string,             // User's password
         fName: string,                // User's first name
         lName: string,                // User's last name
-        buId: string,                 // Unique identifier for the user (BU ID)
-        programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
         pathOfInterest: string,       // User's area of interest (e.g., "AI/ML", "Web Development", can be dynamic)
         coursesToTake: number,        // Number of courses the user plans to take for the semester
@@ -74,8 +70,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             password: password,
             fName: fName,
             lName: lName,
-            buId: buId,
-            programType: programType,
             programCode: programCode,
             pathOfInterest: pathOfInterest,
             coursesToTake: coursesToTake,
@@ -86,12 +80,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         try {
             // Push the new user to the backend
-            const userId = await UserService.createUser(newUser);
+            /*const userId = await UserService.createUser(newUser);
 
             if (userId > 0) {
                 newUser.userId = userId;
 
-                const isLoggedIn = await authService.loginUser(authId, password);
+                const isLoggedIn = await authService.loginUser({ authId, password });
                 if (isLoggedIn) {
                     updateUser(newUser);
                     setIsAuth(true);
@@ -120,7 +114,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
         try {
             // Call the authentication service to log in the user
-            const isLoggedIn = await authService.loginUser(authId, password);
+            const isLoggedIn = await authService.loginUser({ authId, password });
 
             if (isLoggedIn) {
                 setIsAuth(true); // Set authentication status to true
@@ -187,5 +181,7 @@ export const useAuth = (): AuthContextType => {
     if (context === undefined) {
         throw new Error('useAuth must be used within an AuthProvider'); // Ensure the hook is used within the provider
     }
-    return context; // Return the context value
-};
+    return context; // Return the context value};
+
+
+*/

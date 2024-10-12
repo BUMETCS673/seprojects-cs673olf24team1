@@ -9,7 +9,12 @@ const MODEL_NAME = "gpt-4.0"; // Specify the GPT-4.0 model name
 // Paste Your API KEY Below
 const API_KEY = process.env.REACT_APP_OPENAI_API_KEY; // Use environment variable for security
 
-async function runChat(prompt) {
+// Function to run chat
+export const runChat = async (prompt) => {
+    if (!API_KEY) {
+        throw new Error("API key is not defined."); // Check if API key is present
+    }
+    
     const openAI = new OpenAI(API_KEY); // Initialize OpenAI with the provided API key
     const model = openAI.getGenerativeModel({ model: MODEL_NAME }); // Get the GPT-4.0 generative model
 
@@ -50,6 +55,6 @@ async function runChat(prompt) {
     const result = await chat.sendMessage(prompt);
     const response = result.response; // Extract the response object from the result
     return response.text(); // Return the text content of the response
-}
+};
 
 export default runChat; // Export the runChat function for use in other parts of the application

@@ -1,12 +1,13 @@
-import React from 'react'; // Importing React library
+/* eslint-disable no-unused-vars */
+// Updated by Tash
+
+import PropTypes from 'prop-types'; // Import PropTypes for type checking
 import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
 import './ChatBubble.css'; // Importing styles specific to the ChatBubble component
-import { useChat } from '../../context/ChatContext';
 
 // ChatBubble component to display individual chat messages
 const ChatBubble = ({ message }) => {
     const { text, isUser } = message; // Destructuring message object to extract text and user status
-    const { isSendingMessage } = useChat();
 
     return (
         <div className={`chat-bubble ${isUser ? 'user' : 'bot'}`}> {/* Conditional className for styling */}
@@ -23,5 +24,12 @@ const ChatBubble = ({ message }) => {
     );
 };
 
-export default ChatBubble; // Exporting the ChatBubble component for use in other parts of the application
+// PropTypes for type-checking props passed to ChatBubble component
+ChatBubble.propTypes = {
+    message: PropTypes.shape({
+        text: PropTypes.string.isRequired, // Expected text as a string
+        isUser: PropTypes.bool.isRequired,  // Expected isUser as a boolean
+    }).isRequired, // message prop is required
+};
 
+export default ChatBubble; // Exporting the ChatBubble component for use in other parts of the application

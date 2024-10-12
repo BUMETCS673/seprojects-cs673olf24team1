@@ -1,23 +1,20 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
-import './Sidebar.css'
-import { assets } from '../../assets/assets'
-import { useChat } from '../../context/ChatContext';
-import { jsPDF } from 'jspdf' // using jspdf library to generate the PDF
+// Created by Natt, Updated by Tash
+
+import './Sidebar.css'; // Import styles for the Sidebar component
+import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
+import { useChatService } from '../../hooks/useChatService'; // Import useChatService for chat-related functions
+import { jsPDF } from 'jspdf'; // Using jsPDF library to generate the PDF
 
 const DownloadButton = () => {
-    // const { downloadChatHistory } = useChat();
-    const { messages } = useChat(); // Access messages from chat context
+    const { messages } = useChatService(); // Access messages from the chat service
 
-    // old implementation
-    // const handleDownloadChat = () => {
-    //     console.log("Download chat history link");
-    //     // Generate shareable link (backend needed)
-    //     downloadChatHistory();  // Call the function to download chat history
-    // };
-
-    // new implement
     const handleDownloadChat = () => {
+        if (!messages || messages.length === 0) {
+            alert('No chat messages available for download.'); // Alert if there are no messages
+            return;
+        }
+
         // Initialize jsPDF
         const doc = new jsPDF();
 
@@ -32,7 +29,6 @@ const DownloadButton = () => {
         const yPos = 5; // Y position for the top-right placement
 
         doc.addImage(logo, 'PNG', xPos, yPos, logoWidth, logoHeight);
-        // doc.addImage(logo, 'PNG', 20, 5, 40, 40); // Adjust position and size as needed
 
         // Add a title to the PDF
         doc.setFontSize(20);
@@ -43,29 +39,24 @@ const DownloadButton = () => {
         let yPosition = 20; // Starting Y position for messages
 
         // Loop through messages and add them to the PDF
-        messages.forEach((message, index) => {
+        messages.forEach((message) => {
             const { text, isUser } = message; // Destructure message object
             const role = isUser ? 'User' : 'Bot'; // Determine the sender
 
-            // const formattedTime = moment(timestamp).format('YYYY-MM-DD HH:mm:ss'); // Format the timestamp
-            // Add message with timestamp to PDF
-            // doc.text(`${role} [${formattedTime}]: ${text}`, 10, yPosition);
-
-            doc.text(`${role}: ${text}`, 10, yPosition);
+            doc.text(`${role}: ${text}`, 10, yPosition); // Add message to PDF
             yPosition += 10; // Move down for the next message
         });
 
         // Save the generated PDF
         doc.save('chat_history.pdf');
-    }
+    };
 
     return (
         <div className="bottom-item recent-entry" onClick={handleDownloadChat}>
             <img src={assets.download} alt="download" />
             <p>Download</p>
-            {/* {extended ? <p>Share</p> : null} */}
         </div>
-    )
-}
+    );
+};
 
-export default DownloadButton;
+export default DownloadButton; // Export the DownloadButton component for use in other parts of the application

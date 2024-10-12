@@ -5,50 +5,22 @@
 // Annotated by Natasya liew
 
 // Import necessary modules from React and React Router
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // Custom hook for authentication context
+import { Link } from 'react-router-dom';
 import '../assets/styles/SignupPage.scss'; // Importing styles for the Signup page
 import { assets } from '../assets/assets'; // Import asset resources (e.g., logo)
 
+// Note: Updated to Redux and using Interfaces for security by Tash.
 // LoginPage component for user authentication
 const LoginPage = (props) => {
-  // Destructure authentication-related values and functions from the AuthContext
-  const { isAuth, isLoading, isIncorrectPassword, login } = useAuth();
-  
-  // State to manage form inputs for authentication
-  const [formState, setFormState] = useState({ authId: '', password: '' }); // Initial state for authId (username) and password
-  
-  const navigate = useNavigate(); // Hook to programmatically navigate after login
-
-  // Handle changes to form input fields
-  const handleChange = (event) => {
-    const { name, value } = event.target; // Extract name and value from the input field
-
-    // Update formState with the new value for the corresponding field
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
-
-  // Handle form submission
-  const handleFormSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    if (!formState.authId || !formState.password) return; // Ensure both fields are filled
-
-    try {
-      // Attempt to log in using the credentials provided
-      const result = await login(formState.authId, formState.password);
-      if (result) {
-        // Navigate to the chat page upon successful login
-        navigate('/chat');
-      }
-    } catch (error) {
-      // Log any errors encountered during the login process
-      console.error("Login failed: ", error);
-    }
-  };
+  const {
+    formState,
+    //showPassword,
+    //togglePasswordVisibility,
+    handleChange,
+    handleFormSubmit,
+    //successMessage,
+    errorMessage,
+  } = useLoginForm();
 
   return (
     <main className='flex-row justify-center mb-4 h-screen' style={{ height: '100vh' }}>
@@ -75,8 +47,7 @@ const LoginPage = (props) => {
                 value={formState.authId} // Controlled input
                 onChange={handleChange} // Update state on change
               />
-              {/* Uncomment for error display
-              {errors.authId && <p className="error">{errors.authId}</p>} */}
+              {errorMessage && <p className="error">{errorMessage.authId}</p>} {/* Display error for authId */}
             </div>
 
             {/* Password Input Field */}
@@ -91,9 +62,12 @@ const LoginPage = (props) => {
                 value={formState.password} // Controlled input
                 onChange={handleChange} // Update state on change
               />
-              {/* Uncomment for error display
-              {errors.password && <p className="error">{errors.password}</p>} */}
+              {errorMessage && <p className="error">{errorMessage.password}</p>} {/* Display error for password */}
             </div>
+
+            {/* General error message */}
+            {errorMessage && <p className="error">{errorMessage.general}</p>} {/* Display general error */}
+
 
             {/* Submit Button for login */}
             <button className='form-input-btn' type='submit'>
@@ -103,11 +77,6 @@ const LoginPage = (props) => {
             {/* Links for user navigation */}
             <span className='form-input-login'>
               Do not have an account? <Link to="/signup">Sign Up</Link>
-            </span>
-            <span className='form-input-login'>
-              <Link to="/forgotpassword">
-                Forgot password
-              </Link>
             </span>
           </form>
         </div>
