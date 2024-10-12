@@ -5,29 +5,9 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
+import { AuthContextType } from '../interfaces/AuthSession';
 
-// Define the shape of the context value
-interface AuthContextType {
-    isAuth: boolean;                // Indicates if the user is authenticated
-    isIncorrectPassword: boolean;    // Indicates if the last login attempt was unsuccessful due to incorrect password
-    isLoading: boolean;              // Indicates if the authentication process is currently loading
-    signUp: (
-        authId: string,               // Username for the user account
-        email: string,                // User's email address
-        password: string,             // User's password
-        fName: string,                // User's first name
-        lName: string,                // User's last name
-        buId: string,                 // Unique identifier for the user (BU ID)
-        programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
-        programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
-        pathOfInterest: string,       // User's area of interest (e.g., "AI/ML", "Web Development", can be dynamic)
-        coursesToTake: number,        // Number of courses the user plans to take for the semester
-        coursesTaken: string[]        // Array of course IDs or names representing completed courses
-    ) => Promise<boolean>; // Function to sign up a new user
-    login: (authId: string, password: string) => Promise<boolean>; // Function to log in an existing user
-    logout: () => Promise<boolean>;  // Function to log out the user
-}
 
 // Create the authentication context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

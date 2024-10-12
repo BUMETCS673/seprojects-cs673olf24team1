@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React from 'react'; // Import React library
 import PropTypes from 'prop-types'; // Import PropTypes for type checking
 import './InputField.css'; // Import styles for the InputField component
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., send icon)

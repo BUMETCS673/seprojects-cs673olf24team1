@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
 
 interface UserContextType {
     user: User;
@@ -13,11 +13,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState<User>(() => {
         const storedUser = sessionStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : {
-            buId: '',
             firstName: '',
             lastName: '',
             email: '',
-            programType: '',
             programName: '',
             path_interest: '',
             courses_to_take: 0,
@@ -40,12 +38,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const initialUserState: User = {
             authId: '',
             userId: -1,
-            buId: '',
             fName: '',
             lName: '',
             email: '',
             password: '',
-            programType: '',
             programCode: '',
             pathOfInterest: '',
             coursesToTake: 0,

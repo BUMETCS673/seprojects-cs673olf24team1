@@ -1,5 +1,5 @@
-import { Message } from "../interfaces/Message";
-import { User } from "../interfaces/User";
+import { Message } from "../interfaces/ChatSession";
+import { User } from "../interfaces/UserSession";
 
 function extractCourseIds(courses: string[]): string[] {
     return courses.map(course => {
