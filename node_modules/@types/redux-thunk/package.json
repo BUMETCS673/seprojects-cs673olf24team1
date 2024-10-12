@@ -1,0 +1,18 @@
+{
+    "name": "@types/redux-thunk",
+    "version": "2.1.32",
+    "description": "TypeScript definitions for redux-thunk",
+    "license": "MIT",
+    "author": "Qubo <https://github.com/tkqubo>, Kaur Kuut <https://github.com/xStrom>",
+    "main": "",
+    "repository": {
+        "type": "git",
+        "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {
+        "redux": "^3.6.0"
+    },
+    "peerDependencies": {},
+    "typesPublisherContentHash": "2be06a7412b620ddfd9614acc0c32f0432bce83243baf703bd47a0d5be2620bd"
+}

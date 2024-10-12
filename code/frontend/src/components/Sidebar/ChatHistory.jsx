@@ -1,54 +1,68 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { assets } from '../../assets/assets';
-import { useChat } from '../../context/ChatContext';
-import './Sidebar.css';
+// Created by Natt
+// Updated by Tash
+
+import React from 'react'; // Import React library
+import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
+import { useChatService } from '../../hooks/useChatService'; // Use the custom hook for chat service
+import './Sidebar.css'; // Import styles for the Sidebar component
 
 const ChatHistory = () => {
   const {
-    history,
+    getSessionHistory,
+    sessionHistory, // Updated from history to sessionHistory
     isFetchingNetworkData,
     error,
     selectedSession,
-    handleDeleteSessionHistory,
-    handleSelectSession,
-  } = useChat();
+    deleteSessionHistory,
+    getMessageHistory,
+  } = useChatService(); // Use the chat service hook
 
-  const handleDeleteHistory = async (id) => {
+  // Handle deletion of chat history
+  const handleDeleteHistory = async (sessionId) => { // Renamed id to sessionId for clarity
     if (window.confirm("Are you sure you want to clear your chat history?")) {
-      await handleDeleteSessionHistory(id);
+      const result = await deleteSessionHistory(sessionId); // Call deleteSessionHistory
+      if (result && result.code) {
+        alert(result.message); // Show error message if deletion fails
+      } else {
+        alert('Chat history deleted successfully.'); // Success message
+        // Optionally, refresh the chat history
+        await getSessionHistory(); // Refresh history without needing userId
+      }
     }
   };
 
   return (
     <div className="recent">
       <p className='recent-title'>Chat History</p>
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error-message">{error.message}</p>} {/* Display error message */}
 
       {/* Show loading indicator when fetching data */}
       {isFetchingNetworkData ? (
         <p>Loading chat history...</p>
-      ) : history.length > 0 ? (
+      ) : sessionHistory.length > 0 ? ( // Updated to use sessionHistory
         <>
-          {history
+          {sessionHistory
             .sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime)) // Sort by createdTime (latest first)
             .map((session) => (
               <div
-                key={session.id}
-                className={`recent-entry-history ${selectedSession === session.id ? 'active' : ''}`}
-                onClick={() => handleSelectSession(session.id)}
+                key={session.sessionId} // Updated to use sessionId
+                className={`recent-entry-history ${selectedSession === session.sessionId ? 'active' : ''}`}
+                onClick={() => getMessageHistory(session.sessionId)} // Fetch messages for the selected session
               >
-                <img src={assets.message_icon} alt="" />
+                <img src={assets.message_icon} alt="Message icon" />
                 <span>{session.createdTime.toUTCString()}</span> {/* Convert to UTC string */}
-                {/* <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.id) }}>
-                  <img src={assets.clear} alt="clear" />
-                </div> */}
+                <div onClick={(e) => { e.stopPropagation(); handleDeleteHistory(session.sessionId); }}>
+                  <img src={assets.clear} alt="Clear chat history" />
+                </div>
               </div>
             ))}
         </>
-      ) : null}
+      ) : (
+        <p>No chat history available.</p> // Message when no history exists
+      )}
     </div>
   );
-}
+};
 
-export default ChatHistory;
+export default ChatHistory; // Export the ChatHistory component for use in other parts of the application

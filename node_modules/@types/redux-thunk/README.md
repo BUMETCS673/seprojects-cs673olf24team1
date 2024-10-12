@@ -1,0 +1,18 @@
+# Installation
+> `npm install --save @types/redux-thunk`
+
+# Summary
+This package contains type definitions for redux-thunk (https://github.com/gaearon/redux-thunk).
+
+# Details
+Files were exported from https://www.github.com/DefinitelyTyped/DefinitelyTyped/tree/types-2.0/redux-thunk
+
+Additional Details
+ * Last updated: Tue, 29 Nov 2016 18:03:28 GMT
+ * File structure: UMD
+ * Library Dependencies: none
+ * Module Dependencies: redux
+ * Global values: ReduxThunk, thunk
+
+# Credits
+These definitions were written by Qubo <https://github.com/tkqubo>, Kaur Kuut <https://github.com/xStrom>.

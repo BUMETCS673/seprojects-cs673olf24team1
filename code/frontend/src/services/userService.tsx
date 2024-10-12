@@ -1,37 +1,47 @@
-import { User } from "../interfaces/User";
-import { mapUserToAPIBody } from "../utils/mappers";
+// services/userService.tsx
+// Service for handling user-related API operations
+// Created by Poom
+// Updated for Redux integration by Tash
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+import { User, UserResponse, AuthError } from "../interfaces/UserSession"; // Import User and AuthError interfaces
+import { mapUserToAPIBody } from "../utils/mappers"; // Import utility function to map user data
+import store from '../store/store'; // Import the Redux store to access global state
+
+const API_BASE_URL = 'http://localhost:8080/api/v1'; // Base URL for the user API
 
 export const UserService = {
-    async getUserData(authId: string) {
-        const token = sessionStorage.getItem('token'); // Retrieve token from localStorage
-        
+    // Fetch user data by authId
+    async getUserData(authId: string): Promise<User | AuthError> {
+        const state = store.getState(); // Get the Redux state
+        const token = state.auth.jwtToken; // Retrieve JWT token from Redux state
+
         if (!token) {
-            throw new Error('No authentication token found');
+            return { code: 'AUTH_ERROR', message: 'No authentication token found.' } as AuthError; // Return error if token is missing
         }
 
         try {
             const response = await fetch(`${API_BASE_URL}/users/user/${authId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Include token in Authorization header
+                    'Content-Type': 'application/json', // Specify content type
                 },
             });
+
             if (!response.ok) {
-                throw new Error(`Failed to fetch user with ID ${authId}`);
+                throw new Error(`Failed to fetch user with ID ${authId}`); // Handle fetch error
             }
-            const user = await response.json();
-            return user;
+
+            const user: UserResponse = await response.json(); // Parse user data
+            return user.user; // Return user data
         } catch (error) {
-            console.error('Error fetching user:', error);
-            throw error;
+            console.error('Error fetching user:', error); // Log any errors
+            return { code: 'USER_DATA_ERROR', message: 'Failed to fetch user data.' } as AuthError; // Return error
         }
     },
 
-     // Sign up a new user
-     createUser: async (user: User): Promise<number> => {
+    // Sign up a new user
+    async createUser(user: User): Promise<number | AuthError> {
         try {
             const response = await fetch(`${API_BASE_URL}/users/user`, {
                 method: 'POST', // HTTP method for creating a user
@@ -43,15 +53,43 @@ export const UserService = {
 
             // Check if the response indicates failure
             if (!response.ok) {
-                throw new Error('Failed to create user'); // Throw error for non-200 responses
+                throw new Error('Failed to create user'); // Handle failure
             }
 
-            const data = await response.json(); // Parse the response data
-
-            return data; // Return the user object from the response
+            const data = await response.json(); // Parse response data
+            return data.userId; // Return user ID from the response
         } catch (error) {
             console.error('Error during sign-up:', error); // Log any errors encountered
-            return -1; // Return null in case of an error
+            return { code: 'USER_CREATION_ERROR', message: 'Failed to create user.' } as AuthError; // Return error
+        }
+    },
+
+    // Logout user
+    async logoutUser(): Promise<void | AuthError> {
+        const state = store.getState(); // Get the Redux state
+        const token = state.auth.jwtToken; // Retrieve JWT token from Redux state
+
+        if (!token) {
+            return { code: 'AUTH_ERROR', message: 'No authentication token found.' } as AuthError; // Return error if token is missing
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/logout`, {
+                method: 'POST', // HTTP method for logout
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include token in Authorization header
+                    'Content-Type': 'application/json', // Specify content type
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to logout user'); // Handle logout error
+            }
+        } catch (error) {
+            console.error('Error during logout:', error); // Log any errors encountered
+            return { code: 'LOGOUT_ERROR', message: 'Failed to logout user.' } as AuthError; // Return error
         }
     },
 };
+
+export default UserService; // Export UserService for use in other parts of the application

@@ -1,23 +1,46 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+// Created by Poom, updated by Tash
+
+import React from 'react'; // Import React library
+import { useDispatch, useSelector } from 'react-redux'; // Import hooks for accessing Redux state
 import './CourseTakenField.css'; // Import the CSS file
-import useSignUpForm from '../../pages/useSignUpForm';
+import { addCourse, removeCourse } from '../../store/actions/courseActions'; // Import actions for adding/removing courses
 
 const CourseTakenField = () => {
-    const {
-        formState,
-        inputValue,
-        filteredCourses,
-        handleInputChange,
-        handleCourseSelect,
-        handleRemoveCourse,
-      } = useSignUpForm();
+    const dispatch = useDispatch(); // Initialize dispatch for Redux actions
+    const { coursesTaken } = useSelector((state) => state.user); // Access the courses taken from Redux state
+    const [inputValue, setInputValue] = React.useState(''); // Local state for the input field
+    const [filteredCourses, setFilteredCourses] = React.useState([]); // Local state for filtered courses
+
+    // Handle input change to update local state and filter courses
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setInputValue(value);
+
+        // Filter courses based on user input (you may replace this with your own filtering logic)
+        const filtered = coursesTaken.filter(course => course.toLowerCase().includes(value.toLowerCase()));
+        setFilteredCourses(filtered);
+    };
+
+    // Handle course selection
+    const handleCourseSelect = (course) => {
+        dispatch(addCourse(course)); // Dispatch action to add course
+        setInputValue(''); // Clear the input field
+        setFilteredCourses([]); // Clear filtered courses
+    };
+
+    // Handle course removal
+    const handleRemoveCourse = (course) => {
+        dispatch(removeCourse(course)); // Dispatch action to remove course
+    };
 
     return (
         <div className="course-taken-container">
-            <label>Courses Taken:</label>      {formState.coursesTaken.length > 0 ? (
+            <label>Courses Taken:</label>
+            {coursesTaken.length > 0 ? (
                 <div className="course-list">
                     <ul>
-                        {formState.coursesTaken.map(course => (
+                        {coursesTaken.map(course => (
                             <li key={course}>
                                 {course}
                                 <span
@@ -30,7 +53,7 @@ const CourseTakenField = () => {
                         ))}
                     </ul>
                 </div>
-            ) : (null)}
+            ) : null}
             <div className="add-course-container">
                 <input
                     type="text"

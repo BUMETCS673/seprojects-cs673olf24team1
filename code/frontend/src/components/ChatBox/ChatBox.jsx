@@ -1,33 +1,33 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
+// Updated by Tash and Poom
+
 import React, { useState, useRef, useEffect } from 'react'; // Import necessary React hooks
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., logos and icons)
-import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
 import InputField from '../InputField/InputField'; // Input field component for sending messages
 import ChatBubble from './ChatBubble'; // Component for individual chat messages
-import PacmanLoader from 'react-spinners/PacmanLoader'
+import PacmanLoader from 'react-spinners/PacmanLoader'; // Loader for sending messages
+import useChatService from '../../hooks/useChatService'; // Importing the custom hook
 import './ChatBox.css'; // Import styles for the ChatBox component
 
 // ChatBox component to manage the chat interface and interactions
 const ChatBox = () => {
-  // Destructure values and functions from the chat context
   const {
-    handleSendMessage, // Function to handle sending messages
-    messages,          // Array of chat messages
-    isActive,
-    isSendingMessage,  // Boolean indicating if a message is currently being sent
-    error,             // Error messages (if any)
-    history,          // Array of chat sessions
-  } = useChat(); // Accessing the chat context
+    createUserMessage,
+    createAIMessage,
+    getChatBotResponse,
+    userId, // Access the userId directly from the hook
+  } = useChatService(); // Accessing chat service functions
 
-  // Local state management for the profile panel and input field
-  const [isProfilePanelOpen, setProfilePanelOpen] = useState(false); // State for controlling the profile panel visibility
-  const [input, setInput] = useState(''); // State for managing the message input field
+  const [messages, setMessages] = useState([]); // State for chat messages
+  const [isActive, setIsActive] = useState(true); // State for active chat session
+  const [isSendingMessage, setIsSendingMessage] = useState(false); // State for message sending
+  const [input, setInput] = useState(''); // State for message input field
 
-  // Toggle the visibility of the profile panel
-  const toggleProfilePanel = () => {
-    // setProfilePanelOpen(!isProfilePanelOpen);
-  };
+  // Scroll to the bottom when sending a new message
+  const chatEndRef = useRef(null); // Ref to track the end of the chat history
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); // Smoothly scroll to the bottom of chat history
+  }, [messages]); // Dependency on messages to trigger the effect when they change
 
   // Handle changes to the input field
   const handleInputChange = (event) => {
@@ -35,16 +35,30 @@ const ChatBox = () => {
   };
 
   // Handle sending the message when the user triggers it
-  const handleInputSend = () => {
-    handleSendMessage(input); // Call function to send the message
-    setInput(''); // Clear the input field after sending
-  };
+  const handleInputSend = async () => {
+    if (!input.trim()) return; // Ignore empty inputs
 
-  // Scroll to the bottom when sending a new message
-  const chatEndRef = useRef(null); // Ref to track the end of the chat history
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); // Smoothly scroll to the bottom of chat history
-  }, [messages]); // Dependency on messages to trigger the effect when they change
+    const newUserMessage = await createUserMessage({ text: input, isUser: true }); // Create user message
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]); // Add user message to chat
+
+    setIsSendingMessage(true); // Set sending state
+
+    try {
+        const response = await getChatBotResponse({ text: input, isUser: true }); // Get bot response
+        if (response && response.text) {
+            const newAIMessage = await createAIMessage({ text: response.text, isUser: false }); // Create AI message
+            setMessages((prevMessages) => [...prevMessages, newAIMessage]); // Add AI message to chat
+        } else {
+            alert(response.message); // Alert the error message
+        }
+    } catch (error) {
+        console.error('Error fetching chatbot response:', error);
+        alert('Failed to get response from the chatbot.'); // General error alert
+    } finally {
+        setInput(''); // Clear input
+        setIsSendingMessage(false); // Reset sending state
+    }
+};
 
   return (
     <div className='main'>
@@ -54,23 +68,11 @@ const ChatBox = () => {
           <img src={assets.bu_logo} alt="logo" />
           <p>BUAN CHATBOT</p>
         </div>
-        {/* Profile Avatar for accessing user profile */}
-        <div className="avatar-container" onClick={toggleProfilePanel}>
+        <div className="avatar-container">
           <img src={assets.user_icon} alt="User Avatar" />
         </div>
       </div>
 
-      {/* Sliding Profile Panel */}
-      <div className={`profile-panel ${isProfilePanelOpen ? 'open' : ''}`}>
-        <button className="close-btn" onClick={toggleProfilePanel}>X</button> {/* Close button for the profile panel */}
-        <h2>User Profile</h2>
-        {/* <ProfileForm /> */}
-      </div>
-
-      {/* Overlay to dim background when profile panel is open */}
-      {isProfilePanelOpen && <div className="overlay" onClick={toggleProfilePanel}></div>}
-
-      {/* Chat container for displaying chat messages and input field */}
       <div className="chat-container">
         <div className="chat-history-container">
           {/* Conditional rendering based on the presence of chat sessions */}
@@ -86,10 +88,9 @@ const ChatBox = () => {
             ))
           )}
           <div ref={chatEndRef} /> {/* Empty div to enable scrolling to the bottom */}
-          {isSendingMessage ? <div className='loading-indicator'><PacmanLoader color="#e54500" /></div> : null}
+          {isSendingMessage && <div className='loading-indicator'><PacmanLoader color="#e54500" /></div>} {/* Show sending indicator */}
         </div>
-        {/* Input field only visible when there are sessions */}
-        {isActive ? <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} /> : null}
+        {isActive && <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} />} {/* Input field for messages */}
       </div>
     </div>
   );

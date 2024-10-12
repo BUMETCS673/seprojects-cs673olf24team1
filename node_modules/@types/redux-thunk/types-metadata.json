@@ -1,0 +1,27 @@
+{
+    "authors": "Qubo <https://github.com/tkqubo>, Kaur Kuut <https://github.com/xStrom>",
+    "libraryDependencies": [],
+    "moduleDependencies": [
+        "redux"
+    ],
+    "libraryMajorVersion": 2,
+    "libraryMinorVersion": 1,
+    "libraryName": "redux-thunk",
+    "typingsPackageName": "redux-thunk",
+    "projectName": "https://github.com/gaearon/redux-thunk",
+    "sourceRepoURL": "https://www.github.com/DefinitelyTyped/DefinitelyTyped",
+    "sourceBranch": "types-2.0",
+    "kind": "UMD",
+    "globals": [
+        "ReduxThunk",
+        "thunk"
+    ],
+    "declaredModules": [
+        "redux"
+    ],
+    "files": [
+        "index.d.ts"
+    ],
+    "hasPackageJson": true,
+    "contentHash": "2be06a7412b620ddfd9614acc0c32f0432bce83243baf703bd47a0d5be2620bd"
+}

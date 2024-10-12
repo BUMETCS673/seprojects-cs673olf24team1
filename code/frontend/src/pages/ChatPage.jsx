@@ -4,17 +4,29 @@
 
 import React from 'react'; // Import React library
 import ChatBox from '../components/ChatBox/ChatBox'; // Import the ChatBox component for displaying chat messages
-import SideBar from '../components/Sidebar/Sidebar'; // Import the Sidebar component for navigation
-import { ChatProvider } from '../context/ChatContext'; // Import ChatProvider for managing chat state context
+import Sidebar from '../components/Sidebar/Sidebar'; // Import the Sidebar component for navigation
+import { useUserService } from '../hooks/useUserService'; // Import useUserService for user-related functions
 import '../App.css'; // Import global styles for the application
 
 // ChatPage component which serves as the main container for the chat application
 const ChatPage = () => {
+    const { logoutUser } = useUserService(); // Get logoutUser from useUserService
+
+    // Handle logout functionality
+    const handleLogout = async () => {
+        const result = await logoutUser(); // Call the logout function
+        if (result && 'code' in result) {
+            alert(result.message); // Show error message if logout fails
+        } else {
+            alert('Successfully logged out.'); // Optionally add success message handling
+        }
+    };
+
     return (
-        <ChatProvider> {/* Wraps the chat components to provide context for chat state */}
-            <SideBar /> {/* Sidebar for navigation and chat options */}
+        <div className="chat-page">
+            <Sidebar handleLogout={handleLogout} /> {/* Pass handleLogout to Sidebar */}
             <ChatBox /> {/* Main chat interface where messages are displayed */}
-        </ChatProvider>
+        </div>
     );
 };
 
