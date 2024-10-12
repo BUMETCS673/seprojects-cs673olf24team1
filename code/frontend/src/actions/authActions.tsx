@@ -2,7 +2,7 @@
 // Actions for managing authentication state using JWT
 // Created by Tash
 
-import { AuthError, LoginResponse } from '../interfaces/AuthSession'; // Import the AuthError and LoginResponse interfaces
+import { AuthError, AuthResponse } from '../interfaces/AuthSession'; // Import the AuthError and LoginResponse interfaces
 
 // Define action types as constants
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'; // Action type for successful login
@@ -13,7 +13,7 @@ export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'; // Action type for signup failur
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'; // Action type for logout failure
 
 // Define the action creator for successful login
-export const loginSuccess = (payload: LoginResponse) => ({
+export const loginSuccess = (payload: AuthResponse) => ({
     type: LOGIN_SUCCESS,
     payload,
 });
@@ -25,7 +25,7 @@ export const loginFailure = (error: AuthError) => ({
 });
 
 // Define the action creator for successful signup
-export const signupSuccess = (payload: LoginResponse) => ({
+export const signupSuccess = (payload: AuthResponse) => ({
     type: SIGNUP_SUCCESS,
     payload,
 });
