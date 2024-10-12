@@ -1,62 +1,85 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import ChatHistory from './ChatHistory';
-import { Context } from '../../context/ContextProvider';
+import { render, screen } from '@testing-library/react';
+import ChatHistory from '../components/Sidebar/ChatHistory';
+import { useChat } from '../context/ChatContext';
 
-// Mocking the assets used in the component
-jest.mock('../../assets/assets', () => ({
-    assets: {
-        message_icon: 'mock-message-icon',
-    },
+// Mocking assets
+jest.mock('../_mocks_/assets', () => ({
+  message_icon: 'message_icon',
+  clear: 'message_icon',
+}));
+
+// Mocking the useChat hook
+jest.mock('../context/ChatContext', () => ({
+  useChat: jest.fn(),
 }));
 
 describe('ChatHistory Component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks(); // Clear mock calls before each test
+  });
 
-    const mockOnSent = jest.fn();
-    const mockSetRecentPrompt = jest.fn();
-    const prevPromptsMock = ["Prompt 1", "Prompt 2", "Prompt 3"];
-
-    const renderComponent = () => {
-        return render(
-            <Context.Provider value={{
-                onSent: mockOnSent,
-                prevPrompts: prevPromptsMock,
-                setRecentPrompt: mockSetRecentPrompt,
-            }}>
-                <ChatHistory />
-            </Context.Provider>
-        );
-    };
-
-    it('renders the component and displays the title', () => {
-        renderComponent();
-        const titleElement = screen.getByText(/Chat History/i);
-        expect(titleElement).toBeInTheDocument();
+  test('renders loading state when fetching data', () => {
+    // Mock useChat to simulate loading state
+    useChat.mockReturnValue({
+      history: [],
+      isFetchingNetworkData: true,
+      error: null,
+      selectedSession: null,
+      handleDeleteSessionHistory: jest.fn(),
+      handleSelectSession: jest.fn(),
     });
 
-    it('renders the correct number of chat history entries', () => {
-        renderComponent();
-        const chatEntries = screen.getAllByRole('img');
-        expect(chatEntries.length).toBe(prevPromptsMock.length);
+    render(<ChatHistory />);
+
+    // Expect loading text to be displayed
+    expect(screen.getByText(/loading chat history.../i)).toBeInTheDocument();
+  });
+
+  test('renders error message when there is an error', () => {
+    // Mock useChat to simulate an error
+    useChat.mockReturnValue({
+      history: [],
+      isFetchingNetworkData: false,
+      error: 'Failed to load chat history',
+      selectedSession: null,
+      handleDeleteSessionHistory: jest.fn(),
+      handleSelectSession: jest.fn(),
     });
 
-    it('displays the truncated chat history prompts', () => {
-        renderComponent();
-        prevPromptsMock.forEach((prompt) => {
-            const truncatedPrompt = prompt.slice(0, 10) + ' ...';
-            expect(screen.getByText(truncatedPrompt)).toBeInTheDocument();
-        });
+    render(<ChatHistory />);
+
+    // Expect error message to be displayed
+    expect(screen.getByText(/failed to load chat history/i)).toBeInTheDocument();
+  });
+
+  test('renders chat history when available', () => {
+    const now = new Date();
+
+    // Mock useChat to simulate chat history
+    useChat.mockReturnValue({
+      history: [
+        {
+          id: '1',
+          createdTime: now, // Use a Date object directly
+        },
+        {
+          id: '2',
+          createdTime: new Date(now.getTime() - 1000 * 60 * 60), // One hour earlier
+        },
+      ],
+      isFetchingNetworkData: false,
+      error: null,
+      selectedSession: null,
+      handleDeleteSessionHistory: jest.fn(),
+      handleSelectSession: jest.fn(),
     });
 
-    it('calls loadPrompt function when a history entry is clicked', async () => {
-        renderComponent();
-        const chatEntry = screen.getByText('Prompt 1 ...');
-        fireEvent.click(chatEntry);
+    render(<ChatHistory />);
 
-        // Verify that onSent and setRecentPrompt were called with the correct prompt
-        expect(mockOnSent).toHaveBeenCalledWith('Prompt 1');
-        expect(mockSetRecentPrompt).toHaveBeenCalledWith('Prompt 1');
-    });
+    // Expect chat history entries to be displayed
+    expect(screen.getByText(/chat history/i)).toBeInTheDocument();
+    expect(screen.getByText(now.toUTCString())).toBeInTheDocument(); // Check for the most recent entry
+    expect(screen.getByText(new Date(now.getTime() - 1000 * 60 * 60).toUTCString())).toBeInTheDocument(); // Check for the earlier entry
+  });
 });
