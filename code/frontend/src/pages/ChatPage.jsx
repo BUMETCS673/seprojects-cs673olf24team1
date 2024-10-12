@@ -2,7 +2,7 @@
 // Created by Natt
 // Updated and annotated by Natasya Liew
 
-import React from 'react'; // Import React library
+//import React from 'react'; // Import React library
 import ChatBox from '../components/ChatBox/ChatBox'; // Import the ChatBox component for displaying chat messages
 import Sidebar from '../components/Sidebar/Sidebar'; // Import the Sidebar component for navigation
 import { useUserService } from '../hooks/useUserService'; // Import useUserService for user-related functions

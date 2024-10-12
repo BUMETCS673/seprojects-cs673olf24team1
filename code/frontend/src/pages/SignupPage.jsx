@@ -32,6 +32,19 @@ const SignupPage = () => {
     handleRemoveCourse,
   } = useSignUpForm();
 
+  const [errorMessage, setErrorMessage] = useState(''); // State to manage error messages
+
+  const onFormSubmit = async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    try {
+      await handleFormSubmit(); // Call the form submission handler
+      // Handle success (e.g., redirect or show success message)
+    } catch (error) {
+      setErrorMessage(error.message); // Set error message based on the caught error
+    }
+  };
+
 
   return (
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
@@ -40,7 +53,7 @@ const SignupPage = () => {
           <img src={assets.bu_logo} alt="bu-logo" className="form-img" style={{ height: '40%' }} />
         </div>
         <div className="form-content-right col-10 col-md-6">
-          <form className="form" onSubmit={handleFormSubmit}>
+          <form className="form" onSubmit={onFormSubmit}>
             <h1>BUAN CHATBOT</h1>
             <h2>Sign Up</h2>
 

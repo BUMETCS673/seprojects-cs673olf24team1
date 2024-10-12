@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-// Updated by Tash and Poom
+// Created by Natt, updated by Poom and Natasya Liew
 
 import React, { useState, useRef, useEffect } from 'react'; // Import necessary React hooks
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., logos and icons)
@@ -15,8 +15,10 @@ const ChatBox = () => {
     createUserMessage,
     createAIMessage,
     getChatBotResponse,
-    userId, // Access the userId directly from the hook
   } = useChatService(); // Accessing chat service functions
+
+  const userId = useSelector((state) => state.auth.user?.userId); // Get userId from Redux state
+
 
   const [messages, setMessages] = useState([]); // State for chat messages
   const [isActive, setIsActive] = useState(true); // State for active chat session
@@ -58,7 +60,7 @@ const ChatBox = () => {
         setInput(''); // Clear input
         setIsSendingMessage(false); // Reset sending state
     }
-};
+  };
 
   return (
     <div className='main'>
