@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Created by Natt, Updated by Tash
 
-import React from 'react'; // Import React library
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
 import './Sidebar.css'; // Import styles for the Sidebar component
 import { useChatService } from '../../hooks/useChatService'; // Use the custom hook for chat service

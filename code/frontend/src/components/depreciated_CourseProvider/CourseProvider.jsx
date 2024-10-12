@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
 import './CourseProvider.css'
 
 const CourseProvider = () => {

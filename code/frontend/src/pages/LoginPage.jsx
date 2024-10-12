@@ -6,7 +6,6 @@
 
 // Import necessary modules from React and React Router
 import { Link } from 'react-router-dom';
-import React from 'react';
 import '../assets/styles/SignupPage.scss'; // Importing styles for the Signup page
 import { assets } from '../assets/assets'; // Import asset resources (e.g., logo)
 
@@ -15,11 +14,11 @@ import { assets } from '../assets/assets'; // Import asset resources (e.g., logo
 const LoginPage = (props) => {
   const {
     formState,
-    showPassword,
-    togglePasswordVisibility,
+    //showPassword,
+    //togglePasswordVisibility,
     handleChange,
     handleFormSubmit,
-    successMessage,
+    //successMessage,
     errorMessage,
   } = useLoginForm();
 

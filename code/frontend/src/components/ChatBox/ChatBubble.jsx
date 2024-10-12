@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Updated by Tash
 
-import React from 'react'; // Importing React library
 import PropTypes from 'prop-types'; // Import PropTypes for type checking
 import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
 import './ChatBubble.css'; // Importing styles specific to the ChatBubble component

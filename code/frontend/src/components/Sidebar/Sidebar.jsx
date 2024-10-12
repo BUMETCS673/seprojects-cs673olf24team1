@@ -2,7 +2,6 @@
 // Updated by Tash
 
 /* eslint-disable no-unused-vars */
-import React from 'react';
 import NewChatButton from './NewChatButton';
 // import ClearButton from './ClearButton';
 // import EmailButton from './EmailButton';

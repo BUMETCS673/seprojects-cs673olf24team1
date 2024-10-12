@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Created by Natt, Updated by Tash
 
-import React from 'react'; // Import React library
 import './Sidebar.css'; // Import styles for the Sidebar component
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
 import { useChatService } from '../../hooks/useChatService'; // Import useChatService for chat-related functions
@@ -40,7 +39,7 @@ const DownloadButton = () => {
         let yPosition = 20; // Starting Y position for messages
 
         // Loop through messages and add them to the PDF
-        messages.forEach((message, index) => {
+        messages.forEach((message) => {
             const { text, isUser } = message; // Destructure message object
             const role = isUser ? 'User' : 'Bot'; // Determine the sender
 

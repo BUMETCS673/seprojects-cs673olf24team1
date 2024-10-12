@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 // Created by Poom, updated by Tash
 
-import React from 'react'; // Import React library
 import { useDispatch, useSelector } from 'react-redux'; // Import hooks for accessing Redux state
 import './CourseTakenField.css'; // Import the CSS file
 import { addCourse, removeCourse } from '../../store/actions/courseActions'; // Import actions for adding/removing courses

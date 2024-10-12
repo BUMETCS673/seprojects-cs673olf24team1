@@ -2,7 +2,6 @@
 // Created by Natt
 // Updated by Tash
 
-import React from 'react'; // Import React library
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
 import { useChatService } from '../../hooks/useChatService'; // Use the custom hook for chat service
 import './Sidebar.css'; // Import styles for the Sidebar component

@@ -2,7 +2,7 @@
 // Created by Tash
 
 import { ChatState, ChatAction } from '../interfaces/ChatSession'; // Import interfaces
-import { ChatActionTypes } from '../actions/ChatActions'; // Corrected casing
+import { ChatActionTypes } from '../actions/ChatActions'; 
 
 // Initial state for the chat reducer
 const initialState: ChatState = {

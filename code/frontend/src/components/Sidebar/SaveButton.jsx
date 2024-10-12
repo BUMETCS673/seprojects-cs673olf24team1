@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 //Created by Natt, Updated by Tash
 
-import React from 'react';
 import './Sidebar.css';
 import { assets } from '../../assets/assets';
 import { useChatService } from '../../hooks/useChatService'; // Import the useChatService hook
