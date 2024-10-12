@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'; // Import PropTypes
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import store from '../store/store'; // Import your Redux store
+import store from './store/store'; // Import your Redux store
 
 // PrivateRoute component to protect routes
 const PrivateRoute = ({ children }) => {
