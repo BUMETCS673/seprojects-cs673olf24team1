@@ -1,4 +1,3 @@
-import React from 'react'; // Importing React library
 import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
 import './ChatBubble.css'; // Importing styles specific to the ChatBubble component
 import { useChat } from '../../context/ChatContext';

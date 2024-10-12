@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
 import { useChat } from '../../context/ChatContext';
@@ -8,14 +7,6 @@ import { jsPDF } from 'jspdf' // using jspdf library to generate the PDF
 const DownloadButton = () => {
     // const { downloadChatHistory } = useChat();
     const { messages } = useChat(); // Access messages from chat context
-
-    // old implementation
-    // const handleDownloadChat = () => {
-    //     console.log("Download chat history link");
-    //     // Generate shareable link (backend needed)
-    //     downloadChatHistory();  // Call the function to download chat history
-    // };
-
     // new implement
     const handleDownloadChat = () => {
         // Initialize jsPDF
@@ -46,10 +37,6 @@ const DownloadButton = () => {
         messages.forEach((message, index) => {
             const { text, isUser } = message; // Destructure message object
             const role = isUser ? 'User' : 'Bot'; // Determine the sender
-
-            // const formattedTime = moment(timestamp).format('YYYY-MM-DD HH:mm:ss'); // Format the timestamp
-            // Add message with timestamp to PDF
-            // doc.text(`${role} [${formattedTime}]: ${text}`, 10, yPosition);
 
             doc.text(`${role}: ${text}`, 10, yPosition);
             yPosition += 10; // Move down for the next message

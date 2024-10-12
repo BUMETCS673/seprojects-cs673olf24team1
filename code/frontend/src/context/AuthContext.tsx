@@ -5,10 +5,12 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
+import { SignUpParams } from '../interfaces/AuthSession';
+
 
 // Define the shape of the context value
-interface AuthContextType {
+export interface AuthContextType {
     isAuth: boolean;                // Indicates if the user is authenticated
     isIncorrectPassword: boolean;    // Indicates if the last login attempt was unsuccessful due to incorrect password
     isLoading: boolean;              // Indicates if the authentication process is currently loading

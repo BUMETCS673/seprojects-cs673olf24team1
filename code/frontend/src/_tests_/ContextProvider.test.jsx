@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import { renderHook, act } from '@testing-library/react-hooks';
-import ContextProvider, { Context } from './ContextProvider';
+import ContextProvider from './ContextProvider';
 import runChat from '../config/samplegeneraterunchat';
 
 jest.mock('../config/samplegeneraterunchat');
