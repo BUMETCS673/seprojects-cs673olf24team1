@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
 import NewChatButton from './NewChatButton'
-// import ClearButton from './ClearButton'
-// import EmailButton from './EmailButton'
-// import PrintButton from './PrintButton'
 import LogoutButton from './LogoutButton'
 import ChatHistory from './ChatHistory'
 import './Sidebar.css'
@@ -18,9 +15,6 @@ const Sidebar = () => {
             <ChatHistory />
             </div>
             <div className="bottom">
-                {/* <ClearButton /> */}
-                {/* <EmailButton /> */}
-                {/* <PrintButton /> */}
                 <SaveButton/>
                 <DownloadButton />
                 <LogoutButton />
