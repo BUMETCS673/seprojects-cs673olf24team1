@@ -9,7 +9,7 @@ import { RootState } from '../store/store';
 import UserService from '../services/userService'; 
 import { User, AuthError } from '../interfaces/UserSession'; 
 import { SuccessResponse } from '../interfaces/AuthSession';
-import { logout, loginFailure } from '../actions/AuthActions'; 
+import { logout, loginFailure } from '../actions/authActions'; 
 import authService from '../services/authService'; // Import AuthService
 
 export const useUserService = () => {

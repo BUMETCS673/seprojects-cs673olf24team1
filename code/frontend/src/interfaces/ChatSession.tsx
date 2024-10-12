@@ -5,7 +5,7 @@
 // Type definitions for chat-related operations
 
 import { SuccessResponse } from './AuthSession'; // Import the User interface
-import { ChatActionTypes } from '../actions/ChatActions'; // Ensure correct path to the definition
+import { ChatActionTypes } from '../actions/chatActions'; // Ensure correct path to the definition
 
 
 // ChatSession interface representing the structure of a chat session in the application

@@ -2,7 +2,7 @@
 // Reducer for managing authentication state in Redux
 // Created by Tash
 
-import { LOGIN_SUCCESS, LOGOUT, LOGIN_FAILURE, LOGOUT_FAILURE, SIGNUP_SUCCESS, SIGNUP_FAILURE } from '../actions/AuthActions'; // Import action types
+import { LOGIN_SUCCESS, LOGOUT, LOGIN_FAILURE, LOGOUT_FAILURE, SIGNUP_SUCCESS, SIGNUP_FAILURE } from '../actions/authActions'; // Import action types
 import { AuthResponse, AuthError, AuthState, AuthAction } from '../interfaces/AuthSession'; // Import interfaces for the expected response and error
 
 // Initial state

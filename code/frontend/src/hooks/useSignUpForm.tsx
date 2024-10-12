@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import availableCourses from '../assets/availableCourses';
 import { SignUpFormState, AuthError, SignUpVisibilityState, CourseSelectionState } from '../interfaces/AuthSession'; // Import interfaces
-import { loginSuccess, loginFailure } from '../actions/AuthActions'; // Import action creators
+import { loginSuccess, loginFailure } from '../actions/authActions'; // Import action creators
 import { useDispatch } from 'react-redux'; // Import useDispatch for Redux actions
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService'; // Import authService for API calls

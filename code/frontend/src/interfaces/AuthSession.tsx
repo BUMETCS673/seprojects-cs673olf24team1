@@ -2,7 +2,7 @@
 // Type definitions for authentication-related operations
 // Created by Tash
 
-import { LOGIN_SUCCESS, LOGIN_FAILURE, SIGNUP_SUCCESS, SIGNUP_FAILURE, LOGOUT, LOGOUT_FAILURE } from '../actions/AuthActions';
+import { LOGIN_SUCCESS, LOGIN_FAILURE, SIGNUP_SUCCESS, SIGNUP_FAILURE, LOGOUT, LOGOUT_FAILURE } from '../actions/authActions';
 import { User } from './UserSession'; // Import the User interface
 
 
