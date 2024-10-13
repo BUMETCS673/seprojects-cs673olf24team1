@@ -4,6 +4,7 @@
 // Updated and Annotated by Tash: Success/Error Message and Input Requirements
 
 import React, { useState } from 'react'; // Import necessary React hooks
+import PropTypes from 'prop-types'; // Import PropTypes for prop validation
 import '../InputField/InputField.css'; // Import styles for the InputField component
 
 /**
@@ -25,7 +26,7 @@ const InputField = ({ input, onSend, onChange }) => {
     // Handle sending the message
     const handleSend = () => {
         // Requirement Condition: Validate input to prevent empty messages
-        if (!input.trim()) { // Check for empty input or only whitespace
+        if (!input || !input.trim()) { // Check for empty input or only whitespace
             setErrorMessage('Message cannot be empty or just spaces.'); // Set error message
             setSuccessMessage(''); // Clear success message if there's an error
             return; // Exit the function if validation fails
@@ -51,6 +52,13 @@ const InputField = ({ input, onSend, onChange }) => {
             {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
         </div>
     );
+};
+
+// Prop validation for the InputField component
+InputField.propTypes = {
+    input: PropTypes.string.isRequired, // Input field value
+    onSend: PropTypes.func.isRequired, // Function to handle sending messages
+    onChange: PropTypes.func.isRequired, // Function to handle input changes
 };
 
 export default InputField; // Exporting the InputField component for use in other parts of the application

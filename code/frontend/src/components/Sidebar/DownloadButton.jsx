@@ -4,6 +4,8 @@
 
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
 import { useChat } from '../../context/chatContext'; // Custom hook for managing chat context
+import { jsPDF } from 'jspdf'; // Import jsPDF from the jspdf library
+
 
 /**
  * SaveChatButton component for saving the chat history as a PDF document.
