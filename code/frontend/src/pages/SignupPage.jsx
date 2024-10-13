@@ -122,9 +122,9 @@ const SignupPage = () => {
               <input
                 className="form-input"
                 placeholder="Insert your first name"
-                name="fName" // Input name matches the state variable
+                name="firstName" // Input name matches the state variable
                 type="text"
-                value={formState.fName} // Controlled input
+                value={formState.firstName} // Controlled input
                 onChange={handleChange} // Update state on change
                 required
               />
@@ -135,9 +135,9 @@ const SignupPage = () => {
               <input
                 className="form-input"
                 placeholder="Insert your last name"
-                name="lName" // Input name matches the state variable
+                name="lastName" // Input name matches the state variable
                 type="text"
-                value={formState.lName} // Controlled input
+                value={formState.lastName} // Controlled input
                 onChange={handleChange} // Update state on change
                 required
               />

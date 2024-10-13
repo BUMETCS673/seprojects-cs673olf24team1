@@ -18,8 +18,8 @@ export interface AuthContextType {
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        fName: string,                // User's first name
-        lName: string,                // User's last name
+        firstName: string,                // User's first name
+        lastName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
         programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
@@ -57,8 +57,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        fName: string,                // User's first name
-        lName: string,                // User's last name
+        firstName: string,                // User's first name
+        lastName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
         programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
@@ -74,8 +74,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             userId: -1, // place holder
             email: email,
             password: password,
-            fName: fName,
-            lName: lName,
+            firstName: firstName,
+            lastName: lastName,
             buId: buId,
             programType: programType,
             programCode: programCode,

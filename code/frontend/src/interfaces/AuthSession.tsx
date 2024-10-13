@@ -6,8 +6,8 @@ export interface SignUpParams {
     authId: string;               // Username for the user account
     email: string;                // User's email address
     password: string;             // User's password
-    fName: string;                // User's first name
-    lName: string;                // User's last name
+    firstName: string;                // User's first name
+    lastName: string;                // User's last name
     buId: string;                 // Unique identifier for the user (BU ID)
     programType: string;          // Type of academic program (e.g., "MS degree")
     programCode: string;          // Code for the academic program (e.g., "mssd")
@@ -22,8 +22,8 @@ export interface FormState {
     email: string;
     password: string;
     confirmPassword: string;
-    fName: string;
-    lName: string;
+    firstName: string;
+    lastName: string;
     buId: string;
     programType: string;
     programCode: string;

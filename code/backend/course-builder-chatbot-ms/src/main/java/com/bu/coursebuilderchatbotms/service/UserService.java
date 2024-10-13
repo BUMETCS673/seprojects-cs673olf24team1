@@ -25,10 +25,6 @@ public class UserService implements UserDetailsService {
         this.objectMapper = objectMapper;
     }
 
-    public User getUserById(int userId) {
-        return userDAO.getUserById(userId);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDAO.getUserByUsername(username);
@@ -39,7 +35,7 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getAuthId())
                 .password(user.getPasswordHash())
-                .authorities(Collections.emptyList()) // or add appropriate authorities
+                .authorities(Collections.emptyList())
                 .build();
     }
 
@@ -48,13 +44,17 @@ public class UserService implements UserDetailsService {
         user.setAuthId(userDTO.getAuthId());
         user.setEmail(userDTO.getEmail());
         user.setPasswordHash(userDTO.getPasswordHash());
-        user.setFName(userDTO.getFName());
-        user.setLName(userDTO.getLName());
+        user.setFName(userDTO.getFirstName());
+        user.setLName(userDTO.getLastName());
         user.setProgramCode(userDTO.getProgramCode());
 
         try {
-            String courseTakenJson = objectMapper.writeValueAsString(userDTO.getCourseTaken());
-            user.setCourse_taken(courseTakenJson);
+            if(userDTO.getCourseTaken() != null) {
+                String courseTakenJson = objectMapper.writeValueAsString(userDTO.getCourseTaken());
+                user.setCourse_taken(courseTakenJson);
+            } else if (userDTO.getCourseTaken().isEmpty()) {
+                user.setCourse_taken("[]");
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error serializing courseTaken", e);
         }
