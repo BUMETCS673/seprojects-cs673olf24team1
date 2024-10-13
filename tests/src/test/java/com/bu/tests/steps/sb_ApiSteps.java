@@ -4,6 +4,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -32,23 +33,59 @@ public class sb_ApiSteps {
     @Given("I am an authenticated user")
     public void i_am_an_authenticated_user() throws Exception {
         client = HttpClient.newHttpClient();
-        String authUrl = "http://localhost:8080/api/v1/auth/login"; // Updated authentication endpoint
+
+        // Step 1: Create the user if not already created
+        String createUserUrl = "http://localhost:8080/api/v1/users/user";
+        JSONObject userData = new JSONObject();
+        userData.put("authId", "bu1234rerer");
+        userData.put("email", "bu1234erer@example.com");
+        userData.put("password", "password123");
+        userData.put("fName", "bu1234");
+        userData.put("lName", "bu1234");
+        userData.put("programCode", "CS105");
+        userData.put("courseTaken", new String[]{"521"});
+        userData.put("pathInterest", "ai/ml");
+        userData.put("courseToTake", 3);
+
+        HttpRequest createUserRequest = HttpRequest.newBuilder()
+                .uri(URI.create(createUserUrl))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(userData.toString()))
+                .build();
+
+        HttpResponse<String> createUserResponse = client.send(createUserRequest, HttpResponse.BodyHandlers.ofString());
+
+        if (createUserResponse.statusCode() != 200 && createUserResponse.statusCode() != 201) {
+            throw new RuntimeException("Failed to create user: " + createUserResponse.body());
+        }
+
+        // Step 2: Authenticate the user
+        String authUrl = "http://localhost:8080/api/v1/auth/login";
 
         JSONObject credentials = new JSONObject();
-        credentials.put("username", username);
-        credentials.put("password", password);
+        credentials.put("username", "bu1234rerer"); // Use the same authId as the username
+        credentials.put("password", "password123");
 
-        HttpRequest request = HttpRequest.newBuilder()
+        HttpRequest authRequest = HttpRequest.newBuilder()
                 .uri(URI.create(authUrl))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(credentials.toString()))
                 .build();
 
-        HttpResponse<String> authResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> authResponse = client.send(authRequest, HttpResponse.BodyHandlers.ofString());
+
+        // Print the actual response body to understand the format
+        System.out.println("Authentication response body: " + authResponse.body());
 
         if (authResponse.statusCode() == 200) {
             JSONObject responseBody = new JSONObject(authResponse.body());
-            jwtToken = responseBody.getString("token"); // Adjust based on your API's response format
+
+            // Check if "token" exists and adjust the key based on the actual response format
+            if (responseBody.has("jwt")) {
+                jwtToken = responseBody.getString("jwt");
+            } else {
+                throw new RuntimeException("Token not found in the response: " + authResponse.body());
+            }
         } else {
             throw new RuntimeException("Failed to authenticate: " + authResponse.body());
         }
@@ -148,10 +185,10 @@ public class sb_ApiSteps {
     public void i_have_new_user_data() {
         userData = new JSONObject();
         userData.put("authId", "auth_005"); // Ensure unique authId
-        userData.put("email", "bu1234@example.com");
-        userData.put("passwordHash", "hashed_password");
-        userData.put("fName", "bu1234");
-        userData.put("lName", "bu1234");
+        userData.put("email", "newuser@example.com");
+        userData.put("password", "hashed_password"); // Password should be plain text if you're encoding it on the server
+        userData.put("fName", "New");
+        userData.put("lName", "User");
         userData.put("programCode", "CS105");
         userData.put("courseTaken", new String[]{"521"});
         userData.put("pathInterest", "ai/ml");
@@ -161,20 +198,24 @@ public class sb_ApiSteps {
     @When("I send a POST request to {string} with the user data")
     public void i_send_a_post_request_to_with_the_user_data(String endpoint) throws Exception {
         apiUrl = "http://localhost:8080" + endpoint;
+
+        // Ensure we're authenticated
+        assertNotNull("JWT token is missing, make sure you are authenticated", jwtToken);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
                 .header("Content-Type", "application/json")
-                // Depending on your security configuration, you may or may not need the token for user creation
-                .header("Authorization", "Bearer " + jwtToken)
+                .header("Authorization", "Bearer " + jwtToken) // Add the JWT token to the request
                 .POST(HttpRequest.BodyPublishers.ofString(userData.toString()))
                 .build();
+
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     @Then("the user is created in the system")
     public void the_user_is_created_in_the_system() {
-        // Assuming a successful response means the user is created
-        assertEquals(200, response.statusCode());
+        // Expect a 201 Created or 200 OK depending on your API
+        assertEquals(200, response.statusCode()); // Adjust this status code depending on what your API returns on successful creation
     }
 
     @Given("I have user id {string} and student name {string}")
@@ -228,4 +269,48 @@ public class sb_ApiSteps {
         assertEquals("Expected HTTP status code " + expectedStatusCode + " but received " + actualStatusCode,
                 expectedStatusCode, actualStatusCode);
     }
+
+    @Then("the response is successful but the body is null")
+    public void the_response_is_successful_but_the_body_is_null() {
+        // Ensure the response status code is 200 OK
+        assertNotNull("Expected a response, but got null", response);
+        assertEquals("Expected HTTP status code 200", 200, response.statusCode());
+
+        // Check if the response body is null or empty
+        String responseBody = response.body();
+        assertTrue("Expected the response body to be null or empty", responseBody == null || responseBody.isEmpty());
+    }
+
+    @Given("this is just a logger")
+    public void this_is_just_a_logger() {
+        System.out.println("HTTP response body" + response.body());
+    }
+
+    @Then("I successfully receive session data")
+    public void i_successfully_receive_session_data() {
+        // Ensure the response is not null
+        assertNotNull("Expected a response, but got null", response);
+
+        // Ensure the response status code is 200 OK
+        assertEquals("Expected HTTP status code 200", 200, response.statusCode());
+
+        // Get the response body
+        String responseBody = response.body();
+        assertNotNull("Expected the response body to contain session data, but got null", responseBody);
+
+        // Parse the response body as a JSON array
+        JSONArray sessions = new JSONArray(responseBody);
+
+        // Ensure we received at least one session
+        assertTrue("Expected to receive at least one session", sessions.length() > 0);
+
+        // Check specific fields for the first session as an example
+        JSONObject firstSession = sessions.getJSONObject(0);
+        assertEquals(1, firstSession.getInt("sessionId")); // Example: sessionId should be 1
+        assertEquals(2, firstSession.getInt("userId"));    // Example: userId should be 2
+        assertNotNull(firstSession.getString("createdAt")); // Ensure the createdAt field is not null
+        assertEquals("[{\"user\":\"Hello\",\"chatbot\":\"Hi there! How can I help you today?\"}]",
+                firstSession.getString("conversation")); // Check conversation field
+    }
+
 }
