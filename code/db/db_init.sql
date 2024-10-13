@@ -1,3 +1,5 @@
+-- Created by Ananya and Tash
+
 -- TABLE: users
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,

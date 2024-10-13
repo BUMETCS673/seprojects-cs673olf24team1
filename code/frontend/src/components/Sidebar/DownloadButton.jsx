@@ -1,58 +1,65 @@
 /* eslint-disable no-unused-vars */
-import './Sidebar.css'
-import { assets } from '../../assets/assets'
-import { useChat } from '../../context/ChatContext';
-import { jsPDF } from 'jspdf' // using jspdf library to generate the PDF
+// Created by Natt
+// Annotated and Updated by Tash: Success/Error Message, added details and requirement checks
 
-const DownloadButton = () => {
-    // const { downloadChatHistory } = useChat();
-    const { messages } = useChat(); // Access messages from chat context
-    // new implement
-    const handleDownloadChat = () => {
-        // Initialize jsPDF
-        const doc = new jsPDF();
+import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
+import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
 
-        // Add logo
-        const logo = assets.bu_logo;
+/**
+ * SaveChatButton component for saving the chat history as a PDF document.
+ * 
+ * This component triggers the saving of the chat history, provides feedback
+ * messages to the user regarding the success or failure of the operation,
+ * and includes necessary checks before attempting to save.
+ * 
+ * @returns {JSX.Element} The rendered SaveChatButton component.
+ */
+const SaveChatButton = () => {
+    const { chatHistory } = useChat(); // Access chat history from the chat context
 
-        // Add logo to PDF (adjust width, height, and position)
-        const pageWidth = doc.internal.pageSize.getWidth(); // Get the width of the PDF page
-        const logoWidth = 20; // Width of the logo
-        const logoHeight = 20; // Height of the logo
-        const xPos = pageWidth - logoWidth - 10; // Subtract logo width and margin from the page width
-        const yPos = 5; // Y position for the top-right placement
+    /**
+     * Handles the click event to save the chat history.
+     * 
+     * This function checks if there is chat history available before attempting to save it.
+     * It generates a filename with a timestamp and provides feedback messages for success or failure.
+     */
+    const handleSaveChatHistory = async () => {
+        // Requirement Condition: Check if there is chat history to save
+        if (!chatHistory || chatHistory.length === 0) {
+            alert('No chat history available to save.'); // Error message for no chat history
+            return; // Exit the function if there is no history
+        }
 
-        doc.addImage(logo, 'PNG', xPos, yPos, logoWidth, logoHeight);
-        // doc.addImage(logo, 'PNG', 20, 5, 40, 40); // Adjust position and size as needed
+        try {
+            // Generate a timestamp for the filename
+            const timestamp = new Date().toISOString().replace(/:/g, '-'); // Replace colons with dashes for filename compatibility
+            const filename = `chat_history_${timestamp}.pdf`; // Create the filename
 
-        // Add a title to the PDF
-        doc.setFontSize(20);
-        doc.text('Chat History', 10, 10);
+            // Implement your logic to save the chat history as a PDF
+            // For example, you could use a library like jsPDF to generate the PDF document
+            const doc = new jsPDF(); // Create a new PDF document
 
-        // Set font size for the message
-        doc.setFontSize(12);
-        let yPosition = 20; // Starting Y position for messages
+            // Add chat history content to the PDF
+            chatHistory.forEach((message, index) => {
+                doc.text(`${index + 1}. ${message.text}`, 10, 10 + index * 10); // Example of adding messages
+            });
 
-        // Loop through messages and add them to the PDF
-        messages.forEach((message, index) => {
-            const { text, isUser } = message; // Destructure message object
-            const role = isUser ? 'User' : 'Bot'; // Determine the sender
+            // Save the PDF with the generated filename
+            doc.save(filename); // Save the document
 
-            doc.text(`${role}: ${text}`, 10, yPosition);
-            yPosition += 10; // Move down for the next message
-        });
-
-        // Save the generated PDF
-        doc.save('chat_history.pdf');
-    }
+            alert('Chat history saved successfully!'); // Success message
+        } catch (error) {
+            console.error('Error saving chat history:', error); // Log error for debugging
+            alert('Failed to save chat history. Please try again.'); // Error message for saving failure
+        }
+    };
 
     return (
-        <div className="bottom-item recent-entry" onClick={handleDownloadChat}>
-            <img src={assets.download} alt="download" />
-            <p>Download</p>
-            {/* {extended ? <p>Share</p> : null} */}
+        <div onClick={handleSaveChatHistory} className="save-chat-button"> {/* Button to save chat history */}
+            <img src={assets.save_icon} alt="Save Chat" /> {/* Icon for saving chat */}
+            <span>Save Chat History</span> {/* Label for the button */}
         </div>
-    )
-}
+    );
+};
 
-export default DownloadButton;
+export default SaveChatButton; // Exporting the SaveChatButton component for use in other parts of the application

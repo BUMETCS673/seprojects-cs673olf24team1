@@ -1,4 +1,15 @@
-const availableCourses = [
+// Created by Poom, data collected from Tash
+
+/**
+ * Array of available courses offered in the Computer Science program.
+ * 
+ * Each course is represented as a string with its course code and title.
+ * This list can be used in various parts of the application, such as 
+ * course selection, enrollment, and displaying course information.
+ * 
+ * @constant {string[]} availableCourses - List of courses available to students.
+ */
+const availableCourses: string[] = [
     'CS521 - Information Structures with Python',
     'CS526 - Data Structure and Algorithms',
     'CS622 - Advanced Programming Techniques',
@@ -88,4 +99,5 @@ const availableCourses = [
     'CS635 - Network Media Technologies'
 ];
 
+// Exporting the available courses for use in other parts of the application
 export default availableCourses;

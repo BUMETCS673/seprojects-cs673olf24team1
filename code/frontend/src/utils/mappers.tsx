@@ -1,6 +1,16 @@
-import { Message } from "../interfaces/ChatSession";
-import { User } from "../interfaces/UserSession";
+// mappers.jsx
+// Created by Poom
+// Annotated and Updated by Tash
 
+import { Message } from "../interfaces/ChatSession"; // Importing the Message interface
+import { User } from "../interfaces/UserSession"; // Importing the User interface
+
+/**
+ * Extracts course IDs from an array of course names.
+ * 
+ * @param {string[]} courses - Array of course names.
+ * @returns {string[]} - Array of extracted course IDs.
+ */
 function extractCourseIds(courses: string[]): string[] {
     return courses.map(course => {
         // Match the digits following 'CS'
@@ -9,8 +19,17 @@ function extractCourseIds(courses: string[]): string[] {
     }).filter(id => id !== ''); // Filter out any empty strings
 }
 
-// Mapping function from DisplayUser to ApiUser
+/**
+ * Maps User object to API request body format.
+ * 
+ * @param {User} user - User object to map.
+ * @returns {string} - JSON string of the mapped user data for API request.
+ */
 export function mapUserToAPIBody(user: User): string {
+    // Requirement Condition: Ensure that user has necessary properties
+    if (!user.authId || !user.email || !user.password || !user.fName || !user.lName) {
+        throw new Error('User object is missing required fields.'); // Error message for missing fields
+    }
 
     return JSON.stringify({
         "authId": user.authId,
@@ -19,22 +38,27 @@ export function mapUserToAPIBody(user: User): string {
         "fName": user.fName,
         "lName": user.lName,
         "programCode": user.programCode,
-        "courseTaken": extractCourseIds(user.coursesTaken),
+        "courseTaken": extractCourseIds(user.coursesTaken), // Extract course IDs
         "pathInterest": user.pathOfInterest,
         "courseToTake": user.coursesToTake,
     });
 }
 
-
+/**
+ * Creates a JSON string from an array of messages, separating user and bot responses.
+ * 
+ * @param {Message[]} messages - Array of messages to convert.
+ * @returns {string} - JSON string of combined messages.
+ */
 export function createChatJson(messages: Message[]): string {
     const userMessages: string[] = [];
     const botResponses: string[] = [];
 
     messages.forEach(message => {
         if (message.isUser) {
-            userMessages.push(message.text);
+            userMessages.push(message.text); // Collect user messages
         } else {
-            botResponses.push(message.text);
+            botResponses.push(message.text); // Collect bot responses
         }
     });
 
@@ -48,11 +72,17 @@ export function createChatJson(messages: Message[]): string {
         });
     }
 
-    return JSON.stringify(combinedMessages);
+    return JSON.stringify(combinedMessages); // Return JSON string of combined messages
 }
 
+/**
+ * Parses a JSON string into an array of Message objects.
+ * 
+ * @param {string} chatJson - JSON string representing chat messages.
+ * @returns {Message[]} - Array of parsed Message objects.
+ */
 export function parseChatJson(chatJson: string): Message[] {
-    const chatList: { "1": string, chatbot: string }[] = JSON.parse(chatJson);
+    const chatList: { "1": string, chatbot: string }[] = JSON.parse(chatJson); // Parse JSON string
     const messages: Message[] = [];
     let currentDate = new Date(); // Start with the current date
 
@@ -61,7 +91,7 @@ export function parseChatJson(chatJson: string): Message[] {
         messages.push({
             text: chat["user"], // User message
             isUser: true,
-            timestamp: new Date(currentDate) // Assign current date
+            timestamp: new Date(currentDate), // Assign current date
         });
 
         // Increment the date for the next message
@@ -71,21 +101,26 @@ export function parseChatJson(chatJson: string): Message[] {
         messages.push({
             text: chat.chatbot, // Bot message
             isUser: false,
-            timestamp: new Date(currentDate) // Assign current date
+            timestamp: new Date(currentDate), // Assign current date
         });
 
         // Increment the date for the next message
         currentDate.setMinutes(currentDate.getMinutes() + 1);
     });
 
-    return messages;
+    return messages; // Return array of Message objects
 }
 
-
+/**
+ * Parses a chat log input string into a structured JSON string.
+ * 
+ * @param {string} input - Input string containing chat log.
+ * @returns {string} - Formatted JSON string of combined chat messages.
+ */
 function parseChatLog(input: string): string {
     // Parse the input string to an array of objects
     const chatArray = JSON.parse(input) as Array<{ [key: string]: string }>;
-    
+
     // Initialize an object to hold the combined chat messages
     const combinedChat: { [key: string]: string } = {};
 
@@ -97,5 +132,5 @@ function parseChatLog(input: string): string {
     }
 
     // Convert the combined chat object back to a JSON string
-    return JSON.stringify([combinedChat], null, 2);
+    return JSON.stringify([combinedChat], null, 2); // Return formatted JSON string
 }

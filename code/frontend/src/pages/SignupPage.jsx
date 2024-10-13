@@ -1,21 +1,19 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-// Integrated code from depreciated_NewProfilePage.jsx created by Poom.
 // Created by Natt 
-//Updated, integrated, and annotated by Natasya Liew
+// Updated by Poom and Natasya Liew
+// Annotated by Natasya Liew
 
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import necessary modules from React Router
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import password visibility toggle icons
 
 // Import styling for the Signup page
 import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
-// import CourseTakenField from '../components/Profile/CourseTakenField';
 
-
-import { useAuth } from '../context/AuthContext';
-import { useSignUpForm } from './useSignUpForm';
-
+import { useAuth } from '../context/AuthContext'; // Import authentication context
+import { useSignUpForm } from '../context/SigupContext'; // Import Signup context for handling sign-up logic
 
 const SignupPage = () => {
   const {
@@ -27,13 +25,13 @@ const SignupPage = () => {
     handleChange,
     handleFormSubmit,
     successMessage,
+    errorMessage, // Added to handle error messages
     inputValue,
     filteredCourses,
     handleInputChange,
     handleCourseSelect,
     handleRemoveCourse,
   } = useSignUpForm();
-
 
   return (
     <main className="flex-row justify-center mb-4 h-screen" style={{ height: '100vh' }}>
@@ -46,7 +44,7 @@ const SignupPage = () => {
             <h1>BUAN CHATBOT</h1>
             <h2>Sign Up</h2>
 
-            {/* AuthId/Username Input */}
+            {/* Username Input */}
             <div className="form-inputs">
               <label className="form-label">Username</label>
               <input
@@ -116,7 +114,7 @@ const SignupPage = () => {
               </div>
             </div>
 
-            {/* New Fields from Profile Page */}
+            {/* First Name Input */}
             <div className="form-inputs">
               <label className="form-label">First Name</label>
               <input
@@ -130,6 +128,7 @@ const SignupPage = () => {
               />
             </div>
 
+            {/* Last Name Input */}
             <div className="form-inputs">
               <label className="form-label">Last Name</label>
               <input
@@ -143,6 +142,7 @@ const SignupPage = () => {
               />
             </div>
 
+            {/* BU ID Input */}
             <div className="form-inputs">
               <label className="form-label">BU ID</label>
               <input
@@ -152,10 +152,10 @@ const SignupPage = () => {
                 type="text"
                 value={formState.buId} // Controlled input
                 onChange={handleChange} // Update state on change
-                required
               />
             </div>
 
+            {/* Program Type Selection */}
             <div className="form-inputs">
               <label className="form-label">Program Type</label>
               <select
@@ -163,11 +163,13 @@ const SignupPage = () => {
                 value={formState.programType} // Controlled input
                 onChange={handleChange} // Update state on change
                 className="form-input"
+                required
               >
                 <option value="MS degree">MS degree</option>
               </select>
             </div>
 
+            {/* Program Name Selection */}
             <div className="form-inputs">
               <label className="form-label">Program Name</label>
               <select
@@ -175,11 +177,13 @@ const SignupPage = () => {
                 value={formState.programCode} // Controlled input
                 onChange={handleChange} // Update state on change
                 className="form-input"
+                required
               >
                 <option value="mssd">MS of Software Development</option>
               </select>
             </div>
 
+            {/* Path of Interest Selection */}
             <div className="form-inputs">
               <label className="form-label">Path of Interest</label>
               <select
@@ -187,6 +191,7 @@ const SignupPage = () => {
                 value={formState.pathOfInterest}  // Controlled input
                 onChange={handleChange}
                 className="form-input"
+                required
               >
                 <option value="app development">App Development</option>
                 <option value="web development">Web Development</option>
@@ -196,6 +201,7 @@ const SignupPage = () => {
               </select>
             </div>
 
+            {/* Number of Courses to Take Selection */}
             <div className="form-inputs">
               <label className="form-label">Number of Courses to Take for the Semester</label>
               <select
@@ -203,6 +209,7 @@ const SignupPage = () => {
                 value={formState.coursesToTake} // Controlled input
                 onChange={handleChange}
                 className="form-input"
+                required
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -211,9 +218,10 @@ const SignupPage = () => {
               </select>
             </div>
 
-            {/* <CourseTakenField /> */}
+            {/* Courses Taken Section */}
             <div className="course-taken-container">
-              <label>Courses Taken:</label>      {formState.coursesTaken.length > 0 ? (
+              <label>Courses Taken:</label>      
+              {formState.coursesTaken.length > 0 ? (
                 <div className="course-list">
                   <ul>
                     {formState.coursesTaken.map(course => (
@@ -269,10 +277,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage; // Export SignupPage component for use in other parts of the application
-
-
-
-
-
-
+export default SignupPage; // Export the SignupPage component for use in other parts of the application

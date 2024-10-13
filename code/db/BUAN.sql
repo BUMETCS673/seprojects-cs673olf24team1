@@ -1,3 +1,5 @@
+-- Created by Natasya Liew
+
 -- Database: BUAN RELATIONAL DB
 DROP TABLE IF EXISTS session_log;
 DROP TABLE IF EXISTS student;

@@ -1,98 +1,56 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
-import React, { useState, useRef, useEffect } from 'react'; // Import necessary React hooks
-import { assets } from '../../assets/assets'; // Import asset resources (e.g., logos and icons)
-import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
-import InputField from '../InputField/InputField'; // Input field component for sending messages
-import ChatBubble from './ChatBubble'; // Component for individual chat messages
-import PacmanLoader from 'react-spinners/PacmanLoader'
-import './ChatBox.css'; // Import styles for the ChatBox component
+// Created by Natt
+// Updated by Poom
+// Updated and Annotated by Tash: Success/Error Message and Input Requirements
 
-// ChatBox component to manage the chat interface and interactions
-const ChatBox = () => {
-  // Destructure values and functions from the chat context
-  const {
-    handleSendMessage, // Function to handle sending messages
-    messages,          // Array of chat messages
-    isActive,
-    isSendingMessage,  // Boolean indicating if a message is currently being sent
-    error,             // Error messages (if any)
-    history,          // Array of chat sessions
-  } = useChat(); // Accessing the chat context
+import React, { useState } from 'react'; // Import necessary React hooks
+import './InputField.css'; // Import styles for the InputField component
 
-  // Local state management for the profile panel and input field
-  const [isProfilePanelOpen, setProfilePanelOpen] = useState(false); // State for controlling the profile panel visibility
-  const [input, setInput] = useState(''); // State for managing the message input field
+/**
+ * InputField component for sending messages in the chat application.
+ * 
+ * This component allows users to type messages and send them to the chat.
+ * It includes validation to prevent empty inputs or inputs consisting solely of spaces.
+ * 
+ * @param {Object} props - Component properties.
+ * @param {string} props.input - The current value of the input field.
+ * @param {Function} props.onSend - Function to handle sending the message.
+ * @param {Function} props.onChange - Function to handle changes in the input field.
+ * @returns {JSX.Element} The rendered InputField component.
+ */
+const InputField = ({ input, onSend, onChange }) => {
+    const [errorMessage, setErrorMessage] = useState(''); // State for storing error messages
+    const [successMessage, setSuccessMessage] = useState(''); // State for storing success messages
 
-  // Toggle the visibility of the profile panel
-  const toggleProfilePanel = () => {
-    // setProfilePanelOpen(!isProfilePanelOpen);
-  };
+    // Handle sending the message
+    const handleSend = () => {
+        // Requirement Condition: Validate input to prevent empty messages
+        if (!input.trim()) { // Check for empty input or only whitespace
+            setErrorMessage('Message cannot be empty or just spaces.'); // Set error message
+            setSuccessMessage(''); // Clear success message if there's an error
+            return; // Exit the function if validation fails
+        }
 
-  // Handle changes to the input field
-  const handleInputChange = (event) => {
-    setInput(event.target.value); // Update input state with the current value
-  };
+        // Clear any previous messages
+        setErrorMessage(''); // Clear error message
+        setSuccessMessage('Message sent successfully!'); // Set success message
+        onSend(); // Call the function to send the message
+    };
 
-  // Handle sending the message when the user triggers it
-  const handleInputSend = () => {
-    handleSendMessage(input); // Call function to send the message
-    setInput(''); // Clear the input field after sending
-  };
-
-  // Scroll to the bottom when sending a new message
-  const chatEndRef = useRef(null); // Ref to track the end of the chat history
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); // Smoothly scroll to the bottom of chat history
-  }, [messages]); // Dependency on messages to trigger the effect when they change
-
-  return (
-    <div className='main'>
-      {/* Navigation bar with branding and user avatar */}
-      <div className="nav">
-        <div className="branding">
-          <img src={assets.bu_logo} alt="logo" />
-          <p>BUAN CHATBOT</p>
+    return (
+        <div className="input-field-container"> {/* Container for the input field */}
+            <input
+                type="text" // Input field for typing messages
+                placeholder="Type your message..." // Placeholder text
+                value={input} // Controlled input value
+                onChange={onChange} // Handle input changes
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()} // Send message on Enter key press
+            />
+            <button onClick={handleSend}>Send</button> {/* Button to send the message */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+            {successMessage && <p className="success-message">{successMessage}</p>} {/* Display success message */}
         </div>
-        {/* Profile Avatar for accessing user profile */}
-        <div className="avatar-container" onClick={toggleProfilePanel}>
-          <img src={assets.user_icon} alt="User Avatar" />
-        </div>
-      </div>
-
-      {/* Sliding Profile Panel */}
-      <div className={`profile-panel ${isProfilePanelOpen ? 'open' : ''}`}>
-        <button className="close-btn" onClick={toggleProfilePanel}>X</button> {/* Close button for the profile panel */}
-        <h2>User Profile</h2>
-        {/* <ProfileForm /> */}
-      </div>
-
-      {/* Overlay to dim background when profile panel is open */}
-      {isProfilePanelOpen && <div className="overlay" onClick={toggleProfilePanel}></div>}
-
-      {/* Chat container for displaying chat messages and input field */}
-      <div className="chat-container">
-        <div className="chat-history-container">
-          {/* Conditional rendering based on the presence of chat sessions */}
-          {messages.length === 0 ? (
-            <div className="no-sessions-message">
-              <p style={{ textAlign: 'center', fontSize: '24px', margin: '20px 0' }}>
-                (๑•̀ᄇ•́)و ✧ Let's create a new chat to start!
-              </p>
-            </div>
-          ) : (
-            messages.map((message, index) => (
-              <ChatBubble key={index} message={message} /> // Render each chat bubble for messages
-            ))
-          )}
-          <div ref={chatEndRef} /> {/* Empty div to enable scrolling to the bottom */}
-          {isSendingMessage ? <div className='loading-indicator'><PacmanLoader color="#e54500" /></div> : null}
-        </div>
-        {/* Input field only visible when there are sessions */}
-        {isActive ? <InputField input={input} onSend={handleInputSend} onChange={handleInputChange} /> : null}
-      </div>
-    </div>
-  );
+    );
 };
 
-export default ChatBox; // Exporting the ChatBox component for use in other parts of the application
+export default InputField; // Exporting the InputField component for use in other parts of the application
