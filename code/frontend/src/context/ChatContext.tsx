@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, act } from 'react';
 import { useUser } from './UserContext';
-import { Message } from '../interfaces/Message';
-import { ChatSession } from '../interfaces/ChatSession';
+import { ChatSession, Message } from '../interfaces/ChatSession';
 import ChatService from '../services/chatService';
 
 

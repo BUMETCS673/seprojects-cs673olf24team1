@@ -2,25 +2,12 @@ import { useState } from 'react';
 import availableCourses from '../assets/availableCourses';
 import { useUser } from '../context/UserContext';
 import { useAuth } from '../context/AuthContext';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
 import { useNavigate } from 'react-router-dom';
+import { FormState } from '../interfaces/AuthSession';
 
 
-// Define the type for the form state
-interface FormState {
-    authId: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    fName: string;
-    lName: string;
-    buId: string;
-    programType: string;
-    programCode: string;
-    pathOfInterest: string;
-    coursesToTake: number;
-    coursesTaken: string[];
-}
+
 
 export const useSignUpForm = () => {
 

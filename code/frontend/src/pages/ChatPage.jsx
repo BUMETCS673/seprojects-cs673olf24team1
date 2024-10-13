@@ -10,11 +10,11 @@ import '../App.css'; // Import global styles for the application
 
 // ChatPage component which serves as the main container for the chat application
 const ChatPage = () => {
-    return (
-        <ChatProvider> {/* Wraps the chat components to provide context for chat state */}
-            <SideBar /> {/* Sidebar for navigation and chat options */}
-            <ChatBox /> {/* Main chat interface where messages are displayed */}
-        </ChatProvider>
+    return ( <
+        ChatProvider > { /* Wraps the chat components to provide context for chat state */ } <
+        SideBar / > { /* Sidebar for navigation and chat options */ } <
+        ChatBox / > { /* Main chat interface where messages are displayed */ } <
+        /ChatProvider>
     );
 };
 
