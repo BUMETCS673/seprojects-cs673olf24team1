@@ -23,7 +23,7 @@ const authService = {
      */
     loginUser: async (authId:string, password:string): Promise<{ success: boolean; message: string }> => {
         // Requirement Condition: Validate input parameters using the loginRequirement function
-        const validationMessage = loginRequirement(authId, password); // Pass authId and password for validation
+        const validationMessage = loginRequirement({authId, password}); // Pass authId and password for validation
 
         if (validationMessage !== 'Login requirements met.') {
             console.error(validationMessage); // Log validation error

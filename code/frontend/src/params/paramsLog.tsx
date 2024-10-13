@@ -1,14 +1,16 @@
 // Created by Natasya Liew
-import { FormState } from '../interfaces/AuthSession'; // Importing LoginParams and FormState interfaces
-import { Message } from '../interfaces/ChatSession'; // Importing Message and ChatHistoryRetrieval interfaces
-import { useUser } from '../context/UserContext'; // Importing useUser hook to access user context
-import { User } from '../interfaces/UserSession'; // Importing User interface
+import axios from 'axios'; // Importing axios for making HTTP requests
+import { LoginParams, FormState } from '../interfaces/AuthSession'; // Importing LoginParams interface
+import { Message } from '../interfaces/ChatSession'; // Importing Message interface
+import { useUser } from '../context/UserContext';
+import { User } from '../interfaces/UserSession';
 
 // Define base URLs for the API
 export const API_BASE_URL = 'http://localhost:8080/api/v1'; // Primary API base URL
 export const API_BASE_URL2 = 'http://localhost:5000/api'; // Secondary API base URL
 export const REACT_API_BASE_URL1 = process.env.REACT_APP_API_BASE_URL || API_BASE_URL2; // Use environment variable or fallback
 export const REACT_API_BASE_URL2 = process.env.REACT_APP_API_BASE_URL || API_BASE_URL; // Use environment variable or fallback
+
 
 /**
  * Checks login requirements for authId and password.
@@ -21,28 +23,27 @@ export const REACT_API_BASE_URL2 = process.env.REACT_APP_API_BASE_URL || API_BAS
  * @param {LoginParams} params - The login parameters containing authId and password.
  * @returns {string} - A message indicating the result of the validation.
  */
-export const loginRequirement = (authId: string, password: string): string => {
-    // Access the user context
-    const { user } = useUser(); 
+export const loginRequirement = (params: LoginParams): string => {
+    const { user } = useUser(); // Access the user context
 
     // Requirement Condition: Check if both authId and password are provided
-    if (!authId || !password) {
+    if (!params.authId || !params.password) {
         return 'Both username and password are required.'; // Return error message if requirements are not met
     }
 
     // Password complexity checks
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Regex for password validation
-    if (!passwordRegex.test(password)) {
+    if (!passwordRegex.test(params.password)) {
         return 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.'; // Password does not meet complexity requirements
     }
 
     // Check if the user exists
-    if (!user || user.authId !== authId) {
+    if (user.authId !== params.authId) {
         return 'User not found. Please check your authId.'; // Return message if user does not exist
     }
 
     // Check if the password matches
-    if (user.password !== password) {
+    if (user.password !== params.password) {
         return 'Password does not match. Please try again.'; // Return message if password does not match
     }
 
@@ -53,10 +54,11 @@ export const loginRequirement = (authId: string, password: string): string => {
 /**
  * Checks if a given session ID exists and belongs to the specified user.
  * 
- * @param {ChatHistoryRetrieval} params - The parameters containing userId and sessionId.
+ * @param {string} userId - The ID of the user.
+ * @param {string} sessionId - The ID of the session to check.
  * @returns {boolean} - Returns true if the session exists and belongs to the user, otherwise false.
  */
-export const isSessionBelongsToUser = (userId: number, sessionId: number): boolean => {
+export const isSessionBelongsToUser = (userId: number, sessionId:number): boolean => {
     const { user } = useUser(); // Access the user context
 
     // Check if user exists and if the sessionId is in the user's sessions
@@ -65,6 +67,24 @@ export const isSessionBelongsToUser = (userId: number, sessionId: number): boole
     }
     
     return false; // Session does not belong to the user or user does not exist
+};
+
+// Define the structure for the default user data
+export const defaultUser: User = {
+    authId: '',
+    userId: -1,
+    password: '',
+    fName: '',
+    lName: '',
+    email: '',
+    buId: '',
+    programType: '',
+    programCode: '',
+    pathOfInterest: '',
+    coursesToTake: 0,
+    coursesTaken: [],
+    chatSessionIds: [],
+    isNew: true,
 };
 
 // Define the structure for the initial user state

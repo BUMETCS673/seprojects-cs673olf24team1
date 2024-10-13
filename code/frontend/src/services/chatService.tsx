@@ -1,7 +1,7 @@
 // Created by Poom: main functionality
 // Updated by Tash: adding encapsulation, success/error message, annotation, requirement conditions.
 
-import { ChatHistoryRetrieval, ChatSession, Message } from '../interfaces/ChatSession';
+import { ChatSession, Message } from '../interfaces/ChatSession';
 import { createChatJson } from '../utils/mappers';
 import { API_BASE_URL } from '../params/paramsLog';
 import { SuccessResponse, ErrorResponse } from '../interfaces/UserSession';

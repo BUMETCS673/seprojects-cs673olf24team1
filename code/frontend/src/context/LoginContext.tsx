@@ -26,7 +26,7 @@ export const LoginProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     // Function to handle user login
 const handleLogin = async (authId: string, password: string): Promise<void> => {
     // Requirement Condition: Validate login requirements
-    const validationMessage = loginRequirement( authId, password ); // Validate authId and password
+    const validationMessage = loginRequirement( {authId, password} ); // Validate authId and password
 
     if (validationMessage !== 'Login requirements are met.') {
         setErrorMessage(validationMessage); // Set error message if validation fails

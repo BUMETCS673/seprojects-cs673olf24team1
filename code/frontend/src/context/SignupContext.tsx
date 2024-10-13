@@ -17,6 +17,7 @@ export const useSignUpForm = () => {
 
     // State to manage form data using defaultFormState
     const [formState, setFormState] = useState<FormState>(defaultFormState);
+    
 
     // State to manage password visibility
     const [showPassword, setShowPassword] = useState(false);
@@ -121,7 +122,17 @@ export const useSignUpForm = () => {
 
         // Attempt to sign up the user
         const result = await signUp(
-            formState
+            formState.authId,
+            formState.email,
+            formState.password,
+            formState.fName,
+            formState.lName,
+            formState.buId,
+            formState.programType,
+            formState.programCode,
+            formState.pathOfInterest,
+            formState.coursesToTake,
+            formState.coursesTaken
         );
 
         if (result) {
