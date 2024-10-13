@@ -1,9 +1,9 @@
 // Created by Natasya Liew
 
 import React, { createContext, useContext, useState } from 'react';
-import { useAuth } from './AuthContext'; // Import the AuthContext to access the login function
+import { useAuth } from './authContext'; // Import the AuthContext to access the login function
 import { loginRequirement } from '../params/paramsLog'; // Import the loginRequirement function
-import { LoginContextType, LoginParams } from '../interfaces/AuthSession';
+import { LoginContextType, LoginParams } from '../interfaces/authSession';
 
 
 // Create the LoginContext

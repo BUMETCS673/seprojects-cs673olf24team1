@@ -1,8 +1,8 @@
 // Created by Poom: main functionality
 // Updated by Tash: adding encapsulation, success/error message, annotation, requirement conditions.
 
-import { User, SuccessResponse, ErrorResponse } from "../interfaces/UserSession"; // Importing necessary types for User and LoginParams[0]
-import { LoginParams } from "../interfaces/AuthSession";
+import { User, SuccessResponse, ErrorResponse } from "../interfaces/userSession"; // Importing necessary types for User and LoginParams[0]
+import { LoginParams } from "../interfaces/authSession";
 import { mapUserToAPIBody } from "../utils/mappers"; // Importing utility function to map user data to API format
 import { API_BASE_URL } from "../params/paramsLog"; // Importing the API base URL
 

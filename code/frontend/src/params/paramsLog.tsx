@@ -1,9 +1,9 @@
 // Created by Natasya Liew
 import axios from 'axios'; // Importing axios for making HTTP requests
-import { LoginParams, FormState } from '../interfaces/AuthSession'; // Importing LoginParams interface
-import { Message } from '../interfaces/ChatSession'; // Importing Message interface
-import { useUser } from '../context/UserContext';
-import { User } from '../interfaces/UserSession';
+import { LoginParams, FormState } from '../interfaces/authSession'; // Importing LoginParams interface
+import { Message } from '../interfaces/chatSession'; // Importing Message interface
+import { useUser } from '../context/userContext';
+import { User } from '../interfaces/userSession';
 
 // Define base URLs for the API
 export const API_BASE_URL = 'http://localhost:8080/api/v1'; // Primary API base URL

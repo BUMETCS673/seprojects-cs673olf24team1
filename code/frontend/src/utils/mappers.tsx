@@ -2,8 +2,8 @@
 // Created by Poom
 // Annotated and Updated by Tash
 
-import { Message } from "../interfaces/ChatSession"; // Importing the Message interface
-import { User } from "../interfaces/UserSession"; // Importing the User interface
+import { Message } from "../interfaces/chatSession"; // Importing the Message interface
+import { User } from "../interfaces/userSession"; // Importing the User interface
 
 /**
  * Extracts course IDs from an array of course names.

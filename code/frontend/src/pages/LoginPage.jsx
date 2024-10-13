@@ -4,9 +4,9 @@
 // Updated by Poom and Natasya Liew
 // Annotated by Natasya Liew
 
-import { Link, useNavigate } from 'react-router-dom'; // Import necessary modules from React Router
+import { useNavigate } from 'react-router-dom'; // Import necessary modules from React Router
 import React from 'react'; // Import React
-import { useLogin } from '../context/LoginContext'; // Custom hook for login context
+import { useLogin } from '../context/loginContext'; // Custom hook for login context
 import '../assets/styles/SignupPage.scss'; // Importing styles for the Signup page
 import { assets } from '../assets/assets'; // Import asset resources (e.g., logo)
 

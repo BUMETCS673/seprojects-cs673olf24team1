@@ -2,8 +2,8 @@
 // Annotated by Tash: moved from Context Folder to Pages Folder
 
 import React, { ReactNode } from 'react';
-import { UserProvider } from '../context/UserContext'; // Importing UserProvider to manage user-related context
-import { AuthProvider } from '../context/AuthContext'; // Importing AuthProvider to manage authentication-related context
+import { UserProvider } from '../context/userContext'; // Importing UserProvider to manage user-related context
+import { AuthProvider } from '../context/authContext'; // Importing AuthProvider to manage authentication-related context
 
 interface ContextProviderProps {
   children: ReactNode; // Props type definition for children components

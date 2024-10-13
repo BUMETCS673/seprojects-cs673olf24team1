@@ -6,7 +6,7 @@
 
 import axios from 'axios'; // Importing axios for making HTTP requests
 import { API_BASE_URL, loginRequirement } from "../params/paramsLog"; // Importing base URL and login requirement function
-import { LoginParams, LoginResponse } from '../interfaces/AuthSession'; // Importing LoginParams type for type safety
+import { LoginResponse } from '../interfaces/authSession'; // Importing LoginParams type for type safety
 
 // Service to manage authentication-related operations
 const authService = {

@@ -6,7 +6,7 @@
 import './Sidebar.css'; // Import styles for the Sidebar component
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., logout icon)
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import { useAuth } from '../../context/AuthContext'; // Custom hook for managing authentication context
+import { useAuth } from '../../context/authContext'; // Custom hook for managing authentication context
 
 /**
  * LogoutButton component for logging out the user.

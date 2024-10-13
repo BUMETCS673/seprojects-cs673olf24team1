@@ -5,8 +5,8 @@
 
 import { useState } from 'react'; // Importing useState hook for managing state
 import availableCourses from '../assets/availableCourses'; // Importing available courses from assets
-import { useAuth } from '../context/AuthContext'; // Importing authentication context to access auth functions
-import { FormState } from '../interfaces/AuthSession'; // Importing form state interface for TypeScript
+import { useAuth } from './authContext'; // Importing authentication context to access auth functions
+import { FormState } from '../interfaces/authSession'; // Importing form state interface for TypeScript
 import { useNavigate } from 'react-router-dom'; // Importing navigation hook for redirection
 import { defaultFormState, checkUserExists } from '../params/paramsLog'; // Importing default form state
 

@@ -2,8 +2,8 @@
 // Created by Poom, updated and annotated by Tash
 
 import axios from 'axios';
-import { LoginParams, FormState, SuccessResponse, ErrorResponse } from '../interfaces/AuthSession'; // Import necessary interfaces
-import { OpenAIResponse } from '../interfaces/ChatSession';
+import { LoginParams, FormState, SuccessResponse, ErrorResponse } from '../interfaces/authSession'; // Import necessary interfaces
+import { OpenAIResponse } from '../interfaces/chatSession';
 
 const API_BASE_URL = 'http://localhost:9000/api/v1'; // Update this if your backend runs on a different port
 

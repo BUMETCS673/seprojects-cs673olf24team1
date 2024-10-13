@@ -12,8 +12,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Import
 import '../assets/styles/SignupPage.scss';
 import { assets } from '../assets/assets'; // Import asset resources
 
-import { useAuth } from '../context/AuthContext'; // Import authentication context
-import { useSignUpForm } from '../context/SignupContext'; // Import Signup context for handling sign-up logic
+import { useSignUpForm } from '../context/signupContext'; // Import Signup context for handling sign-up logic
 
 const SignupPage = () => {
   const {

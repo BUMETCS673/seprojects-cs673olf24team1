@@ -3,7 +3,7 @@
 // Annotated and Updated by Tash: Success/Error Message, added details and requirement checks
 
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
-import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
+import { useChat } from '../../context/chatContext'; // Custom hook for managing chat context
 
 /**
  * SaveChatButton component for saving the chat history as a PDF document.

@@ -4,7 +4,7 @@
 
 // Import necessary assets and context
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., icons)
-import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
+import { useChat } from '../../context/chatContext'; // Custom hook for managing chat context
 import './Sidebar.css'; // Import styles for the Sidebar component
 
 /**

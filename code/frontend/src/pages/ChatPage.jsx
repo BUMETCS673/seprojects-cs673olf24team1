@@ -4,7 +4,7 @@
 
 import ChatBox from '../components/ChatBox/ChatBox'; // Import the ChatBox component for displaying chat messages
 import SideBar from '../components/Sidebar/Sidebar'; // Import the Sidebar component for navigation
-import { ChatProvider } from '../context/ChatContext'; // Import ChatProvider for managing chat state context
+import { ChatProvider } from '../context/chatContext'; // Import ChatProvider for managing chat state context
 import '../App.css'; // Import global styles for the application
 
 /**

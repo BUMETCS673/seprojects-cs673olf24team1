@@ -5,7 +5,7 @@
 // Import necessary assets and styles
 import { assets } from '../../assets/assets'; // Importing asset resources (e.g., icons)
 import './ChatBubble.css'; // Importing styles specific to the ChatBubble component
-import { useChat } from '../../context/ChatContext'; // Importing chat context for accessing chat state
+import { useChat } from '../../context/chatContext'; // Importing chat context for accessing chat state
 
 /**
  * ChatBubble component to display individual chat messages.

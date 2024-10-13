@@ -3,11 +3,11 @@
 // Annotated by Natasya Liew
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react'; // Import necessary React hooks
-import { useUser } from './UserContext'; // Importing the UserContext to manage user details
+import { useUser } from './userContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService'; // Importing user service for fetching user data
-import { User } from '../interfaces/UserSession'; // Importing User interface
-import { AuthContextType } from '../interfaces/AuthSession'; // Import necessary types
+import { User } from '../interfaces/userSession'; // Importing User interface
+import { AuthContextType } from '../interfaces/authSession'; // Import necessary types
 
 // Create the authentication context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

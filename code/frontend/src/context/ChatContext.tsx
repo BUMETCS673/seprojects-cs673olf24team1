@@ -3,11 +3,11 @@
 // Annotated by Natasya Liew
 
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react'; // Import necessary React hooks
-import { useUser } from './UserContext'; // Importing the UserContext to manage user details
-import { ChatSession, Message } from '../interfaces/ChatSession'; // Importing interfaces for chat sessions and messages
+import { useUser } from './userContext'; // Importing the UserContext to manage user details
+import { ChatSession, Message } from '../interfaces/chatSession'; // Importing interfaces for chat sessions and messages
 import ChatService from '../services/chatService'; // Importing the chat service for API calls
 import { isSessionBelongsToUser, newUserMessage, newAIMessage } from '../params/paramsLog'; // Import the session validation function and message templates
-import { ChatContextType } from '../interfaces/ChatSession'; // Import ChatContext type
+import { ChatContextType } from '../interfaces/chatSession'; // Import ChatContext type
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 

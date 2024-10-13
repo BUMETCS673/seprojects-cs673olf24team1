@@ -5,7 +5,7 @@
 // Import necessary styles and assets
 import './Sidebar.css'; // Import styles for the Sidebar component
 import { assets } from '../../assets/assets'; // Import asset resources (e.g., save chat icon)
-import { useChat } from '../../context/ChatContext'; // Custom hook for managing chat context
+import { useChat } from '../../context/chatContext'; // Custom hook for managing chat context
 
 /**
  * SaveButton component for saving the current chat session.

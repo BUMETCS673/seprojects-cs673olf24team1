@@ -3,7 +3,7 @@
 // Annotated by Natasya Liew
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User, UserContextType } from '../interfaces/UserSession'; // Importing User interfaces
+import { User, UserContextType } from '../interfaces/userSession'; // Importing User interfaces
 import { initializeUserState } from '../params/paramsLog'; // Importing default user and remove user state
 
 // Create a UserContext for managing user-related data and actions
