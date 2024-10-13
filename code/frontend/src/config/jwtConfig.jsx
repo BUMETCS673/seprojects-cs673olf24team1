@@ -1,37 +1,36 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 
-// Created by Poom: main functionality
-// Updated by Tash: adding encapsulation, success/error message, annotation, requirement conditions.
+// Created by Poom
+// Updated and Annotated by Natasya Liew
 
-
+// Importing necessary libraries and parameters
 import axios from 'axios'; // Importing axios for making HTTP requests
-import { tokenResponseAPICall, tokenResponseLogin, tokenResponseManual, loginRequirement } from '../params/paramsLog'; // Importing token responses
+import { loginRequirement } from '../params/paramsLog'; // Importing login requirement validation
 
 /**
  * Manual Authentication method (fallback until JWT authentication is ready).
  * 
- * This function attempts to manually log in a user by utilizing the provided LoginRequirement.
+ * This function attempts to manually log in a user by utilizing the provided login requirements.
  * It handles both success and error responses appropriately.
  * 
- * @param {Function} loginRequirement - Function to validate login requirements (authId and password).
+ * @param {Object} credentials - Contains authId and password for login.
  * @returns {Promise<void>} - A promise that resolves when the login attempt is completed.
  */
-export const manualLogin = async (loginRequirement) => {
+export const manualLogin = async ({ authId, password }) => {
     try {
         // Requirement Condition: Validate login inputs before proceeding
-        const validationMessage = loginRequirement(/* authId, password */); // Pass actual values to validate
+        const validationMessage = loginRequirement({ authId, password });
         if (validationMessage !== 'Login requirements met.') {
             console.error(validationMessage); // Log validation error
             return; // Stop execution if requirements are not met
         }
 
-        const response = await axios.post('/api/manual-login', {
-            // Here you would send authId and password from your UI or params
-        });
+        // Making a POST request for manual login
+        const response = await axios.post('/api/manual-login', { authId, password });
 
         if (response.status === 200) {
-            // Handle successful login, e.g., store user info or session
+            // Handle successful login
             console.log('Manual login successful:', response.data);
             // Implement logic to store user info or handle session
         } else {
@@ -50,21 +49,20 @@ export const manualLogin = async (loginRequirement) => {
  * This function attempts to log in a user using JWT authentication.
  * It handles success and error responses appropriately.
  * 
- * @param {Function} loginRequirement - Function to validate login requirements (authId and password).
+ * @param {Object} credentials - Contains authId and password for login.
  * @returns {Promise<void>} - A promise that resolves when the login attempt is completed.
  */
-export const jwtLogin = async (loginRequirement) => {
+export const jwtLogin = async ({ authId, password }) => {
     try {
         // Requirement Condition: Validate login inputs before proceeding
-        const validationMessage = loginRequirement(/* authId, password */); // Pass actual values to validate
+        const validationMessage = loginRequirement({ authId, password });
         if (validationMessage !== 'Login requirements met.') {
             console.error(validationMessage); // Log validation error
             return; // Stop execution if requirements are not met
         }
 
-        const response = await axios.post('/api/jwt-login', {
-            // Here you would send authId and password from your UI or params
-        });
+        // Making a POST request for JWT login
+        const response = await axios.post('/api/jwt-login', { authId, password });
 
         if (response.status === 200) {
             const { token } = response.data; // Extract token from the response

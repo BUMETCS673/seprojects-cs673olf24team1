@@ -18,7 +18,7 @@ export const UserService = {
      *          - A promise that resolves to either a success response containing user data,
      *            or an error response with relevant messages and HTTP status code.
      */
-    async getUserData(params: LoginParams[0]): Promise<SuccessResponse<any> | ErrorResponse> {
+    async getUserData(params: LoginParams['authId']): Promise<SuccessResponse<any> | ErrorResponse> {
         const token = sessionStorage.getItem('token'); // Retrieve authentication token from sessionStorage
         
         // Requirement Condition: Validate that the token is present
@@ -31,7 +31,7 @@ export const UserService = {
 
         try {
             // Fetch user data from the API
-            const response = await fetch(`${API_BASE_URL}/users/user/${params.userId}`, {
+            const response = await fetch(`${API_BASE_URL}/users/user/${params}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`, // Include the authentication token in the header
@@ -43,7 +43,7 @@ export const UserService = {
             if (!response.ok) {
                 const errorData: ErrorResponse = {
                     success: false,
-                    message: `Failed to fetch user with ID ${params.userId}`, // Provide meaningful error message
+                    message: `Failed to fetch user with ID ${params}`, // Provide meaningful error message
                     code: response.status, // Include HTTP status code for reference
                     details: 'Please check the user ID and try again.', // Additional error details
                 };
@@ -109,7 +109,7 @@ export const UserService = {
             const data = await response.json(); // Parse the response data
             return {
                 success: true,
-                data: data.id, // Return the user ID from the created user object
+                data: data.userId, // Return the user ID from the created user object
                 message: 'User created successfully', // Success message
             }; // Return structured success response
         } catch (error) {

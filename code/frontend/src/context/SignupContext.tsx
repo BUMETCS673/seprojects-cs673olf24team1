@@ -8,12 +8,12 @@ import availableCourses from '../assets/availableCourses'; // Importing availabl
 import { useAuth } from '../context/AuthContext'; // Importing authentication context to access auth functions
 import { FormState } from '../interfaces/AuthSession'; // Importing form state interface for TypeScript
 import { useNavigate } from 'react-router-dom'; // Importing navigation hook for redirection
-import { defaultFormState } from '../params/paramsLog'; // Importing default form state
+import { defaultFormState, checkUserExists } from '../params/paramsLog'; // Importing default form state
 
 // Custom hook to manage the signup form state and functionality
 export const useSignUpForm = () => {
     const navigate = useNavigate(); // Hook to programmatically navigate after signup
-    const { signUp, checkUserExists, checkEmailExists, checkBuIdExists } = useAuth(); // Access functions from AuthContext
+    const { signUp } = useAuth(); // Access functions from AuthContext
 
     // State to manage form data using defaultFormState
     const [formState, setFormState] = useState<FormState>(defaultFormState);
@@ -57,26 +57,29 @@ export const useSignUpForm = () => {
             return;
         }
 
-        // Check if the username already exists
-        const userExists = await checkUserExists(formState.authId);
-        if (userExists) {
-            setErrorMessage('Username already exists. Please choose a different username or login to your existing account.'); // Error message for existing username
-            return;
-        }
+        /// Check if the username already exists
+    const { authIdExists, emailExists, buIdExists } = await checkUserExists(
+        formState.authId,
+        formState.email,
+        formState.buId
+    );
 
-        // Check if the email already exists
-        const emailExists = await checkEmailExists(formState.email);
-        if (emailExists) {
-            setErrorMessage('Email already exists. Please use a different email or login to your existing account.'); // Error message for existing email
-            return;
-        }
+    if (authIdExists) {
+        setErrorMessage('Username already exists. Please choose a different username or login to your existing account.'); // Error message for existing username
+        return;
+    }
 
-        // Check if the BU id already exists
-        const buidExists = await checkBuIdExists(formState.buId);
-        if (buidExists) {
-            setErrorMessage('BU Id already exists. Login to your existing account.'); // Error message for existing BU ID
-            return;
-        }
+    // Check if the email already exists
+    if (emailExists) {
+        setErrorMessage('Email already exists. Please use a different email or login to your existing account.'); // Error message for existing email
+        return;
+    }
+
+    // Check if the BU id already exists
+    if (buIdExists) {
+        setErrorMessage('BU Id already exists. Login to your existing account.'); // Error message for existing BU ID
+        return;
+    }
 
         // Password validation using regex
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -118,18 +121,7 @@ export const useSignUpForm = () => {
 
         // Attempt to sign up the user
         const result = await signUp(
-            formState.authId,
-            formState.email,
-            formState.password,
-            formState.confirmPassword,
-            formState.fName,
-            formState.lName,
-            formState.buId,
-            formState.programType,
-            formState.programCode,
-            formState.pathOfInterest,
-            formState.coursesToTake,
-            formState.coursesTaken,
+            formState
         );
 
         if (result) {

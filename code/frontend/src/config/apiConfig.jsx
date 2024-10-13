@@ -3,7 +3,7 @@
 
 // Importing necessary libraries and parameters
 import axios from 'axios'; // Importing axios for making HTTP requests
-import { tokenResponse } from '../params/paramsLog'; // Importing API base URL and token response
+import { REACT_API_BASE_URL } from '../params/paramsLog'; // Importing API base URL
 
 /**
  * Function to fetch data from the API.
@@ -14,20 +14,25 @@ import { tokenResponse } from '../params/paramsLog'; // Importing API base URL a
  */
 const fetchData = async () => {
   try {
-    // Requirement Condition: Ensure tokenResponse is available before making the request
-    if (!tokenResponse) {
-      throw new Error('Token response is not defined.'); // Error handling for missing token response
+    // Requirement Condition: Ensure the token is available before making the request
+    const token = sessionStorage.getItem('token'); // Retrieve the token from session storage
+    if (!token) {
+      throw new Error('Authentication token is not defined.'); // Error handling for missing token
     }
 
-    // Making a GET request to the specified endpoint
-    tokenResponse;
-    
+    // Making a GET request to the specified endpoint using the token for authorization
+    const response = await axios.get(`${REACT_API_BASE_URL}/endpoint`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the request headers
+      },
+    });
+
     // Log the response data for debugging
-    console.log(tokenResponse.data); // Log the fetched data to console
+    console.log('Fetched data:', response.data); // Log the fetched data to console
 
   } catch (error) {
     // Handling any errors that occur during the fetch operation
-    console.error('Error fetching data:', error); // Log error for debugging
+    console.error('Error fetching data:', error.message || error); // Log error message for debugging
   }
 };
 

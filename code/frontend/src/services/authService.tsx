@@ -6,7 +6,7 @@
 
 import axios from 'axios'; // Importing axios for making HTTP requests
 import { API_BASE_URL, loginRequirement } from "../params/paramsLog"; // Importing base URL and login requirement function
-import { LoginParams } from '../interfaces/AuthSession'; // Importing LoginParams type for type safety
+import { LoginParams, LoginResponse } from '../interfaces/AuthSession'; // Importing LoginParams type for type safety
 
 // Service to manage authentication-related operations
 const authService = {
@@ -21,9 +21,9 @@ const authService = {
      * @returns {Promise<{ success: boolean; message: string }>} 
      *          - A promise that resolves to an object indicating success status and message.
      */
-    loginUser: async (params: LoginParams): Promise<{ success: boolean; message: string }> => {
+    loginUser: async (authId:string, password:string): Promise<{ success: boolean; message: string }> => {
         // Requirement Condition: Validate input parameters using the loginRequirement function
-        const validationMessage = loginRequirement(params.authId, params.password); // Pass authId and password for validation
+        const validationMessage = loginRequirement(authId, password); // Pass authId and password for validation
 
         if (validationMessage !== 'Login requirements met.') {
             console.error(validationMessage); // Log validation error
@@ -35,9 +35,9 @@ const authService = {
 
         try {
             // Send a POST request to the authentication endpoint
-            const response = await axios.post(`${API_BASE_URL}/v1/auth/login`, {
-                username: params.authId, // Username from params
-                password: params.password, // Password from params
+            const response = await axios.post<LoginResponse>(`${API_BASE_URL}/v1/auth/login`, {
+                username: authId, // Username from params
+                password: password, // Password from params
             });
 
             // Check for successful response

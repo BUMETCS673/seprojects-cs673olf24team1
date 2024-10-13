@@ -2,7 +2,8 @@
 // Created by Poom, updated and annotated by Tash
 
 import axios from 'axios';
-import { LoginParams, SignUpParams, SuccessResponse, ErrorResponse } from '../interfaces/AuthSession'; // Import necessary interfaces
+import { LoginParams, FormState, SuccessResponse, ErrorResponse } from '../interfaces/AuthSession'; // Import necessary interfaces
+import { OpenAIResponse } from '../interfaces/ChatSession';
 
 const API_BASE_URL = 'http://localhost:9000/api/v1'; // Update this if your backend runs on a different port
 
@@ -62,7 +63,7 @@ export const login = async (params: LoginParams): Promise<SuccessResponse<any> |
  * @returns {Promise<SuccessResponse<any> | ErrorResponse>} 
  *          - A promise that resolves to a success response or an error response.
  */
-export const signup = async (userDetails: SignUpParams): Promise<SuccessResponse<any> | ErrorResponse> => {
+export const signup = async (userDetails: FormState): Promise<SuccessResponse<any> | ErrorResponse> => {
     // Requirement Condition: Ensure all required fields are filled
     if (!userDetails.authId || !userDetails.email || !userDetails.password || !userDetails.confirmPassword) {
         return { success: false, message: 'All fields are required.' }; // Return error message for missing fields
@@ -129,7 +130,7 @@ export const sendMessageToOpenAI = async (message: string): Promise<string | Err
     }
 
     try {
-        const response = await axios.post(OPENAI_URL, {
+        const response = await axios.post<OpenAIResponse>(OPENAI_URL, {
             model: 'text-davinci-003',
             prompt: message,
             max_tokens: 150

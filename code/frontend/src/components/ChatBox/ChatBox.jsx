@@ -4,7 +4,7 @@
 // Updated and Annotated by Tash: Success/Error Message and Input Requirements
 
 import React, { useState } from 'react'; // Import necessary React hooks
-import './InputField.css'; // Import styles for the InputField component
+import '../InputField/InputField.css'; // Import styles for the InputField component
 
 /**
  * InputField component for sending messages in the chat application.

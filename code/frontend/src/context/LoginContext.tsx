@@ -23,28 +23,32 @@ export const LoginProvider: React.FC<{ children: React.ReactNode }> = ({ childre
      * - Attempts to log in using the credentials provided
      * - Sets success or error messages based on login result
      */
-    const handleLogin = async (params: LoginParams) => {
-        // Requirement Condition: Validate login requirements
-        const validationMessage = loginRequirement(params); // Validate authId and password
-        if (validationMessage !== 'Login requirements are met.') {
-            setErrorMessage(validationMessage); // Set error message if validation fails
-            setSuccessMessage(''); // Clear success message if there's an error
-            return; // Exit the function if validation fails
-        }
+    // Function to handle user login
+const handleLogin = async (authId: string, password: string): Promise<void> => {
+    // Requirement Condition: Validate login requirements
+    const validationMessage = loginRequirement( authId, password ); // Validate authId and password
 
-        try {
-            const result = await login(params); // Attempt to log in
-            if (result) {
-                setSuccessMessage('Login successful!'); // Set success message on successful login
-                setErrorMessage(''); // Clear any previous error message
-            } else {
-                setErrorMessage('Login failed. Please check your credentials and try again.'); // Set error message if login fails
-            }
-        } catch (error) {
-            console.error("Login failed: ", error); // Log error if login fails
-            setErrorMessage('An unexpected error occurred during login. Please try again later.'); // Set error message for unexpected errors
+    if (validationMessage !== 'Login requirements are met.') {
+        setErrorMessage(validationMessage); // Set error message if validation fails
+        setSuccessMessage(''); // Clear success message if there's an error
+        return; // Exit the function if validation fails
+    }
+
+    try {
+        const result = await login( authId, password ); // Attempt to log in
+
+        if (result) {
+            setSuccessMessage('Login successful!'); // Set success message on successful login
+            setErrorMessage(''); // Clear any previous error message
+        } else {
+            setErrorMessage('Login failed. Please check your credentials and try again.'); // Set error message if login fails
         }
-    };
+    } catch (error) {
+        console.error("Login failed: ", error); // Log error if login fails
+        setErrorMessage('An unexpected error occurred during login. Please try again later.'); // Set error message for unexpected errors
+    }
+};
+
 
     /**
      * Handle changes to form input fields
