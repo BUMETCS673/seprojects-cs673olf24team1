@@ -104,11 +104,6 @@ const LoginPage = (props) => {
             <span className='form-input-login'>
               Do not have an account? <Link to="/signup">Sign Up</Link>
             </span>
-            <span className='form-input-login'>
-              <Link to="/forgotpassword">
-                Forgot password
-              </Link>
-            </span>
           </form>
         </div>
       </div>

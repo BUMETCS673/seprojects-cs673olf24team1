@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, act } from 'react';
 import { useUser } from './UserContext';
-import { Message } from '../interfaces/Message';
-import { ChatSession } from '../interfaces/ChatSession';
+import { ChatSession, Message } from '../interfaces/ChatSession';
 import ChatService from '../services/chatService';
 
 
@@ -64,7 +63,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
-    const response = await ChatService.getChatBotResponse(input, user.fName, user.authId);
+    const response = await ChatService.getChatBotResponse(input, user.firstName, user.authId);
 
     if (response) {
       const newAIMessage: Message = {

@@ -2,9 +2,8 @@
 # 🗄️ PostgreSQL Database Schema
 
 Within this directory, we have three different `.sql` files consisting of:
-1. `depreciated_scripts.sql`: for our first draft db script from iteration 1.
+1. `db_init`: our current db structure.
 2. `BUAN.sql`: the ideal structured relational database script for our finished product post-iteration 3.
-3. `current_buandb.sql`: the final draft for our db script for our cs673 project.
 
 We will explain the `BUAN.sql` file further in the SDD documentation and focus on the sql script file that we plan to use in this project.
 
@@ -85,7 +84,7 @@ CREATE INDEX idx_sessions_created_at ON sessions(created_at);
 
 ```
 
-## 📜 Stored Procedures
+## 📜 Stored Procedures (OPTIONAL)
 ### Storedproc: Update the `user` table when a new user is created through the sign-up page
 This procedure adds a new user to the `users` table.
 ```sql

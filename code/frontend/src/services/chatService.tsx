@@ -1,5 +1,5 @@
-import { Message } from '../interfaces/Message';
-import { ChatSession } from '../interfaces/ChatSession';
+
+import { ChatSession, Message } from '../interfaces/ChatSession';
 import { createChatJson } from '../utils/mappers';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';

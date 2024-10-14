@@ -1,4 +1,4 @@
-import { User } from "../interfaces/User";
+import { User } from "../interfaces/UserSession";
 import { mapUserToAPIBody } from "../utils/mappers";
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
