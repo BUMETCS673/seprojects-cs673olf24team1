@@ -17,6 +17,11 @@
     }
 }
 
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
 .close-btn {
     position: absolute;
     top: 2%;
@@ -135,11 +140,6 @@
     width: 100%;
 }
 
-.form-inputs p {
-    font-size: 0.8rem;
-    color: $secondary;
-}
-
 .form-label {
     display: inline-block;
     font-size: 0.8rem;
@@ -150,12 +150,26 @@
 .form-input {
     display: block;
     padding-left: 10px;
-    outline: none;
     border-radius: 2px;
     height: 40px;
     width: 100%;
     border: $borderRadius;
     background-color: $light-grey;
+}
+
+.form-input-invalid {
+    display: block;
+    padding-left: 10px;
+    border-radius: 2px;
+    height: 40px;
+    width: 100%;
+    background-color: $light-grey; 
+    border: 1px solid red;
+}
+
+.form-inputs p {
+    font-size: 0.8rem;
+    color: $secondary;
 }
 
 .form-input::placeholder {

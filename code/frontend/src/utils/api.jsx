@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:9000/api/v1'; // Update this if your backend runs on a different port
+const API_BASE_URL = 'http://54.159.232.88:9000/api/v1'; // Update this if your backend runs on a different port
 
 export const getChatbotResponse = async(userInput) => {
     try {
@@ -20,7 +20,7 @@ export const getChatbotResponse = async(userInput) => {
 // api.js - Responsible for making requests to backend and OpenAI
 
 // Backend API URL
-const BACKEND_URL = 'http://localhost:8080/api'; // Adjust this based on your backend server
+const BACKEND_URL = 'http://54.159.232.88:8080/api'; // Adjust this based on your backend server
 
 // OpenAI API key - In a real-world scenario, this should be handled securely in the backend
 const OPENAI_API_KEY = 'your-openai-api-key';

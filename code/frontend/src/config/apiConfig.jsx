@@ -1,7 +1,7 @@
 import axios from 'axios'; // Importing axios for making HTTP requests
 
 // Base URL for the API, using environment variable or defaulting to localhost
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://54.159.232.88:5000/api';
 
 // Function to fetch data from the API
 const fetchData = async () => {

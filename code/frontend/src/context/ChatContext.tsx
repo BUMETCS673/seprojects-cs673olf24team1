@@ -63,7 +63,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSendingMessage(true);
 
     // Insert a service API call here to fetch AI response.
-    const response = await ChatService.getChatBotResponse(input, user.fName, user.authId);
+    const response = await ChatService.getChatBotResponse(input, user.firstName, user.authId);
 
     if (response) {
       const newAIMessage: Message = {

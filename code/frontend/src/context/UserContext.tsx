@@ -38,8 +38,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const initialUserState: User = {
             authId: '',
             userId: -1,
-            fName: '',
-            lName: '',
+            firstName: '',
+            lastName: '',
             email: '',
             password: '',
             programCode: '',

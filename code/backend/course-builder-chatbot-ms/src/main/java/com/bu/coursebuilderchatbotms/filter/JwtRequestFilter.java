@@ -1,5 +1,6 @@
-package com.bu.coursebuilderchatbotms.utils;
+package com.bu.coursebuilderchatbotms.filter;
 
+import com.bu.coursebuilderchatbotms.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

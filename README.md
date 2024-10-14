@@ -149,11 +149,12 @@ Ensure you have the following installed:
 ### Step 5: Create Database Tables
 - Use your database manager of choice, ex. DBeaver
 - Connect it to the running Postgres container `http://localhost:5432`
-- Run the current_buandb.sql script that is under code/db to create the tables
+- Run the db_init.sql script that is under code/db to create the tables (run all the create tables script before stored procedures section)
 
 ### Step 6: Verify the Services
 - Open your browser and go to `http://localhost:3000` to access the frontend application.
 - You can also use API testing tools like `curl` or Postman to verify the AI service (`http://localhost:9080`) and backend (`http://localhost:8080`) are running correctly.
+- You can use DBeaver to also test the DB connection to the database as well.
 
 ### Step 7: Shutting Down the Services
 - To stop the services, use:
