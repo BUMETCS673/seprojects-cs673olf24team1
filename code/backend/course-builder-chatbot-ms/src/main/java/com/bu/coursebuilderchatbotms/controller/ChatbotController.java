@@ -40,9 +40,13 @@ public class ChatbotController {
             aiRequest.put("user_id", user.getAuthId());
             aiRequest.put("student_name", user.getAuthId());
             aiRequest.put("message", message);
-            aiRequest.set("course_taken", objectMapper.valueToTree(convertStringToStringArr(user.getCourse_taken())));
+
+            List<String> courseTaken = convertStringToStringArr(user.getCourse_taken());
+            aiRequest.set("course_taken", courseTaken.isEmpty() ? objectMapper.createArrayNode() : objectMapper.valueToTree(courseTaken));
+
             aiRequest.put("path_interest", user.getPathInterest());
             aiRequest.put("course_to_take", user.getCourseToTake());
+            System.out.println(aiRequest);
             return aiRequest;
         }).flatMap(aiRequest ->
                 webClient.post()

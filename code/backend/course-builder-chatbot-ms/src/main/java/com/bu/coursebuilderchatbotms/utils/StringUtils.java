@@ -14,14 +14,17 @@ public class StringUtils {
     }
 
     public static List<String> convertStringToStringArr(String input) {
-        if (input == null || input.isEmpty()) {
+        if (input == null || input.isEmpty() || input.equals("[]")) {
             return new ArrayList<>();
         }
         input = input.replaceAll("'", "").replaceAll("\\[", "").replaceAll("\\]", "");
         String[] elements = input.split(",");
         List<String> result = new ArrayList<>();
         for (String element : elements) {
-            result.add(element.trim());
+            String trimmed = element.trim();
+            if (!trimmed.isEmpty()) {
+                result.add(trimmed);
+            }
         }
         return result;
     }
