@@ -31,3 +31,13 @@ export interface FormState {
     coursesToTake: number;
     coursesTaken: string[];
 }
+
+export interface FormError {
+    username: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    firstName: string,
+    lastName: string,
+    buId: string,
+}
