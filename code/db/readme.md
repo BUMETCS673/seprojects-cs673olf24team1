@@ -18,7 +18,7 @@ CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     auth_id VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    password_hash VARCHAR(250) NOT NULL,
+    password_hash VARCHAR NOT NULL,
     f_name VARCHAR(50) NOT NULL,
     l_name VARCHAR(50) NOT NULL,
     program_code VARCHAR(10) NOT NULL,
