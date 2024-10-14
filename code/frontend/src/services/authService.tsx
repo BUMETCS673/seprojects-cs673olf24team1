@@ -4,7 +4,7 @@
 import axios from "axios";
 
 // Base URL for the authentication API, configured for JWT Auth
-const REACT_APP_API_BASE_URL = 'http://localhost:8080/api';
+const REACT_APP_API_BASE_URL = 'http://54.159.232.88:8080/api';
 
 // Service to manage authentication-related operations
 const authService = {

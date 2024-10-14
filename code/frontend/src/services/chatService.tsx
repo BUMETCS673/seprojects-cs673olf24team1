@@ -2,7 +2,7 @@
 import { ChatSession, Message } from '../interfaces/ChatSession';
 import { createChatJson } from '../utils/mappers';
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = 'http://54.159.232.88:8080/api/v1';
 
 const ChatService = {
 
