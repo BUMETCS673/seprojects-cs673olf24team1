@@ -15,10 +15,10 @@ public class UserCreationDTO {
     private String email;
     private String password;
     private String passwordHash;
-    private String fName;
-    private String lName;
     private String programCode;
     private List<String> courseTaken;
     private String pathInterest;
     private Integer courseToTake;
+    private String firstName;
+    private String lastName;
 }

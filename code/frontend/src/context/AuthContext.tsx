@@ -5,10 +5,12 @@ import React, { createContext, useState, useContext, useEffect, ReactNode } from
 import { useUser } from './UserContext'; // Importing the UserContext to manage user details
 import authService from '../services/authService'; // Importing the authentication service for API calls
 import { UserService } from '../services/userService';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
+import { SignUpParams } from '../interfaces/AuthSession';
+
 
 // Define the shape of the context value
-interface AuthContextType {
+export interface AuthContextType {
     isAuth: boolean;                // Indicates if the user is authenticated
     isIncorrectPassword: boolean;    // Indicates if the last login attempt was unsuccessful due to incorrect password
     isLoading: boolean;              // Indicates if the authentication process is currently loading
@@ -16,8 +18,8 @@ interface AuthContextType {
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        fName: string,                // User's first name
-        lName: string,                // User's last name
+        firstName: string,                // User's first name
+        lastName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
         programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
@@ -55,8 +57,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         authId: string,               // Username for the user account
         email: string,                // User's email address
         password: string,             // User's password
-        fName: string,                // User's first name
-        lName: string,                // User's last name
+        firstName: string,                // User's first name
+        lastName: string,                // User's last name
         buId: string,                 // Unique identifier for the user (BU ID)
         programType: string,          // Type of academic program (e.g., "MS degree", can be dynamic)
         programCode: string,          // Code for the academic program (e.g., "mssd", can be dynamic)
@@ -72,8 +74,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             userId: -1, // place holder
             email: email,
             password: password,
-            fName: fName,
-            lName: lName,
+            firstName: firstName,
+            lastName: lastName,
             buId: buId,
             programType: programType,
             programCode: programCode,

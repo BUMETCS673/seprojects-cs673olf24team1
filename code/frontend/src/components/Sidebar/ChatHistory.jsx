@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
 import { assets } from '../../assets/assets';
 import { useChat } from '../../context/ChatContext';
 import './Sidebar.css';

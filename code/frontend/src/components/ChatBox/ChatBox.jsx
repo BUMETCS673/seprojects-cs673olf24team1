@@ -21,13 +21,7 @@ const ChatBox = () => {
   } = useChat(); // Accessing the chat context
 
   // Local state management for the profile panel and input field
-  const [isProfilePanelOpen, setProfilePanelOpen] = useState(false); // State for controlling the profile panel visibility
   const [input, setInput] = useState(''); // State for managing the message input field
-
-  // Toggle the visibility of the profile panel
-  const toggleProfilePanel = () => {
-    // setProfilePanelOpen(!isProfilePanelOpen);
-  };
 
   // Handle changes to the input field
   const handleInputChange = (event) => {
@@ -54,21 +48,7 @@ const ChatBox = () => {
           <img src={assets.bu_logo} alt="logo" />
           <p>BUAN CHATBOT</p>
         </div>
-        {/* Profile Avatar for accessing user profile */}
-        <div className="avatar-container" onClick={toggleProfilePanel}>
-          <img src={assets.user_icon} alt="User Avatar" />
-        </div>
       </div>
-
-      {/* Sliding Profile Panel */}
-      <div className={`profile-panel ${isProfilePanelOpen ? 'open' : ''}`}>
-        <button className="close-btn" onClick={toggleProfilePanel}>X</button> {/* Close button for the profile panel */}
-        <h2>User Profile</h2>
-        {/* <ProfileForm /> */}
-      </div>
-
-      {/* Overlay to dim background when profile panel is open */}
-      {isProfilePanelOpen && <div className="overlay" onClick={toggleProfilePanel}></div>}
 
       {/* Chat container for displaying chat messages and input field */}
       <div className="chat-container">

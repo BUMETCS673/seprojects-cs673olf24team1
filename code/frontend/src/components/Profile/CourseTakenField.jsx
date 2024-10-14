@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import './CourseTakenField.css'; // Import the CSS file
 import useSignUpForm from '../../pages/useSignUpForm';
 

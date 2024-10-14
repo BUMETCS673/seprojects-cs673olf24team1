@@ -3,8 +3,7 @@
 // Created by Natt 
 //Updated, integrated, and annotated by Natasya Liew
 
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // // Import password visibility toggle icons
 
@@ -21,6 +20,7 @@ import { useSignUpForm } from './useSignUpForm';
 const SignupPage = () => {
   const {
     formState,
+    errors,
     showPassword,
     showConfirmPassword,
     togglePasswordVisibility,
@@ -48,10 +48,10 @@ const SignupPage = () => {
             <h2>Sign Up</h2>
 
             {/* AuthId/Username Input */}
-            <div className="form-inputs">
+            <div className='form-inputs'>
               <label className="form-label">Username</label>
               <input
-                className="form-input"
+                className={errors.username ? 'form-input-invalid' : 'form-input'}
                 placeholder="Insert your desired username [text]: "
                 name="authId" // Input name matches the state variable
                 type="text"
@@ -60,21 +60,22 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errors.username && <span className="error">{errors.username}</span>}
             </div>
 
             {/* Email Input */}
-            <div className="form-inputs">
+            <div className='form-inputs'>
               <label className="form-label">Email</label>
               <input
-                className="form-input"
+                className={errors.email ? 'form-input-invalid': 'form-input'}
                 placeholder="Insert your email [text]: "
                 name="email" // Input name matches the state variable
-                type="email"
                 id="email"
                 value={formState.email} // Controlled input
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errors.email && <span className="error">{errors.email}</span>}
             </div>
 
             {/* Password Input */}
@@ -82,7 +83,7 @@ const SignupPage = () => {
               <label className="form-label">Password</label>
               <div className="password-container">
                 <input
-                  className="form-input"
+                  className={errors.password ? 'form-input-invalid': 'form-input'}
                   placeholder="******"
                   name="password" // Input name matches the state variable
                   type={showPassword ? 'text' : 'password'} // Toggle between text and password
@@ -95,6 +96,7 @@ const SignupPage = () => {
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
+              {errors.password && <span className="error">{errors.password}</span>}
             </div>
 
             {/* Confirm Password Input */}
@@ -102,7 +104,7 @@ const SignupPage = () => {
               <label className="form-label">Confirm Password</label>
               <div className="password-container">
                 <input
-                  className="form-input"
+                  className={errors.confirmPassword ? 'form-input-invalid': 'form-input'}
                   placeholder="******"
                   name="confirmPassword" // Input name matches the state variable
                   type={showConfirmPassword ? 'text' : 'password'} // Toggle between text and password
@@ -115,39 +117,42 @@ const SignupPage = () => {
                   <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
+              {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
             </div>
 
             {/* New Fields from Profile Page */}
             <div className="form-inputs">
               <label className="form-label">First Name</label>
               <input
-                className="form-input"
+                className={errors.firstName ? 'form-input-invalid': 'form-input'}
                 placeholder="Insert your first name"
-                name="fName" // Input name matches the state variable
+                name="firstName" // Input name matches the state variable
                 type="text"
-                value={formState.fName} // Controlled input
+                value={formState.firstName} // Controlled input
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errors.firstName && <span className="error">{errors.firstName}</span>}
             </div>
 
             <div className="form-inputs">
               <label className="form-label">Last Name</label>
               <input
-                className="form-input"
+                className={errors.lastName ? 'form-input-invalid': 'form-input'}
                 placeholder="Insert your last name"
-                name="lName" // Input name matches the state variable
+                name="lastName" // Input name matches the state variable
                 type="text"
-                value={formState.lName} // Controlled input
+                value={formState.lastName} // Controlled input
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errors.lastName && <span className="error">{errors.lastName}</span>}
             </div>
 
             <div className="form-inputs">
               <label className="form-label">BU ID</label>
               <input
-                className="form-input"
+                className={errors.buId ? 'form-input-invalid': 'form-input'}
                 placeholder="Insert your BU ID"
                 name="buId" // Input name matches the state variable
                 type="text"
@@ -155,6 +160,7 @@ const SignupPage = () => {
                 onChange={handleChange} // Update state on change
                 required
               />
+              {errors.buId && <span className="error">{errors.buId}</span>}
             </div>
 
             <div className="form-inputs">
@@ -202,13 +208,7 @@ const SignupPage = () => {
               <select
                 name="coursesToTake" // Input name matches the state variable
                 value={formState.coursesToTake} // Controlled input
-                onChange={(e) => handleChange({
-                  ...e,
-                  target: {
-                    ...e.target,
-                    value: Number(e.target.value) // Convert selected value to integer
-                  }
-                })}
+                onChange={handleChange}
                 className="form-input"
               >
                 <option value="1">1</option>

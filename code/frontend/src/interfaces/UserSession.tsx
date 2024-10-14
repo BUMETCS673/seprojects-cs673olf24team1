@@ -7,8 +7,8 @@ export interface User {
     userId: number;
     email: string;                // User's email address
     password: string;             // User's password (not typically stored, usually for temporary use during login)
-    fName: string;            // User's first name
-    lName: string;             // User's last name
+    firstName: string;            // User's first name
+    lastName: string;             // User's last name
     buId: string;                 // Unique identifier for the user (BU ID)
     programType: string;          // Type of academic program (e.g., "MS degree", can be dynamic)
     programCode: string;          // Code for the academic program (e.g., "mssd", can be dynamic)

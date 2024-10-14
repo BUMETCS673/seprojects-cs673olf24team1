@@ -1,5 +1,5 @@
-import { Message } from "../interfaces/Message";
-import { User } from "../interfaces/User";
+import { Message } from "../interfaces/ChatSession";
+import { User } from "../interfaces/UserSession";
 
 function extractCourseIds(courses: string[]): string[] {
     return courses.map(course => {
@@ -16,8 +16,8 @@ export function mapUserToAPIBody(user: User): string {
         "authId": user.authId,
         "email": user.email,
         "password": user.password,
-        "fName": user.fName,
-        "lName": user.lName,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
         "programCode": user.programCode,
         "courseTaken": extractCourseIds(user.coursesTaken),
         "pathInterest": user.pathOfInterest,

@@ -2,25 +2,11 @@ import { useState } from 'react';
 import availableCourses from '../assets/availableCourses';
 import { useUser } from '../context/UserContext';
 import { useAuth } from '../context/AuthContext';
-import { User } from '../interfaces/User';
+import { User } from '../interfaces/UserSession';
 import { useNavigate } from 'react-router-dom';
+import { FormError, FormState } from '../interfaces/AuthSession';
+import { validateSignupForm } from '../utils/validators';
 
-
-// Define the type for the form state
-interface FormState {
-    authId: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    fName: string;
-    lName: string;
-    buId: string;
-    programType: string;
-    programCode: string;
-    pathOfInterest: string;
-    coursesToTake: number;
-    coursesTaken: string[];
-}
 
 export const useSignUpForm = () => {
 
@@ -33,8 +19,8 @@ export const useSignUpForm = () => {
         email: '',
         password: '',
         confirmPassword: '',
-        fName: '',
-        lName: '',
+        firstName: '',
+        lastName: '',
         buId: '',
         programType: 'MS degree',
         programCode: 'mssd',
@@ -42,6 +28,17 @@ export const useSignUpForm = () => {
         coursesToTake: 3,
         coursesTaken: [],
     });
+
+    // State to validate the form inputs
+    const [errors, setErrors] = useState<FormError>({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        firstName: '',
+        lastName: '',
+        buId: '',
+    })
 
     // State to manage password visibility
     const [showPassword, setShowPassword] = useState(false);
@@ -75,28 +72,28 @@ export const useSignUpForm = () => {
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        // Check if passwords match before sending the request
-        if (formState.password !== formState.confirmPassword) {
-            alert("Passwords don't match");
-            return;
-        }
+        const { isValid, newErrors } = validateSignupForm(formState);
 
-        const result = await signUp(
-            formState.authId,
-            formState.email,
-            formState.password,
-            formState.fName,
-            formState.lName,
-            formState.buId,
-            formState.programType,
-            formState.programCode,
-            formState.pathOfInterest,
-            formState.coursesToTake,
-            formState.coursesTaken,
-        );
+        if (isValid) {
+            const result = await signUp(
+                formState.authId,
+                formState.email,
+                formState.password,
+                formState.firstName,
+                formState.lastName,
+                formState.buId,
+                formState.programType,
+                formState.programCode,
+                formState.pathOfInterest,
+                formState.coursesToTake,
+                formState.coursesTaken,
+            );
 
-        if (result) {
-            navigate('/login');
+            if (result) {
+                navigate('/login');
+            }
+        } else {
+            setErrors(newErrors);
         }
 
     };
@@ -146,6 +143,7 @@ export const useSignUpForm = () => {
 
     return {
         formState,
+        errors,
         showPassword,
         showConfirmPassword,
         togglePasswordVisibility,

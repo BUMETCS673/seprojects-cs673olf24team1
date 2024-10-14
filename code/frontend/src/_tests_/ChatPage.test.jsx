@@ -2,11 +2,9 @@
 /* eslint-disable react/display-name */
 /* eslint-disable no-undef */
 // ChatPage.test.js
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ChatPage from '../ChatPage'; // Adjust the path as necessary
-import SideBar from '../components/Sidebar/Sidebar';
-import ChatBox from '../components/ChatBox/ChatBox';
+
 
 // Mock the child components (SideBar and ChatBox) to isolate the test
 jest.mock('../components/Sidebar/Sidebar', () => () => <div>Sidebar Component</div>);

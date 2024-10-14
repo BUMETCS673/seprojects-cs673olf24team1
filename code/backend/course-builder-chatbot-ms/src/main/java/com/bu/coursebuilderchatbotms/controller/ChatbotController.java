@@ -14,6 +14,8 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bu.coursebuilderchatbotms.utils.StringUtils.convertStringToStringArr;
+
 @RestController
 @RequestMapping("/api/v1/chatbot")
 public class ChatbotController {
@@ -34,8 +36,6 @@ public class ChatbotController {
             String message = request.get("message").asText();
             String username = request.get("user_id").asText();
             User user = userService.getUserByUsername(username);
-            System.out.println("Processing request for user: " + username);
-            System.out.println("User retrieved: " + user);
             ObjectNode aiRequest = objectMapper.createObjectNode();
             aiRequest.put("user_id", user.getAuthId());
             aiRequest.put("student_name", user.getAuthId());
@@ -43,9 +43,6 @@ public class ChatbotController {
             aiRequest.set("course_taken", objectMapper.valueToTree(convertStringToStringArr(user.getCourse_taken())));
             aiRequest.put("path_interest", user.getPathInterest());
             aiRequest.put("course_to_take", user.getCourseToTake());
-
-            System.out.println("Request Body: " + aiRequest);
-
             return aiRequest;
         }).flatMap(aiRequest ->
                 webClient.post()
@@ -54,18 +51,5 @@ public class ChatbotController {
                         .retrieve()
                         .bodyToMono(JsonNode.class)
         ).doOnError(error -> System.err.println("Error in chatConversation: " + error.getMessage()));
-    }
-
-    private List<String> convertStringToStringArr(String input) {
-        if (input == null || input.isEmpty()) {
-            return new ArrayList<>();
-        }
-        input = input.replaceAll("'", "").replaceAll("\\[", "").replaceAll("\\]", "");
-        String[] elements = input.split(",");
-        List<String> result = new ArrayList<>();
-        for (String element : elements) {
-            result.add(element.trim());
-        }
-        return result;
     }
 }

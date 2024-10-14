@@ -2,7 +2,6 @@
 /* eslint-disable react/display-name */
 /* eslint-disable no-unused-vars */
 // App.test.js
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import App from './App'; // Adjust the path as necessary
