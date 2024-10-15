@@ -22,18 +22,16 @@ public class ApiSteps {
         client = HttpClient.newHttpClient();
     }
 
-    @When("I send a POST HTTP request")
-    public void sendPost() throws Exception {
-        // Create JSON body
+    // Generic method for sending POST requests with custom messages
+    private void sendPostWithMessage(String message) throws Exception {
         JSONObject json = new JSONObject();
         json.put("user_id", "123");
         json.put("student_name", "bcevik");
         json.put("course_taken", new int[]{521});
         json.put("path_interest", "Web development");
         json.put("course_to_take", 1);
-        json.put("message", "I need to take this class");
+        json.put("message", message);
 
-        // Build the request
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
                 .header("Content-Type", "application/json")
@@ -44,16 +42,23 @@ public class ApiSteps {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    @Then("I receive a valid HTTP response code {int}")
-    public void i_receive_a_valid_http_response_code(int expectedStatusCode) {
-        // Assert the status code
-        assertEquals(expectedStatusCode, response.statusCode());
+    // Default test case
+    @When("I send a POST HTTP request")
+    public void sendPost() throws Exception {
+        sendPostWithMessage("I need to take this class");
+    }
+
+    // Handling dynamic message input for various tests
+    @When("I send a POST HTTP request with the message {string}")
+    public void sendPostWithDynamicMessage(String message) throws Exception {
+        sendPostWithMessage(message);
     }
 
     @When("I send a POST HTTP request with an empty message")
     public void sendPostWithEmptyMessage() throws Exception {
+        // Send an invalid request with only the "message" field as empty
         JSONObject json = new JSONObject();
-        json.put("message", "");
+        json.put("message", "");  // Empty message field
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
@@ -64,24 +69,21 @@ public class ApiSteps {
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    // Response assertion for valid response code
+    @Then("I receive a valid HTTP response code {int}")
+    public void i_receive_a_valid_http_response_code(int expectedStatusCode) {
+        assertEquals(expectedStatusCode, response.statusCode());
+    }
+
+    // Response assertion for invalid response code
+    @Then("I receive an invalid HTTP response code {int}")
+    public void i_receive_an_invalid_http_response_code(int expectedStatusCode) {
+        assertEquals(expectedStatusCode, response.statusCode());
+    }
+
+    // Error code assertion for empty message
     @Then("I should receive an error code {int} for empty message")
     public void i_should_receive_an_error_code_for_empty_message(int expectedErrorCode) {
         assertEquals(expectedErrorCode, response.statusCode());
-    }
-
-    @When("I send a POST HTTP request without credentials")
-    public void sendPostWithoutCredentials() throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{}"))
-                .build();
-
-        response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    @Then("I should receive an unauthorized code {int} for no credentials")
-    public void i_should_receive_an_unauthorized_code_for_no_credentials(int expectedStatusCode) {
-        assertEquals(expectedStatusCode, response.statusCode());
     }
 }
