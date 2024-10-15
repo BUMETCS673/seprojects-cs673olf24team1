@@ -1,0 +1,17 @@
+# Environments
+.env
+.venv
+.idea
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Node.js modules
+node_modules/
