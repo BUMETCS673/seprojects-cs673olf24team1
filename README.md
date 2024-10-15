@@ -1,7 +1,10 @@
 
 # 🦅 Academic Navigator Chatbot
 
-This project provides a web application designed to enhance BU MET students' experience in getting information on their CS program and courses, with additional features such as: selecting courses based on their career interests and preferences using our custom-made recommendation algorithm and answering questions from visa-related issues as an International Student to other student life queries. By creating this product, we can help the student advising team scale their accessibility to enrich their service to assist the students within the BU MET CS department. Our application integrates a chatbot built with ChatGPT-4o via Langchain API service and the Langchain tooling services for RAG retrieval from our courses.csv, programs.csv, and promptlib.json files to enhance users' scope of query capability. 
+This project provides a web application designed to enhance BU MET students' experience in getting information on their CS program and courses, with additional features such as: selecting courses based on their career interests and preferences using our custom-made recommendation algorithm and answering questions from visa-related issues as an International Student to other student life queries. By creating this product, we can help the student advising team scale their accessibility to enrich their service to assist the students within the BU MET CS department. Our application integrates a chatbot built with ChatGPT-4o via Langchain API service and the Langchain tooling services for RAG retrieval from our courses.csv, programs.csv, and promptlib.json files to enhance users' scope of query capability.
+
+# Access to our deployed website
+http://54.159.232.88:3000/
 
 ## Core Features
 - **AI-Driven Recommendations**: AI model integrated with Python, Langchain, and GPT-4o for personalized course suggestions.
@@ -113,6 +116,7 @@ Ensure you have the following installed:
    ```bash
    cd path/to/project/root
    ```
+3. Replace http://54.159.232.88/ in our code with http:localhost/ to run dev environment locally
 
 ### Step 2: Create Environment Files
 1. In the `./code/ai-service/fast-api` directory, create a `.env` file for the AI service.
